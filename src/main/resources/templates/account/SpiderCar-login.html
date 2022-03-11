@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--favicon-->
+	<link rel="icon" th:href="@{/images/favicon-32x32.png}" type="image/png" />
+	<!--plugins-->
+	<link th:href="@{/plugins/simplebar/css/simplebar.css}" rel="stylesheet" />
+	<link th:href="@{/plugins/perfect-scrollbar/css/perfect-scrollbar.css}" rel="stylesheet" />
+	<link th:href="@{/plugins/metismenu/css/metisMenu.min.css}" rel="stylesheet" />
+	<!-- loader-->
+	<link th:href="@{/css/pace.min.css}" rel="stylesheet" />
+	<script th:src="@{/js/pace.min.js}"></script>
+	<!-- Bootstrap CSS -->
+	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+	<link th:href="@{/css/app.css}" rel="stylesheet">
+	<link th:href="@{/css/icons.css}" rel="stylesheet">
+	<title>二手车网站登录页</title>
+</head>
+
+<body class="bg-login">
+	<!--wrapper-->
+	<div class="wrapper">
+		<div class="section-authentication-signin d-flex align-items-center justify-content-center my-5 my-lg-0">
+			<div class="container-fluid">
+				<div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3">
+					<div class="col mx-auto">
+						<div class="mb-4 text-center">
+							<img th:src="@{/images/logo-img.png}" width="180" alt="" />
+						</div>
+						<div class="card">
+							<div class="card-body">
+								<div class="border p-4 rounded">
+									<div class="text-center">
+										<h3 class="">登 录</h3>
+										<p>还没有账号？ <a href="SpiderCar-register.html">点此注册</a></p>
+									</div>
+
+									<div class="form-body">
+										<form class="row g-3" th:action="@{/user/login}">
+											<div>
+												<!--消息回显，如果msg消息不为空显示提示信息-->
+												<p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+											</div>
+											<div class="col-12">
+												<label for="inputUsername" class="form-label">账 号</label>
+												<input type="text" name="username" class="form-control" id="inputUsername" placeholder="请输入账号">
+											</div>
+											<div class="col-12">
+												<label for="inputChoosePassword" class="form-label">密 码</label>
+												<div class="input-group" id="show_hide_password">
+													<input type="password" name="password" class="form-control border-end-0" id="inputChoosePassword" value="" placeholder="请输入密码">
+													<a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-hide'></i></a>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-check form-switch">
+													<input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+													<label class="form-check-label" for="flexSwitchCheckChecked">记住我</label>
+												</div>
+											</div>
+											<div class="col-md-6 text-end">
+												<a href="forgot-password.html">忘记密码？</a>
+											</div>
+											<div class="col-12">
+												<div class="d-grid">
+													<button type="submit" class="btn btn-primary"><i class="bx bxs-lock-open"></i>登 录</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--end row-->
+			</div>
+		</div>
+	</div>
+	<!--end wrapper-->
+	<!-- Bootstrap JS -->
+	<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+	<!--plugins-->
+	<script th:src="@{/js/jquery.min.js}"></script>
+	<script th:src="@{/plugins/simplebar/js/simplebar.min.js}"></script>
+	<script th:src="@{/plugins/metismenu/js/metisMenu.min.js}"></script>
+	<script th:src="@{/plugins/perfect-scrollbar/js/perfect-scrollbar.js}"></script>
+	<!--Password show & hide js -->
+	<script th:inline="javascript">
+		$(document).ready(function (){
+			$('#show_hide_password a').on('click', function (event){
+				if ($('#show_hide_password input').attr("type") === "text"){
+					$('#show_hide_password input').attr('type', 'password');
+					$('#show_hide_password i').addClass("bx-hide");
+					$('#show_hide_password i').removeClass("bx-show");
+				} else if ($('#show_hide_password input').attr("type") === "text") {
+					$('#show_hide_password input').attr('type', 'text');
+					$('#show_hide_password i').removeClass("bx-hide");
+					$('#show_hide_password i').addClass("bx-show");
+				}
+			});
+		});
+	</script>
+	<!--app JS-->
+	<script th:src="@{/js/app.js}"></script>
+</body>
+
+</html>
