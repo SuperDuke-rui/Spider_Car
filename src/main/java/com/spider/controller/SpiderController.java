@@ -8,7 +8,6 @@ import com.spider.worm.SpiderMain;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -62,31 +61,44 @@ public class SpiderController {
 
         SpiderMain spiderMain = new SpiderMain();
 
-        List<Car> carList = spiderMain.getCars();
+        //获取分页urls
+        List<String> pageUrlsList = spiderMain.getPagesUrls();
 
-        //爬取结束时间
-        long middleTime = new Date().getTime();
+        //创建一个List存放Car类
+        List<Car> carList = null;
 
-        int hour = (int) ((middleTime-startTime)/3600000);
-        int minute = (int) (((middleTime-startTime)-hour*3600000)/60000);
-        int second = (int) ((((middleTime-startTime)-hour*3600000)-minute*60000)/1000);
-        System.out.println("爬取结束，耗时" + hour + "时" + minute + "分" + second + "秒");
+        //计数分页数
+        int num = 1;
+        //统计插入数据库的数据总数
+        int sum = 0;
 
-        System.out.println("=======================================================");
+        //分别获取每个分页中的单个二手车信息并存储至数据库
+        for (String eachPageUrl : pageUrlsList){
 
-        System.out.println("开始插入数据库");
+            System.out.println("当前爬取的是第"+ (num++) + "个分页，url为：" + eachPageUrl);
+            carList = SpiderMain.getDetailInfoFromPageUrl(eachPageUrl);
 
-        for (int i = 0; i<carList.size(); i++){
-            System.out.println(carList.get(i));
-            carMapper.insert(carList.get(i));
+            //统计插入数据量
+            sum += carList.size();
+
+            //存储该分页的数据到数据库中
+
+            for (Car car : carList) {
+                System.out.println(car);
+                carMapper.insert(car);
+            }
+
+            System.out.println("插入成功，该分页插入了" + carList.size() + "条数据！");
+
         }
 
 
         long endTime = new Date().getTime();
-        hour = (int) ((endTime-middleTime)/3600000);
-        minute = (int) (((endTime-middleTime)-hour*3600000)/60000);
-        second = (int) ((((endTime-middleTime)-hour*3600000)-minute*60000)/1000);
+        int hour = (int) ((endTime-startTime)/3600000);
+        int minute = (int) (((endTime-startTime)-hour*3600000)/60000);
+        int second = (int) ((((endTime-startTime)-hour*3600000)-minute*60000)/1000);
         System.out.println("插入结束，耗时" + hour + "时" + minute + "分" + second + "秒");
-        System.out.println("插入完成，共插入" + carList.size() + "条数据！");
+        System.out.println("插入完成，共插入" + sum + "条数据！");
     }
+
 }

@@ -38,6 +38,8 @@ public class SpiderMain {
 
     /**
      * 爬取二手车数据
+     * <p>
+     * 废弃该方法****
      */
     public List<Car> getCars() throws IOException, InterruptedException, ParseException {
         //1.二手车之家，默认地址暂为上海（shanghai），url为主页地址
@@ -48,11 +50,11 @@ public class SpiderMain {
 //        brand_urls2.add("/shanghai/benchi/");
 
         //2.2继续通过获得的品牌展示urls获取到展示页中的每个二手车分页的所有地址信息car_pages_urls
-        List<String> car_pages_urls = getPagesUrlsFromBrandUrls(brand_urls);
+//        List<String> car_pages_urls = getPagesUrlsFromBrandUrls(brand_urls);
 
         //2.3通过获取的所有品牌的所有分页的地址urls获取每个分页上所有单个二手车的urls并对其进行解析，返回CarList
 
-        return getDetailInfoFromPageUrls(car_pages_urls);
+//        return getDetailInfoFromPageUrls(car_pages_urls);
 
 //        List<Car> carList = new ArrayList<>();
 //        Car car = new Car();
@@ -60,7 +62,7 @@ public class SpiderMain {
 //
 //        carList.add(car);
 //        return carList;
-
+        return null;
     }
 
     /**
@@ -75,7 +77,7 @@ public class SpiderMain {
             Car car = null;
 
             Document doc = handleUrls(car_detail_url);
-            if (doc == null){
+            if (doc == null) {
                 System.out.println("获取失败，继续下一个。。。");
                 return null;
             }
@@ -111,17 +113,21 @@ public class SpiderMain {
                 //5.车辆品牌
                 String car_infos_string = doc.select(".bread-crumbs a").text();
                 String[] car_base_infos = car_infos_string.split(" ");
-                if (car_base_infos.length>10){
+                if (car_base_infos.length > 10) {
                     car.setCar_brand(car_base_infos[3]);
-                } else {
+                } else if (car_base_infos.length == 10) {
                     car.setCar_brand(car_base_infos[2]);
+                } else {
+                    car.setCar_brand("-");
                 }
 
                 //6.车辆类型
-                if (car_base_infos.length>10){
+                if (car_base_infos.length > 10) {
                     car.setCar_type(car_base_infos[4]);
-                } else {
+                } else if (car_base_infos.length == 10) {
                     car.setCar_type(car_base_infos[3]);
+                } else {
+                    car.setCar_type("-");
                 }
 
                 //7.车辆表显里程
@@ -136,7 +142,7 @@ public class SpiderMain {
                 car.setTransmission(car_base2_infos[2]);
 
                 //10.车辆排放量
-                String emissions_string = car_base2_infos[4].substring(0,car_base2_infos[4].length()-1);
+                String emissions_string = car_base2_infos[4].substring(0, car_base2_infos[4].length() - 1);
                 car.setEmissions(Double.parseDouble(emissions_string));
 
                 //11.车辆排放标准
@@ -159,90 +165,92 @@ public class SpiderMain {
                 //15.车辆过户次数
                 String transfers_times = car_content[14].substring(4);
                 car.setTransfers_times(transfers_times);
-                System.out.println(transfers_times);
+//                System.out.println(transfers_times);
 
                 //16.车辆所在地
-                if (car_base_infos.length>10){
-                    car.setCar_loc(car_base_infos[2]);
-                } else {
-                    car.setCar_loc(car_base_infos[1]);
-                }
+//                if (car_base_infos.length > 10) {
+//                    car.setCar_loc(car_base_infos[2]);
+//                } else {
+//                    car.setCar_loc(car_base_infos[1]);
+//                }
+                car.setCar_loc("上海");
 
                 //17.车辆级别
                 String car_grade = "";
-                if (car_content.length>28){
-                    car_grade= car_content[23].substring(4);
-                } else if (car_content.length == 28){
+                if (car_content.length > 28) {
+                    car_grade = car_content[23].substring(4);
+                } else if (car_content.length == 28) {
                     car_grade = car_content[22].substring(4);
                 } else {
                     car_grade = "-";
                 }
                 car.setCar_grade(car_grade);
-                System.out.println(car_grade);
+//                System.out.println(car_grade);
 
                 //18.车辆发动机
                 String car_engine = "";
-                if (car_content.length>28){
-                    car_engine= car_content[20].substring(1) + " " + car_content[21] + " " + car_content[22];
-                } else if (car_content.length == 28){
+                if (car_content.length > 28) {
+                    car_engine = car_content[20].substring(1) + " " + car_content[21] + " " + car_content[22];
+                } else if (car_content.length == 28) {
                     car_engine = car_content[20].substring(1) + " " + car_content[21];
                 } else {
                     car_engine = "-";
                 }
 
                 car.setCar_engine(car_engine);
-                System.out.println(car_engine);
+//                System.out.println(car_engine);
 
                 //19.车辆颜色
                 String car_color = "";
-                if (car_content.length>28){
+                if (car_content.length > 28) {
                     car_color = car_content[24].substring(4);
-                } else if (car_content.length == 28){
+                } else if (car_content.length == 28) {
                     car_color = car_content[23].substring(4);
                 } else {
                     car_color = "-";
                 }
                 car.setCar_color(car_color);
-                System.out.println(car_color);
+//                System.out.println(car_color);
 
                 //20.燃油标号
                 String fuel_type = "";
-                if (car_content.length>28){
+                if (car_content.length > 28) {
                     fuel_type = car_content[25].substring(4);
-                } else if (car_content.length == 28){
+                } else if (car_content.length == 28) {
                     fuel_type = car_content[24].substring(4);
                 } else {
                     fuel_type = "-";
                 }
 
                 car.setFuel_type(fuel_type);
-                System.out.println(fuel_type);
+//                System.out.println(fuel_type);
 
                 //21.驱动方式
                 String power_type = "";
-                if (car_content.length>28){
+                if (car_content.length > 28) {
                     power_type = car_content[26].substring(4);
-                } else if (car_content.length == 28){
+                } else if (car_content.length == 28) {
                     power_type = car_content[25].substring(4);
                 } else {
                     power_type = "-";
                 }
                 car.setPower_type(power_type);
-                System.out.println(power_type);
+//                System.out.println(power_type);
 
                 //22.二手车网站
-                if (car_base_infos.length>10){
-                    car.setCar_website(car_base_infos[1]);
-                } else {
-                    car.setCar_website(car_base_infos[0]);
-                }
+//                if (car_base_infos.length > 10) {
+//                    car.setCar_website(car_base_infos[1]);
+//                } else {
+//                    car.setCar_website(car_base_infos[0]);
+//                }
+                car.setCar_website("二手车之家");
 
                 //23.二手车信息发布时间
                 String release_time = car_content[8].substring(4);
                 car.setRelease_time(release_time);
 
                 return car;
-            }catch (StringIndexOutOfBoundsException e){
+            } catch (StringIndexOutOfBoundsException e) {
                 System.out.println("报错了，继续下一个。。。");
                 return null;
             }
@@ -254,83 +262,44 @@ public class SpiderMain {
 
 
     /**
-     * 对大段重复代码进行抽取
+     * 获取一个分页中的单个二手的车详细信息
      *
-     * @param url
-     * @return 返回获取到的正确的doc
+     * @param car_pages_url
+     * @return List<Car> 一个分页的二手车列表
      * @throws IOException
      */
-    private static Document handleUrls(String url) throws IOException, InterruptedException {
-        //复用WebDriver
-        ReuseWebDriver driver = new ReuseWebDriver(serverURL, sessionId);
-
-        driver.get(url);
-
-        Document doc = Jsoup.parse(driver.getPageSource());
-
-        //尝试获取错误页面的元素，若获取到错误页面，则重新设置ip
-        String error_page = doc.select(".fail-page").text();
-        while (!error_page.isEmpty()) {
-            //重置代理ip
-            HttpUtils.setProxyIp();
-
-            Thread.sleep(2000);
-            System.out.println("暂停两秒，再切换IP");
-
-            driver.get(url);
-
-            doc = Jsoup.parse(driver.getPageSource());
-            //再次获取错误页，如存在继续循环，知道获得正确的页面
-            error_page = doc.select(".fail-page").text();
-        }
-        return doc;
-    }
-
-    /**
-     * 获取单个二手的车详细信息
-     *
-     * @param car_pages_urls
-     * @return
-     * @throws IOException
-     */
-    public static List<Car> getDetailInfoFromPageUrls(List<String> car_pages_urls) throws IOException, ParseException, InterruptedException {
+    public static List<Car> getDetailInfoFromPageUrl(String car_pages_url) throws IOException, ParseException, InterruptedException {
 
         //创建一个List存放每个二手车的Url
         List<Car> car_detail_infos = new ArrayList<>();
 
-//        System.out.println("car_pages_urls.size()" + car_pages_urls.size());
+        Document doc = handleUrls(car_pages_url);
 
-        for (String car_pages_url : car_pages_urls) {
+        Element element = doc.getElementById("goodStartSolrQuotePriceCore0");
 
-            Document doc = handleUrls(car_pages_url);
-
-            Element element = doc.getElementById("goodStartSolrQuotePriceCore0");
-
-            if (element != null){
-                Elements elements = element.getElementsByTag("a");
+        if (element != null) {
+            Elements elements = element.getElementsByTag("a");
 
 //            System.out.println(elements.size());
 
-                for (Element elementEach : elements) {
-                    Car car = new Car();
-                    System.out.println("详情页面：" + elementEach.attr("href"));
-                    //使用获取到的单个url解析详情页面
-                    if (!elementEach.attr("href").startsWith("https://topicm")) {  //去除广告页面
-                        if (elementEach.attr("href").startsWith("/dealer/")) {
-                            car = getCarInfoFromUrl("https://www.che168.com" + elementEach.attr("href"));
-                            //                    System.out.println("https://www.che168.com/" + elementEach.attr("href"));
-                        } else {
-                            car = getCarInfoFromUrl("https:" + elementEach.attr("href"));
-                            //                    System.out.println("https:" + elementEach.attr("href"));
-                        }
-                        if (car != null) {
-                            car_detail_infos.add(car);
-                        }
+            for (Element elementEach : elements) {
+                Car car = new Car();
+                System.out.println("详情页面：" + elementEach.attr("href"));
+                //使用获取到的单个url解析详情页面
+                if (!elementEach.attr("href").startsWith("https://topicm")) {  //去除广告页面
+                    if (elementEach.attr("href").startsWith("/dealer/")) {
+                        car = getCarInfoFromUrl("https://www.che168.com" + elementEach.attr("href"));
+                        //                    System.out.println("https://www.che168.com/" + elementEach.attr("href"));
+                    } else {
+                        car = getCarInfoFromUrl("https:" + elementEach.attr("href"));
+                        //                    System.out.println("https:" + elementEach.attr("href"));
                     }
-//                System.out.println(elementEach.attr("href"));
+                    if (car != null) {
+                        car_detail_infos.add(car);
+                    }
                 }
+//                System.out.println(elementEach.attr("href"));
             }
-
         }
 
         return car_detail_infos;
@@ -377,6 +346,88 @@ public class SpiderMain {
         }
 
         return car_pages_urls;
+    }
+
+
+    /**
+     * 获取首页所有的a标签的href属性, 这里获取到的是所有品牌的展示页面的urls
+     *
+     * @param url
+     * @return
+     */
+
+    private static List<String> getUrlsFromIndex(String url) {
+        //创建一个List
+        List<String> brand_urls = new ArrayList<>();
+
+        //1.和二手车网站建立链接
+        System.setProperty("webdriver.gecko.driver", "C:\\Program Files (x86)\\Mozilla Firefox\\geckodriver.exe");
+
+        //初始化一个firefox浏览器实例 第一次通过new FireFoxDriver()启动浏览器
+        FirefoxDriver driver = new FirefoxDriver();
+
+        sessionId = String.valueOf(driver.getSessionId());
+
+        serverURL = String.valueOf(((HttpCommandExecutor) driver.getCommandExecutor()).getAddressOfRemoteServer());
+
+
+        //设置隐性等待时间
+        driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
+
+        //get()打开一个站点
+        driver.get(url);
+
+        Document doc = Jsoup.parse(driver.getPageSource());
+
+//        Elements elements = doc.select(".sub-element a");
+        Element element = doc.getElementById("brandshow");
+
+        assert element != null;
+        Elements elements = element.getElementsByTag("a");
+        System.out.println("共有" + elements.size() + "个分页");
+
+        for (Element elementEach : elements) {
+            if (!elementEach.attr("pingyin").isEmpty()) {
+//                System.out.println("https://www.che168.com" + elementEach.attr("pingyin"));
+                //elementEach.attr("pingyin")的值类型为：/shanghai/aodi/
+                brand_urls.add(elementEach.attr("pingyin"));
+            }
+        }
+
+        return brand_urls;
+    }
+
+    /**
+     * 对大段重复代码进行抽取
+     *
+     * @param url
+     * @return 返回获取到的正确的doc
+     * @throws IOException
+     */
+    private static Document handleUrls(String url) throws IOException, InterruptedException {
+        //复用WebDriver
+        ReuseWebDriver driver = new ReuseWebDriver(serverURL, sessionId);
+
+        driver.get(url);
+
+        Document doc = Jsoup.parse(driver.getPageSource());
+
+        //尝试获取错误页面的元素，若获取到错误页面，则重新设置ip
+        String error_page = doc.select(".fail-page").text();
+        while (!error_page.isEmpty()) {
+            //重置代理ip
+            HttpUtils.setProxyIp();
+
+            Thread.sleep(2000);
+            System.out.println("暂停两秒，再切换IP");
+
+            driver.get(url);
+
+            doc = Jsoup.parse(driver.getPageSource());
+            //再次获取错误页，如存在继续循环，知道获得正确的页面
+            error_page = doc.select(".fail-page").text();
+        }
+        return doc;
     }
 
     /**
@@ -435,55 +486,6 @@ public class SpiderMain {
 
 
         return page_num;
-    }
-
-
-    /**
-     * 获取首页所有的a标签的href属性, 这里获取到的是所有品牌的展示页面的urls
-     *
-     * @param url
-     * @return
-     */
-
-    private static List<String> getUrlsFromIndex(String url) {
-        //创建一个List
-        List<String> brand_urls = new ArrayList<>();
-
-        //1.和二手车网站建立链接
-        System.setProperty("webdriver.gecko.driver", "C:\\Program Files (x86)\\Mozilla Firefox\\geckodriver.exe");
-
-        //初始化一个firefox浏览器实例 第一次通过new FireFoxDriver()启动浏览器
-        FirefoxDriver driver = new FirefoxDriver();
-
-        sessionId = String.valueOf(driver.getSessionId());
-
-        serverURL = String.valueOf(((HttpCommandExecutor) driver.getCommandExecutor()).getAddressOfRemoteServer());
-
-
-        //设置隐性等待时间
-        driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
-
-        //get()打开一个站点
-        driver.get(url);
-
-        Document doc = Jsoup.parse(driver.getPageSource());
-
-//        Elements elements = doc.select(".sub-element a");
-        Element element = doc.getElementById("brandshow");
-
-        assert element != null;
-        Elements elements = element.getElementsByTag("a");
-        System.out.println(elements.size());
-
-        for (Element elementEach : elements) {
-            if (!elementEach.attr("pingyin").isEmpty()) {
-//                System.out.println("https://www.che168.com" + elementEach.attr("pingyin"));
-                //elementEach.attr("pingyin")的值类型为：/shanghai/aodi/
-                brand_urls.add(elementEach.attr("pingyin"));
-            }
-        }
-
-        return brand_urls;
     }
 
 }
