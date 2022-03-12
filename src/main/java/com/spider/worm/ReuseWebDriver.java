@@ -115,7 +115,7 @@ public class ReuseWebDriver extends RemoteWebDriver {
         WebDriverException toThrow = null;
         try {
             URL killUrl = new URL(serverUrl + "/shutdown");
-            new UrlChecker().waitUntilUnavailable(3, TimeUnit.SECONDS, killUrl);
+            new UrlChecker().waitUntilUnavailable(3000, TimeUnit.SECONDS, killUrl);
         } catch (MalformedURLException e) {
             toThrow = new WebDriverException(e);
         } catch (UrlChecker.TimeoutException e) {

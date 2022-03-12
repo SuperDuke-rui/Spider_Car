@@ -41,10 +41,10 @@ public class MyMvcConfig implements WebMvcConfigurer {
         registry.addViewController("/Chart3").setViewName("charts/charts-highcharts");
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginHandlerInterceptor())
-                .addPathPatterns("/**").excludePathPatterns("/user/login","/login.html",
-                        "/css/*","/flags/**","/fonts/*","/images/**","/js/*","/plugins/**");//  "/*" :一级匹配； “/**”：多级匹配
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(new LoginHandlerInterceptor())
+//                .addPathPatterns("/**").excludePathPatterns("/user/login","/login.html",
+//                        "/css/*","/flags/**","/fonts/*","/images/**","/js/*","/plugins/**");//  "/*" :一级匹配； “/**”：多级匹配
+//    }
 }
