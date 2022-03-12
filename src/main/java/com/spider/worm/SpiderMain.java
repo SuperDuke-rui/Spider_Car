@@ -255,7 +255,7 @@ public class SpiderMain {
      * @return
      * @throws IOException
      */
-    private static List<String> getPagesUrlsFromBrandUrls(List<String> brand_urls) throws IOException, InterruptedException {
+    private static List<String> getPagesUrlsFromBrandUrls(List<String> brand_urls) throws IOException {
         //创建一个List
         List<String> car_pages_urls = new ArrayList<>();
 
@@ -354,9 +354,9 @@ public class SpiderMain {
      *
      * @param url
      * @return
-     * @throws IOException
      */
-    private static List<String> getUrlsFromIndex(String url) throws IOException {
+
+    private static List<String> getUrlsFromIndex(String url) {
         //创建一个List
         List<String> brand_urls = new ArrayList<>();
 
