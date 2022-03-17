@@ -19,6 +19,15 @@ a {
 	text-decoration: none
 }
 
+h6 {
+	font-family: 楷体, serif;
+	color: red;
+}
+
+.display_flex {
+	display: flex;
+}
+
 .wrapper {
 	width: 100%;
 	position: relative
@@ -1791,14 +1800,6 @@ a {
 
 .bg-forgot {
 	background-image: url(../images/login-images/bg-forgot-password.jpg);
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-attachment: fixed
-}
-
-.bg-lock-screen {
-	background-image: url(../images/login-images/bg-lock-screen.jpg);
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;

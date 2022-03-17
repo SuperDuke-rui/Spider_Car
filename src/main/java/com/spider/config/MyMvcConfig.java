@@ -14,7 +14,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MyMvcConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("index");
         registry.addViewController("/index.html").setViewName("index");
 
         //忘记密码页
@@ -32,19 +31,16 @@ public class MyMvcConfig implements WebMvcConfigurer {
         // 二手车信息展示页
         registry.addViewController("/table_Datatable").setViewName("table-datatable");
 
-        //欢迎页
-        registry.addViewController("/welcome").setViewName("welcome");
-
         //三个chart
-        registry.addViewController("/Chart1").setViewName("charts/charts-apex-chart");
+        registry.addViewController("/Chart1").setViewName("charts/chartDemo");
         registry.addViewController("/Chart2").setViewName("charts/charts-chartjs");
         registry.addViewController("/Chart3").setViewName("charts/charts-highcharts");
     }
 
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new LoginHandlerInterceptor())
-//                .addPathPatterns("/**").excludePathPatterns("/user/login","/login.html",
-//                        "/css/*","/flags/**","/fonts/*","/images/**","/js/*","/plugins/**");//  "/*" :一级匹配； “/**”：多级匹配
-//    }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LoginHandlerInterceptor())
+                .addPathPatterns("/**").excludePathPatterns("/user/login","/user/register","/register","/login.html","/toRegister","/toLogin",
+                        "/", "/welcome" ,"/css/*","/flags/**","/fonts/*","/images/**","/js/*","/plugins/**");//  "/*" :一级匹配； “/**”：多级匹配
+    }
 }

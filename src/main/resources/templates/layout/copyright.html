@@ -47,30 +47,30 @@
                 <a href="javascript:;" class="has-arrow">
                     <div class="parent-icon"><i class='bx bx-cart'></i>
                     </div>
-                    <div class="menu-title">eCommerce</div>
+                    <div class="menu-title">二手车</div>
                 </a>
                 <ul>
-                    <li> <a th:href="@{carsList}"><i class="bx bx-right-arrow-alt"></i>Products</a>
+                    <li> <a th:href="@{carsList}"><i class="bx bx-right-arrow-alt"></i>信息列表</a>
                     </li>
                 </ul>
             </li>
 
 
-            <li class="menu-label">图表</li>
+            <li class="menu-label">分析图表</li>
 
             <li>
                 <a class="has-arrow" href="javascript:;">
                     <div class="parent-icon"><i class="bx bx-grid-alt"></i>
                     </div>
-                    <div class="menu-title">Tables</div>
+                    <div class="menu-title">图表</div>
                 </a>
                 <ul>
-                    <li> <a th:href="@{table_Datatable}"><i class="bx bx-right-arrow-alt"></i>Data Table</a>
+                    <li> <a th:href="@{table_Datatable}"><i class="bx bx-right-arrow-alt"></i>数据图表</a>
                     </li>
                 </ul>
             </li>
 
-            <li class="menu-label">Charts & Maps</li>
+            <li class="menu-label">图表</li>
 
             <li>
                 <a class="has-arrow" href="javascript:;">
@@ -113,8 +113,8 @@
                             </a>
                         </li>
                         <li class="nav-item dropdown dropdown-large">
-                            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" th:href="@{#}" role="button" data-bs-toggle="dropdown" aria-expanded="false">	<i class='bx bx-category'></i>
-                            </a>
+<!--                            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" th:href="@{#}" role="button" data-bs-toggle="dropdown" aria-expanded="false">	<i class='bx bx-category'></i>-->
+<!--                            </a>-->
                             <div class="dropdown-menu dropdown-menu-end">
                                 <div class="row row-cols-3 g-3 p-3">
                                     <div class="col text-center">
@@ -151,9 +151,9 @@
                             </div>
                         </li>
                         <li class="nav-item dropdown dropdown-large">
-                            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" th:href="@{#}" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="alert-count">7</span>
-                                <i class='bx bx-bell'></i>
-                            </a>
+<!--                            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" th:href="@{#}" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="alert-count">7</span>-->
+<!--                                <i class='bx bx-bell'></i>-->
+<!--                            </a>-->
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a href="javascript:;">
                                     <div class="msg-header">
@@ -268,9 +268,9 @@
                             </div>
                         </li>
                         <li class="nav-item dropdown dropdown-large">
-                            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" th:href="@{#}" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="alert-count">8</span>
-                                <i class='bx bx-comment'></i>
-                            </a>
+<!--                            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" th:href="@{#}" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="alert-count">8</span>-->
+<!--                                <i class='bx bx-comment'></i>-->
+<!--                            </a>-->
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a href="javascript:;">
                                     <div class="msg-header">
@@ -422,10 +422,10 @@
 
                 <div class="user-box dropdown">
                     <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" th:href="@{#}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img th:src="@{/images/avatars/avatar-2.png}" class="user-img" alt="user avatar">
+                        <img th:src="@{/images/user-images/user-images-01.png}" class="user-img" alt="user avatar">
                         <div class="user-info ps-3">
                             <p class="user-name mb-0">[[${session.loginUser}]]</p>
-                            <p class="designattion mb-0">Web Designer</p>
+                            <p class="designattion mb-0">[[${session.loginRole}]]</p>
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
@@ -471,33 +471,33 @@
         </div>
         <div class="switcher-body">
             <div class="d-flex align-items-center">
-                <h5 class="mb-0 text-uppercase">Theme Customizer</h5>
+                <h4 class="mb-0 text-uppercase">主题自定义</h4>
                 <button type="button" class="btn-close ms-auto close-switcher" aria-label="Close"></button>
             </div>
             <hr/>
-            <h6 class="mb-0">Theme Styles</h6>
+            <h5 class="mb-0">主题颜色</h5>
             <hr/>
             <div class="d-flex align-items-center justify-content-between">
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="lightmode" checked>
-                    <label class="form-check-label" for="lightmode">Light</label>
+                    <label class="form-check-label" for="lightmode">浅色</label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="darkmode">
-                    <label class="form-check-label" for="darkmode">Dark</label>
+                    <label class="form-check-label" for="darkmode">深色</label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="semidark">
-                    <label class="form-check-label" for="semidark">Semi Dark</label>
+                    <label class="form-check-label" for="semidark">半暗</label>
                 </div>
             </div>
             <hr/>
             <div class="form-check">
                 <input class="form-check-input" type="radio" id="minimaltheme" name="flexRadioDefault">
-                <label class="form-check-label" for="minimaltheme">Minimal Theme</label>
+                <label class="form-check-label" for="minimaltheme">简约主题</label>
             </div>
             <hr/>
-            <h6 class="mb-0">Header Colors</h6>
+            <h5 class="mb-0">顶栏颜色</h5>
             <hr/>
             <div class="header-colors-indigators">
                 <div class="row row-cols-auto g-3">
@@ -528,7 +528,7 @@
                 </div>
             </div>
             <hr/>
-            <h6 class="mb-0">Sidebar Colors</h6>
+            <h5 class="mb-0">侧边栏颜色</h5>
             <hr/>
             <div class="header-colors-indigators">
                 <div class="row row-cols-auto g-3">

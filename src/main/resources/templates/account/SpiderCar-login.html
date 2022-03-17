@@ -37,23 +37,24 @@
 								<div class="border p-4 rounded">
 									<div class="text-center">
 										<h3 class="">登 录</h3>
-										<p>还没有账号？ <a href="SpiderCar-register.html">点此注册</a></p>
+										<p>还没有账号？ <a th:href="@{/toRegister}">点此注册</a></p>
 									</div>
 
 									<div class="form-body">
-										<form class="row g-3" th:action="@{/user/login}">
-											<div>
-												<!--消息回显，如果msg消息不为空显示提示信息-->
-												<p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
-											</div>
+										<form class="row g-3" th:action="@{/user/login}" th:onsubmit="return check()">
 											<div class="col-12">
-												<label for="inputUsername" class="form-label">账 号</label>
+												<div th:class="display_flex">
+													<label for="inputUsername" class="form-label">账 号</label>
+													<div th:class="col-5"></div>
+													<!--消息回显，如果msg消息不为空显示提示信息-->
+													<p style="color: red" th:id="message" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+												</div>
 												<input type="text" name="username" class="form-control" id="inputUsername" placeholder="请输入账号">
 											</div>
 											<div class="col-12">
-												<label for="inputChoosePassword" class="form-label">密 码</label>
+												<label for="inputPassword" class="form-label">密 码</label>
 												<div class="input-group" id="show_hide_password">
-													<input type="password" name="password" class="form-control border-end-0" id="inputChoosePassword" value="" placeholder="请输入密码">
+													<input type="password" name="password" class="form-control border-end-0" id="inputPassword" value="" placeholder="请输入密码">
 													<a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-hide'></i></a>
 												</div>
 											</div>
@@ -68,7 +69,7 @@
 											</div>
 											<div class="col-12">
 												<div class="d-grid">
-													<button type="submit" class="btn btn-primary"><i class="bx bxs-lock-open"></i>登 录</button>
+													<button th:type="submit" class="btn btn-primary"><i class="bx bxs-lock-open"></i>登 录</button>
 												</div>
 											</div>
 										</form>
@@ -105,6 +106,19 @@
 				}
 			});
 		});
+	</script>
+
+	<!--判断账号密码是否为空-->
+	<script>
+		function check() {
+			var username = $("#inputUsername").val();
+			var password = $("#inputPassword").val();
+			if (username === "" || password === "") {
+				$("#message").text("用户名、密码不能为空！");
+				return false;
+			}
+			return true;
+		}
 	</script>
 	<!--app JS-->
 	<script th:src="@{/js/app.js}"></script>

@@ -421,6 +421,9 @@ public class SpiderMain {
             Thread.sleep(2000);
             System.out.println("暂停两秒，再切换IP");
 
+            //刷新当前网页
+            driver.navigate().refresh();
+
             driver.get(url);
 
             doc = Jsoup.parse(driver.getPageSource());

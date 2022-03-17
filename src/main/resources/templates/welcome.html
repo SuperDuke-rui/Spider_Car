@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--favicon-->
+	<link rel="icon" th:href="@{/images/favicon-32x32.png}" type="image/png" />
+	<!--plugins-->
+	<link th:href="@{/plugins/vectormap/jquery-jvectormap-2.0.2.css}" rel="stylesheet"/>
+	<link th:href="@{/plugins/simplebar/css/simplebar.css}" rel="stylesheet" />
+	<link th:href="@{/plugins/perfect-scrollbar/css/perfect-scrollbar.css}" rel="stylesheet" />
+	<link th:href="@{/plugins/metismenu/css/metisMenu.min.css}" rel="stylesheet" />
+	<!-- loader-->
+	<link th:href="@{/css/pace.min.css}" rel="stylesheet" />
+	<script th:src="@{/js/pace.min.js}"></script>
+	<!-- Bootstrap CSS -->
+	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+	<link th:href="@{/css/app.css}" rel="stylesheet">
+	<link th:href="@{/css/icons.css}" rel="stylesheet">
+	<!-- Theme Style CSS -->
+	<link rel="stylesheet" th:href="@{/css/dark-theme.css}" />
+	<link rel="stylesheet" th:href="@{/css/semi-dark.css}" />
+	<link rel="stylesheet" th:href="@{/css/header-colors.css}" />
+	<title>二手车爬虫网站</title>
+
+</head>
+
+<body>
+
+	<!--wrapper-->
+	<div class="wrapper">
+
+		<nav class="navbar navbar-expand-lg navbar-light bg-white rounded rounded-0 shadow-sm">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="#">
+					<img th:src="@{/images/logo-img.png}" width="140" alt="" />
+				</a>
+			</div>
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+			<div class="right col-md-3" id="navbarSupportedContent1">
+				<form class="d-flex">
+					<a class="btn btn-dark me-3 radius-30 px-4" th:href="@{/toLogin}"><i class='bx bx-lock'></i> 登录</a>
+					<a class="btn btn-light radius-30 px-4" th:href="@{/toRegister}"><i class='bx bx-user'></i> 注册</a>
+				</form>
+			</div>
+		</nav>
+
+		<!--start page wrapper -->
+		<div class="page-content">
+			<h2>欢迎访问二手车爬虫网站！</h2>
+			<hr />
+			<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 row-cols-xl-4">
+				<div class="col">
+					<div class="card">
+						<img th:src="@{images/welcome/getInfo.png}" class="card-img-top" alt="...">
+						<div class="card-body">
+							<h5 class="card-title">爬取信息</h5>
+							<p class="card-text">通过Java爬虫技术，从二手车网站中爬取大量的二手车信息并展示。</p>	<a href="javascript:;" class="btn btn-primary">Go somewhere</a>
+						</div>
+					</div>
+				</div>
+				<div class="col">
+					<div class="card">
+						<img th:src="@{images/welcome/search.png}" class="card-img-top" alt="...">
+						<div class="card-body">
+							<h5 class="card-title">筛选信息</h5>
+							<p class="card-text">用户可以通过选择车辆品牌、车型、价格等检索符合条件的二手车信息。</p>	<a href="javascript:;" class="btn btn-danger">Go somewhere</a>
+						</div>
+					</div>
+				</div>
+				<div class="col">
+					<div class="card">
+						<img th:src="@{images/welcome/search.png}" class="card-img-top" alt="...">
+						<div class="card-body">
+							<h5 class="card-title">分析信息</h5>
+							<p class="card-text">通过图表的方式直观地分析当前品牌二手车的价格、类型等分布情况。</p>	<a href="javascript:;" class="btn btn-success">Go somewhere</a>
+						</div>
+					</div>
+				</div>
+				<div class="col">
+					<div class="card">
+						<img th:src="@{images/welcome/save.png}" class="card-img-top" alt="...">
+						<div class="card-body">
+							<h5 class="card-title">保存信息</h5>
+							<p class="card-text">用户可以选择喜欢的车辆信息进行保存，支持EXCEL格式。</p>	<a href="javascript:;" class="btn btn-warning">Go somewhere</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--end page wrapper -->
+
+		<!--start overlay-->
+		<div th:insert="~{layout/copyright :: copy_overlay}"></div>
+		<!--end overlay-->
+
+		<!--Start Back To Top Button-->
+		<div th:insert="~{layout/copyright :: copy_back}"></div>
+		<!--End Back To Top Button-->
+
+	</div>
+	<!--end wrapper-->
+
+	<!--start switcher-->
+	<div th:insert="~{layout/copyright :: copy_switcher}"></div>
+	<!--end switcher-->
+
+	<!-- Bootstrap JS -->
+	<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+	<!--plugins-->
+	<script th:src="@{/js/jquery.min.js}"></script>
+	<script th:src="@{/plugins/simplebar/js/simplebar.min.js}"></script>
+	<script th:src="@{/plugins/metismenu/js/metisMenu.min.js}"></script>
+	<script th:src="@{/plugins/perfect-scrollbar/js/perfect-scrollbar.js}"></script>
+	<script th:src="@{/plugins/vectormap/jquery-jvectormap-2.0.2.min.js}"></script>
+	<script th:src="@{/plugins/vectormap/jquery-jvectormap-world-mill-en.js}"></script>
+	<script th:src="@{/plugins/chartjs/js/Chart.min.js}"></script>
+	<script th:src="@{/plugins/chartjs/js/Chart.extension.js}"></script>
+	<script th:src="@{/js/index.js}"></script>
+	<!--app JS-->
+	<script th:src="@{/js/app.js}"></script>
+</body>
+
+</html>
