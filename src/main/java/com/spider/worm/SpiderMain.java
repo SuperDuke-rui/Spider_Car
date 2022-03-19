@@ -95,10 +95,10 @@ public class SpiderMain {
                 String car_photo = "";
                 try {
                     car_photo = "http:" + doc.select(".swiper-slide-active a img").first().attr("src");
-                    car.setCar_photo(car_photo);
+                    car.setCarPhoto(car_photo);
                 } catch (NullPointerException e) {
                     System.out.println("未获取到图片");
-                    car.setCar_photo("");
+                    car.setCarPhoto("");
                 }
 
                 //4.车辆价格
@@ -107,36 +107,36 @@ public class SpiderMain {
 //            System.out.println(string_price);
                 String[] price_items = string_price.split(" ");
                 car_price = Double.parseDouble(price_items[0].substring(1, price_items[0].length() - 1));
-                car.setCar_price(car_price);
+                car.setCarPrice(car_price);
 //            System.out.println(car_price);
 
                 //5.车辆品牌
                 String car_infos_string = doc.select(".bread-crumbs a").text();
                 String[] car_base_infos = car_infos_string.split(" ");
                 if (car_base_infos.length > 10) {
-                    car.setCar_brand(car_base_infos[3]);
+                    car.setCarBrand(car_base_infos[3]);
                 } else if (car_base_infos.length == 10) {
-                    car.setCar_brand(car_base_infos[2]);
+                    car.setCarBrand(car_base_infos[2]);
                 } else {
-                    car.setCar_brand("-");
+                    car.setCarBrand("-");
                 }
 
                 //6.车辆类型
                 if (car_base_infos.length > 10) {
-                    car.setCar_type(car_base_infos[4]);
+                    car.setCarType(car_base_infos[4]);
                 } else if (car_base_infos.length == 10) {
-                    car.setCar_type(car_base_infos[3]);
+                    car.setCarType(car_base_infos[3]);
                 } else {
-                    car.setCar_type("-");
+                    car.setCarType("-");
                 }
 
                 //7.车辆表显里程
                 String car_infos2_string = doc.select(".brand-unit-item h4").text();
                 String[] car_base2_infos = car_infos2_string.split(" ");
-                car.setDisplayed_mileage(car_base2_infos[0]);
+                car.setDisplayedMileage(car_base2_infos[0]);
 
                 //8.车辆上牌时间
-                car.setLicensing_time(car_base2_infos[1]);
+                car.setLicensingTime(car_base2_infos[1]);
 
                 //9.车辆变速箱
                 car.setTransmission(car_base2_infos[2]);
@@ -146,25 +146,25 @@ public class SpiderMain {
                 car.setEmissions(Double.parseDouble(emissions_string));
 
                 //11.车辆排放标准
-                car.setEmission_standard(car_base2_infos[6]);
+                car.setEmissionStandard(car_base2_infos[6]);
 
                 //12.车辆年检到期时间
                 String car_document = doc.select(".all-basic-content li").text();
                 String[] car_content = car_document.split(" ");
                 String annual_timeout = car_content[10].substring(4);
-                car.setAnnual_timeout(annual_timeout);
+                car.setAnnualTimeout(annual_timeout);
 
                 //13.车辆保险到期时间
                 String insurance_timeout = car_content[11].substring(4);
-                car.setInsurance_timeout(insurance_timeout);
+                car.setInsuranceTimeout(insurance_timeout);
 
                 //14.车辆质检到期时间
                 String quality_timeout = car_content[12].substring(4);
-                car.setQuality_timeout(quality_timeout);
+                car.setQualityTimeout(quality_timeout);
 
                 //15.车辆过户次数
                 String transfers_times = car_content[14].substring(4);
-                car.setTransfers_times(transfers_times);
+                car.setTransfersTimes(transfers_times);
 //                System.out.println(transfers_times);
 
                 //16.车辆所在地
@@ -173,7 +173,7 @@ public class SpiderMain {
 //                } else {
 //                    car.setCar_loc(car_base_infos[1]);
 //                }
-                car.setCar_loc("上海");
+                car.setCarLoc("上海");
 
                 //17.车辆级别
                 String car_grade = "";
@@ -184,7 +184,7 @@ public class SpiderMain {
                 } else {
                     car_grade = "-";
                 }
-                car.setCar_grade(car_grade);
+                car.setCarGrade(car_grade);
 //                System.out.println(car_grade);
 
                 //18.车辆发动机
@@ -197,7 +197,7 @@ public class SpiderMain {
                     car_engine = "-";
                 }
 
-                car.setCar_engine(car_engine);
+                car.setCarEngine(car_engine);
 //                System.out.println(car_engine);
 
                 //19.车辆颜色
@@ -209,7 +209,7 @@ public class SpiderMain {
                 } else {
                     car_color = "-";
                 }
-                car.setCar_color(car_color);
+                car.setCarColor(car_color);
 //                System.out.println(car_color);
 
                 //20.燃油标号
@@ -222,7 +222,7 @@ public class SpiderMain {
                     fuel_type = "-";
                 }
 
-                car.setFuel_type(fuel_type);
+                car.setFuelType(fuel_type);
 //                System.out.println(fuel_type);
 
                 //21.驱动方式
@@ -234,7 +234,7 @@ public class SpiderMain {
                 } else {
                     power_type = "-";
                 }
-                car.setPower_type(power_type);
+                car.setPowerType(power_type);
 //                System.out.println(power_type);
 
                 //22.二手车网站
@@ -243,11 +243,11 @@ public class SpiderMain {
 //                } else {
 //                    car.setCar_website(car_base_infos[0]);
 //                }
-                car.setCar_website("二手车之家");
+                car.setCarWebsite("二手车之家");
 
                 //23.二手车信息发布时间
                 String release_time = car_content[8].substring(4);
-                car.setRelease_time(release_time);
+                car.setReleaseTime(release_time);
 
                 return car;
             } catch (StringIndexOutOfBoundsException e) {

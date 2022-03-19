@@ -47,7 +47,7 @@
 													<label for="inputUsername" class="form-label">账 号</label>
 													<div th:class="col-5"></div>
 													<!--消息回显，如果msg消息不为空显示提示信息-->
-													<p style="color: red" th:id="message" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+													<p style="color: red" th:id="message" th:text="${msg}"></p>
 												</div>
 												<input type="text" name="username" class="form-control" id="inputUsername" placeholder="请输入账号">
 											</div>
@@ -63,9 +63,6 @@
 													<input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
 													<label class="form-check-label" for="flexSwitchCheckChecked">记住我</label>
 												</div>
-											</div>
-											<div class="col-md-6 text-end">
-												<a href="forgot-password.html">忘记密码？</a>
 											</div>
 											<div class="col-12">
 												<div class="d-grid">
@@ -114,7 +111,7 @@
 			var username = $("#inputUsername").val();
 			var password = $("#inputPassword").val();
 			if (username === "" || password === "") {
-				$("#message").text("用户名、密码不能为空！");
+				$("#message").text("账号、密码不能为空！")
 				return false;
 			}
 			return true;

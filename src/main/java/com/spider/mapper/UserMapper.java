@@ -11,4 +11,7 @@ import com.spider.pojo.User;
 public interface UserMapper extends BaseMapper<User> {
     /*查询用户*/
     User selectOne(User user);
+
+    /*更新用户信息*/
+    int update(User user);
 }

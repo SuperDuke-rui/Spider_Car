@@ -18,22 +18,22 @@ public class Car {
     private String title;
 
     /*二手车图片*/
-    private String car_photo;
+    private String carPhoto;
 
     /*车辆价格 单位：万元*/
-    private double car_price;
+    private double carPrice;
 
     /*车辆品牌 如：奔驰*/
-    private String car_brand;
+    private String carBrand;
 
     /*车辆类型 如：奔驰GLC*/
-    private String car_type;
+    private String carType;
 
     /*车辆表显里程 单位：万公里*/
-    private String displayed_mileage;
+    private String displayedMileage;
 
     /*车辆上牌时间*/
-    private String licensing_time;
+    private String licensingTime;
 
     /*车辆变速箱类型*/
     private String transmission;
@@ -42,42 +42,42 @@ public class Car {
     private double emissions;
 
     /*车辆排放标准 如：欧V*/
-    private String emission_standard;
+    private String emissionStandard;
 
     /*车辆年检到期时间，作为字符串获取*/
-    private String annual_timeout;
+    private String annualTimeout;
 
     /*车辆保险到期时间，作为字符串获取*/
-    private String insurance_timeout;
+    private String insuranceTimeout;
 
     /*车辆质检到期时间，作为字符串获取*/
-    private String quality_timeout;
+    private String qualityTimeout;
 
     /*车辆过户次数，作为字符串获取*/
-    private String transfers_times;
+    private String transfersTimes;
 
     /*车辆所在地*/
-    private String car_loc;
+    private String carLoc;
 
     /*车辆级别 如：中型SUV*/
-    private String car_grade;
+    private String carGrade;
 
     /*车辆发动机 如：2.0T 211马力 L4*/
-    private String car_engine;
+    private String carEngine;
 
     /*车辆颜色 如：白色*/
-    private String car_color;
+    private String carColor;
 
     /*燃油标号 如：95号*/
-    private String fuel_type;
+    private String fuelType;
 
     /*驱动方式 如：前置四驱*/
-    private String power_type;
+    private String powerType;
 
     /*二手车网站*/
-    private String car_website;
+    private String carWebsite;
 
     /*二手车信息发布时间*/
-    private String release_time;
+    private String releaseTime;
 
 }

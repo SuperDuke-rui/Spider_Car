@@ -28,7 +28,6 @@ public class RegisterController {
     @RequestMapping("/user/register")
     public String register(@RequestParam("username") String username,
                            @RequestParam("password") String password,
-                           @RequestParam("rePassword") String rePassword,
                            @RequestParam("phone") String phone,
                            @RequestParam("email") String email,
                            @RequestParam("location") String location,
@@ -36,14 +35,13 @@ public class RegisterController {
 
         //查询数据
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username", username);
+        queryWrapper.eq("phone", phone);
         User selectUser = userMapper.selectOne(queryWrapper);
         System.out.println(selectUser);
 
         //如果查询到，则回显消息，否则将数据插入
         if (selectUser != null) {
-            model.addAttribute("msg","用户名已被注册");
-            return "account/SpiderCar-register";
+            model.addAttribute("msg","账号已被注册");
         } else {
             //先查询该用户名是否已经注册
             User user = new User();
@@ -54,10 +52,14 @@ public class RegisterController {
             user.setLocation(location);
             //默认注册用户为普通用户
             user.setState(0);
+
+            //设置默认头像
+            user.setUserPhoto("/images/user-images/user-images-1.png");
+
             //向数据库中插入用户信息
             userMapper.insert(user);
             model.addAttribute("msg", "注册成功！");
-            return "account/SpiderCar-register";
         }
+        return "account/SpiderCar-register";
     }
 }

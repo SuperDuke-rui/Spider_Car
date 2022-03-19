@@ -3,6 +3,8 @@ package com.spider.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.spider.mapper.UserMapper;
 import com.spider.pojo.User;
+import com.spider.service.IUserService;
+import com.spider.service.impl.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +22,7 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
 
     @Resource
-    private UserMapper userMapper;
+    private IUserService userService;
 
     @RequestMapping("/user/login")
     public String login(@RequestParam("username") String username,
@@ -28,16 +30,15 @@ public class LoginController {
                         Model model, HttpSession session) {
 
         //mybatis-plus通过实体类查询数据
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username",username);
-        User selectUser = userMapper.selectOne(queryWrapper);
+        User selectUser = userService.queryUserByString("phone", username);
+
         System.out.println(selectUser);
 
         //具体的业务
 //        if (!StringUtils.isEmpty(username) && "123456".equals(password)) {
         if (selectUser != null) {       //如果没查询到则不存在该用户
             if (selectUser.getPassword().equals(password)) {  //检查密码是否正确
-                session.setAttribute("loginUser", username);
+                session.setAttribute("loginUser", selectUser);
                 String role = (selectUser.getState() == 1) ? "管理员" : "普通用户";
                 session.setAttribute("loginRole", role);
                 return "redirect:/index.html";

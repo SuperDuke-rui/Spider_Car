@@ -14,19 +14,19 @@ public class User {
     /*用户id*/
     private int uid;
 
-    /*用户登录账号*/
+    /*用户名，昵称*/
     private String username;
 
     /*用户登录密码*/
     private String password;
 
     /*用户头像*/
-    private String user_photo;
+    private String userPhoto;
 
     /*用户地址*/
     private String location;
 
-    /*用户手机号*/
+    /*用户手机号（用于登录系统）*/
     private String phone;
 
     /*用户邮箱*/
