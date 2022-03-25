@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @MapperScan("com.spider.mapper")
+//MapperScan的作用是扫描mapper包下的接口交给spring管理
 @SpringBootApplication
 public class SpiderCarApplication {
 

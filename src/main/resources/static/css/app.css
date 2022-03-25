@@ -19,9 +19,8 @@ a {
 	text-decoration: none
 }
 
-h6 {
-	font-family: 楷体, serif;
-	color: red;
+li {
+	list-style-type: none;
 }
 
 .display_flex {
@@ -725,6 +724,12 @@ h6 {
 
 .radius-15 {
 	border-radius: 15px
+}
+
+.radius-5 {
+	margin: 5px;
+	border: 5px;
+	border-radius: 5px
 }
 
 .row.row-group>div {

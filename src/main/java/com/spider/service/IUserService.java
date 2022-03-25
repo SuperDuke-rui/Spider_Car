@@ -32,4 +32,5 @@ public interface IUserService {
      * @return int
      */
     int updateUser(String field, int value, User user);
+
 }

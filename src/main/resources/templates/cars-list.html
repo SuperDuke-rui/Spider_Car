@@ -2,397 +2,255 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<!-- Required meta tags -->
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!--favicon-->
-	<link rel="icon" th:href="@{/images/favicon-32x32.png}" type="image/png" />
-	<!--plugins-->
-	<link th:href="@{/plugins/simplebar/css/simplebar.css}" rel="stylesheet" />
-	<link th:href="@{/plugins/perfect-scrollbar/css/perfect-scrollbar.css}" rel="stylesheet" />
-	<link th:href="@{/plugins/metismenu/css/metisMenu.min.css}" rel="stylesheet" />
-	<!-- loader-->
-	<link th:href="@{/css/pace.min.css}" rel="stylesheet" />
-	<script th:src="@{/js/pace.min.js}"></script>
-	<!-- Bootstrap CSS -->
-	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-	<link th:href="@{/css/app.css}" rel="stylesheet">
-	<link th:href="@{/css/icons.css}" rel="stylesheet">
-	<!-- Theme Style CSS -->
-	<link rel="stylesheet" th:href="@{/css/dark-theme.css}" />
-	<link rel="stylesheet" th:href="@{/css/semi-dark.css}" />
-	<link rel="stylesheet" th:href="@{/css/header-colors.css}" />
-	<title>车辆展示页</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--favicon-->
+    <link rel="icon" th:href="@{/images/favicon-32x32.png}" type="image/png"/>
+    <!--plugins-->
+    <link th:href="@{/plugins/simplebar/css/simplebar.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/perfect-scrollbar/css/perfect-scrollbar.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/metismenu/css/metisMenu.min.css}" rel="stylesheet"/>
+    <!-- loader-->
+    <link th:href="@{/css/pace.min.css}" rel="stylesheet"/>
+    <script th:src="@{/js/pace.min.js}"></script>
+    <!-- Bootstrap CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
+    <link th:href="@{/css/icons.css}" rel="stylesheet">
+    <!-- Theme Style CSS -->
+    <link rel="stylesheet" th:href="@{/css/dark-theme.css}"/>
+    <link rel="stylesheet" th:href="@{/css/semi-dark.css}"/>
+    <link rel="stylesheet" th:href="@{/css/header-colors.css}"/>
+    <title>车辆展示页</title>
+
+    <style>
+        h6 {
+            font-family: 宋体, serif;
+        }
+    </style>
 </head>
 
 <body>
-	<!--wrapper-->
-	<div class="wrapper">
-		<!--sidebar wrapper -->
-		<div th:insert="~{layout/copyright :: copy_sideBar}"></div>
-		<!--end sidebar wrapper -->
+<!--wrapper-->
+<div class="wrapper">
+    <!--sidebar wrapper -->
+    <div th:insert="~{layout/copyright :: copy_sideBar}"></div>
+    <!--end sidebar wrapper -->
 
-		<!--start header -->
-		<div th:insert="~{layout/copyright :: copy_header}"></div>
-		<!--end header -->
+    <!--start header -->
+    <div th:insert="~{layout/copyright :: copy_header}"></div>
+    <!--end header -->
 
-		<!--start page wrapper -->
-		<div class="page-wrapper">
-			<div class="page-content">
+    <!--start page wrapper -->
+    <div class="page-wrapper">
+        <div class="page-content">
 
-				<div class="row">
-					<div class="col-12">
-						<div class="card">
-							<div class="card-body">
-								<div class="row align-items-center">
-									<div class="col-lg-3 col-xl-2">
-										<a href="ecommerce-add-new-products.html" class="btn btn-primary mb-3 mb-lg-0"><i class='bx bxs-plus-square'></i>New Product</a>
-									</div>
-									<div class="col-lg-9 col-xl-10">
-										<form class="float-lg-end">
-											<div class="row row-cols-lg-auto g-2">
-												<div class="col-12">
-													<div class="position-relative">
-														<input type="text" class="form-control ps-5" placeholder="Search Product..."> <span class="position-absolute top-50 product-show translate-middle-y"><i class="bx bx-search"></i></span>
-													</div>
-												</div>
-												<div class="col-12">
-													<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-														<button type="button" class="btn btn-white">Sort By</button>
-														<div class="btn-group" role="group">
-															<button id="btnGroupDrop1" type="button" class="btn btn-white dropdown-toggle dropdown-toggle-nocaret px-1" data-bs-toggle="dropdown" aria-expanded="false">
-																<i class='bx bx-chevron-down'></i>
-															</button>
-															<ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-																<li><a class="dropdown-item" href="#">Dropdown link</a></li>
-																<li><a class="dropdown-item" href="#">Dropdown link</a></li>
-															</ul>
-														</div>
-													</div>
-												</div>
-												<div class="col-12">
-													<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-														<button type="button" class="btn btn-white">Collection Type</button>
-														<div class="btn-group" role="group">
-															<button id="btnGroupDrop2" type="button" class="btn btn-white dropdown-toggle dropdown-toggle-nocaret px-1" data-bs-toggle="dropdown" aria-expanded="false">
-																<i class='bx bxs-category'></i>
-															</button>
-															<ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
-																<li><a class="dropdown-item" href="#">Dropdown link</a></li>
-																<li><a class="dropdown-item" href="#">Dropdown link</a></li>
-															</ul>
-														</div>
-													</div>
-												</div>
-												<div class="col-12">
-													<div class="btn-group" role="group">
-														<button type="button" class="btn btn-white">Price Range</button>
-														<div class="btn-group" role="group">
-															<button id="btnGroupDrop3" type="button" class="btn btn-white dropdown-toggle dropdown-toggle-nocaret px-1" data-bs-toggle="dropdown" aria-expanded="false">
-																<i class='bx bx-slider'></i>
-															</button>
-															<ul class="dropdown-menu dropdown-menu-start" aria-labelledby="btnGroupDrop3">
-																<li><a class="dropdown-item" href="#">Dropdown link</a></li>
-																<li><a class="dropdown-item" href="#">Dropdown link</a></li>
-															</ul>
-														</div>
-													</div>
-												</div>
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+            <!--顶部查询栏 Begin-->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-lg-3 col-xl-3">
+                                    <div class="col-12">
+                                        <div class="position-relative">
+                                            <input type="text" class="form-control ps-5" placeholder="查找二手车...">
+                                            <span
+                                                class="position-absolute top-50 product-show translate-middle-y">
+                                                <i class="bx bx-search"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-1 col-xl-2">
+                                    <a href="#" class="btn btn-primary mb-3 mb-lg-0"><i class='bx bx-search'></i>查询</a>
+                                </div>
+                                <div class="col-lg-8 col-xl-7">
+                                    <form class="float-lg-end">
+                                        <div class="row row-cols-lg-auto g-2">
 
-				<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 product-grid">
-					<div class="col">
-						<div class="card">
-							<img src="/images/products/01.png" class="card-img-top" alt="...">
-							<div class="">
-								<div class="position-absolute top-0 end-0 m-3 product-discount"><span class="">-10%</span></div>
-							</div>
-							<div class="card-body">
-								<h6 class="card-title cursor-pointer">Nest Shaped Chair</h6>
-								<div class="clearfix">
-									<p class="mb-0 float-start"><strong>134</strong> Sales</p>
-									<p class="mb-0 float-end fw-bold"><span class="me-2 text-decoration-line-through text-secondary">$350</span><span>$240</span></p>
-								</div>
-								<div class="d-flex align-items-center mt-3 fs-6">
-									<div class="cursor-pointer">
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-secondary'></i>
-									</div>
-									<p class="mb-0 ms-auto">4.2(182)</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="card">
-							<img src="/images/products/02.png" class="card-img-top" alt="...">
-							<div class="">
-								<div class="position-absolute top-0 end-0 m-3 product-discount"><span class="">-10%</span></div>
-							</div>
-							<div class="card-body">
-								<h6 class="card-title cursor-pointer">Nest Shaped Chair</h6>
-								<div class="clearfix">
-									<p class="mb-0 float-start"><strong>134</strong> Sales</p>
-									<p class="mb-0 float-end fw-bold"><span class="me-2 text-decoration-line-through text-secondary">$350</span><span>$240</span></p>
-								</div>
-								<div class="d-flex align-items-center mt-3 fs-6">
-									<div class="cursor-pointer">
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-secondary'></i>
-									</div>
-									<p class="mb-0 ms-auto">4.2(182)</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="card">
-							<img src="/images/products/03.png" class="card-img-top" alt="...">
-							<div class="">
-								<div class="position-absolute top-0 end-0 m-3 product-discount"><span class="">-10%</span></div>
-							</div>
-							<div class="card-body">
-								<h6 class="card-title cursor-pointer">Nest Shaped Chair</h6>
-								<div class="clearfix">
-									<p class="mb-0 float-start"><strong>134</strong> Sales</p>
-									<p class="mb-0 float-end fw-bold"><span class="me-2 text-decoration-line-through text-secondary">$350</span><span>$240</span></p>
-								</div>
-								<div class="d-flex align-items-center mt-3 fs-6">
-									<div class="cursor-pointer">
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-secondary'></i>
-									</div>
-									<p class="mb-0 ms-auto">4.2(182)</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="card">
-							<img src="/images/products/04.png" class="card-img-top" alt="...">
-							<div class="">
-								<div class="position-absolute top-0 end-0 m-3 product-discount"><span class="">-10%</span></div>
-							</div>
-							<div class="card-body">
-								<h6 class="card-title cursor-pointer">Nest Shaped Chair</h6>
-								<div class="clearfix">
-									<p class="mb-0 float-start"><strong>134</strong> Sales</p>
-									<p class="mb-0 float-end fw-bold"><span class="me-2 text-decoration-line-through text-secondary">$350</span><span>$240</span></p>
-								</div>
-								<div class="d-flex align-items-center mt-3 fs-6">
-									<div class="cursor-pointer">
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-secondary'></i>
-									</div>
-									<p class="mb-0 ms-auto">4.2(182)</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="card">
-							<img src="/images/products/05.png" class="card-img-top" alt="...">
-							<div class="">
-								<div class="position-absolute top-0 end-0 m-3 product-discount"><span class="">-10%</span></div>
-							</div>
-							<div class="card-body">
-								<h6 class="card-title cursor-pointer">Nest Shaped Chair</h6>
-								<div class="clearfix">
-									<p class="mb-0 float-start"><strong>134</strong> Sales</p>
-									<p class="mb-0 float-end fw-bold"><span class="me-2 text-decoration-line-through text-secondary">$350</span><span>$240</span></p>
-								</div>
-								<div class="d-flex align-items-center mt-3 fs-6">
-									<div class="cursor-pointer">
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-secondary'></i>
-									</div>
-									<p class="mb-0 ms-auto">4.2(182)</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="card">
-							<img src="/images/products/06.png" class="card-img-top" alt="...">
-							<div class="">
-								<div class="position-absolute top-0 end-0 m-3 product-discount"><span class="">-10%</span></div>
-							</div>
-							<div class="card-body">
-								<h6 class="card-title cursor-pointer">Nest Shaped Chair</h6>
-								<div class="clearfix">
-									<p class="mb-0 float-start"><strong>134</strong> Sales</p>
-									<p class="mb-0 float-end fw-bold"><span class="me-2 text-decoration-line-through text-secondary">$350</span><span>$240</span></p>
-								</div>
-								<div class="d-flex align-items-center mt-3 fs-6">
-									<div class="cursor-pointer">
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-secondary'></i>
-									</div>
-									<p class="mb-0 ms-auto">4.2(182)</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="card">
-							<img src="/images/products/07.png" class="card-img-top" alt="...">
-							<div class="">
-								<div class="position-absolute top-0 end-0 m-3 product-discount"><span class="">-10%</span></div>
-							</div>
-							<div class="card-body">
-								<h6 class="card-title cursor-pointer">Nest Shaped Chair</h6>
-								<div class="clearfix">
-									<p class="mb-0 float-start"><strong>134</strong> Sales</p>
-									<p class="mb-0 float-end fw-bold"><span class="me-2 text-decoration-line-through text-secondary">$350</span><span>$240</span></p>
-								</div>
-								<div class="d-flex align-items-center mt-3 fs-6">
-									<div class="cursor-pointer">
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-secondary'></i>
-									</div>
-									<p class="mb-0 ms-auto">4.2(182)</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="card">
-							<img src="/images/products/08.png" class="card-img-top" alt="...">
-							<div class="">
-								<div class="position-absolute top-0 end-0 m-3 product-discount"><span class="">-10%</span></div>
-							</div>
-							<div class="card-body">
-								<h6 class="card-title cursor-pointer">Nest Shaped Chair</h6>
-								<div class="clearfix">
-									<p class="mb-0 float-start"><strong>134</strong> Sales</p>
-									<p class="mb-0 float-end fw-bold"><span class="me-2 text-decoration-line-through text-secondary">$350</span><span>$240</span></p>
-								</div>
-								<div class="d-flex align-items-center mt-3 fs-6">
-									<div class="cursor-pointer">
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-secondary'></i>
-									</div>
-									<p class="mb-0 ms-auto">4.2(182)</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="card">
-							<img src="/images/products/09.png" class="card-img-top" alt="...">
-							<div class="">
-								<div class="position-absolute top-0 end-0 m-3 product-discount"><span class="">-10%</span></div>
-							</div>
-							<div class="card-body">
-								<h6 class="card-title cursor-pointer">Nest Shaped Chair</h6>
-								<div class="clearfix">
-									<p class="mb-0 float-start"><strong>134</strong> Sales</p>
-									<p class="mb-0 float-end fw-bold"><span class="me-2 text-decoration-line-through text-secondary">$350</span><span>$240</span></p>
-								</div>
-								<div class="d-flex align-items-center mt-3 fs-6">
-									<div class="cursor-pointer">
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-secondary'></i>
-									</div>
-									<p class="mb-0 ms-auto">4.2(182)</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="card">
-							<img src="/images/products/10.png" class="card-img-top" alt="...">
-							<div class="">
-								<div class="position-absolute top-0 end-0 m-3 product-discount"><span class="">-10%</span></div>
-							</div>
-							<div class="card-body">
-								<h6 class="card-title cursor-pointer">Nest Shaped Chair</h6>
-								<div class="clearfix">
-									<p class="mb-0 float-start"><strong>134</strong> Sales</p>
-									<p class="mb-0 float-end fw-bold"><span class="me-2 text-decoration-line-through text-secondary">$350</span><span>$240</span></p>
-								</div>
-								<div class="d-flex align-items-center mt-3 fs-6">
-									<div class="cursor-pointer">
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-warning'></i>
-										<i class='bx bxs-star text-secondary'></i>
-									</div>
-									<p class="mb-0 ms-auto">4.2(182)</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div><!--end row-->
+                                            <div class="col-12">
+                                                <div class="btn-group" role="group"
+                                                     aria-label="Button group with nested dropdown">
+                                                    <button type="button" class="btn btn-white">Sort By</button>
+                                                    <div class="btn-group" role="group">
+                                                        <button id="btnGroupDrop1" type="button"
+                                                                class="btn btn-white dropdown-toggle dropdown-toggle-nocaret px-1"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <i class='bx bx-chevron-down'></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>
+                                                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="btn-group" role="group"
+                                                     aria-label="Button group with nested dropdown">
+                                                    <button type="button" class="btn btn-white">Collection Type</button>
+                                                    <div class="btn-group" role="group">
+                                                        <button id="btnGroupDrop2" type="button"
+                                                                class="btn btn-white dropdown-toggle dropdown-toggle-nocaret px-1"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <i class='bx bxs-category'></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+                                                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>
+                                                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="btn-group" role="group">
+                                                    <button type="button" class="btn btn-white">Price Range</button>
+                                                    <div class="btn-group" role="group">
+                                                        <button id="btnGroupDrop3" type="button"
+                                                                class="btn btn-white dropdown-toggle dropdown-toggle-nocaret px-1"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <i class='bx bx-slider'></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-start"
+                                                            aria-labelledby="btnGroupDrop3">
+                                                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>
+                                                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--顶部查询栏 End-->
+
+            <!--查询结果展示区 Begin-->
+            <div th:id="carList" class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 product-grid">
+                <ul th:each="car : ${carPage.getRecords()}">
+                    <li>
+                        <div class="col">
+                            <div class="card">
+                                <img th:src="${car.getCarPhoto()}" class="card-img-top" alt="...">
+                                <div class="card-body" style="height: 10rem">
+                                    <h6 class="card-title cursor-pointer" style="height: 3rem">[[${car.getTitle()}]]</h6>
+                                    <hr style="margin-top: 0" />
+                                    <small>[[${car.getDisplayedMileage()}]] | [[${car.getCarLoc()}]] | [[${car.getCarWebsite()}]]</small>
+                                    <div class="clearfix display_flex">
+                                        <div class="mb-0 display_flex fw-bold col-8" style="height: 4rem; margin-top: 5px">
+                                            <h3 style="color: #d9810d">[[${car.getCarPrice()}]]</h3>
+                                            <p style="color: #3c83ea"> 万元</p>
+                                        </div>
+                                        <!--<div class="col-4">-->
+                                        <!--    <a class="btn-success radius-5">0次过户</a>-->
+                                        <!--</div>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div><!--end row-->
+            <!--查询结果展示区 End-->
+
+            <!--底边分页栏 Begin-->
+            <div>
+            	<ul class="pagination pull-right no-margin">
+
+            		<!-- 首页 -->
+            		<li>
+            			<a th:class="btn-success" th:href="'/carList?pageNum=1'">首页</a>
+            		</li>
+
+            		<!-- 上一页 -->
+            		<li th:if="${carPage.hasPrevious()}">
+                        &nbsp;&nbsp;
+            			<a th:class="btn-info" th:href="'/carList?pageNum=' + ${carPage.getPages()-1}" th:text="上一页"></a>
+            		</li>
+
+            		 <!--中间页 -->
+                    <!--<li th:if="${carPage.getCurrent() > 3}">-->
+                    <!--    <li th:each="pageNum:${#numbers.sequence(carPage.getCurrent() - 3, carPage.getCurrent() + 2)}">-->
+                    <!--        <a th:class="btn-danger" th:href="'/carList?pageNum=' + ${pageNum}" th:text="${pageNum}" th:if="${pageNum ne carPage.getPages()}"></a>-->
+                    <!--        <a th:class="btn-danger " th:href="'/carList?pageNum=' + ${pageNum}" th:text="${pageNum}" th:if="${pageNum eq carPage.getPages()}" style="font-weight:bold;background: #6faed9;"></a>-->
+                    <!--    </li>-->
+                    <!--</li>-->
+
+            		<!-- 下一页 -->
+            		<li th:if="${carPage.hasNext()}">
+                        &nbsp;&nbsp;
+            			<a th:class="btn-info" th:href="'/carList?pageNum=' + ${carPage.getCurrent() + 1}" th:text="下一页"></a>
+            		</li>
+
+            		<!-- 尾页 -->
+            		<li>
+                        &nbsp;&nbsp;
+            			<a th:class="btn-success" th:href="'/carList?pageNum=' + ${carPage.getPages()}">尾页</a>
+            		</li>
+
+                    &nbsp;&nbsp;
+                    共[[${carPage.getTotal()}]]条数据，共[[${carPage.getPages()}]]页 当前第[[${carPage.getCurrent()}]]页
+
+                    <!--跳转至某页-->
+                    <li>
+                        &nbsp;&nbsp;
+                        第 <input type="text" style="width: 40px; height: 20px" value="" th:id="goToPage" /> 页
+                        <a href="" th:class="btn-danger" th:id="pageA" th:onclick="goToPage()">跳转</a>
+                    </li>
 
 
-			</div>
-		</div>
-		<!--end page wrapper -->
 
-		<!--start overlay-->
-		<div th:insert="~{layout/copyright :: copy_overlay}"></div>
-		<!--end overlay-->
+            	</ul>
+            </div>
+            <!--底边分页栏 End-->
 
-		<!--Start Back To Top Button-->
-		<div th:insert="~{layout/copyright :: copy_back}"></div>
-		<!--End Back To Top Button-->
 
-		<!--start footer -->
-		<div th:insert="~{layout/copyright :: copy_footer}"></div>
-		<!--end footer -->
-	</div>
-	<!--end wrapper-->
+        </div>
+    </div>
+    <!--end page wrapper -->
 
-	<!--start switcher-->
-	<div th:insert="~{layout/copyright :: copy_switcher}"></div>
-	<!--end switcher-->
+    <!--start overlay-->
+    <div th:insert="~{layout/copyright :: copy_overlay}"></div>
+    <!--end overlay-->
 
-	<!-- Bootstrap JS -->
-	<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-	<!--plugins-->
-	<script th:src="@{/js/jquery.min.js}"></script>
-	<script th:src="@{/plugins/simplebar/js/simplebar.min.js}"></script>
-	<script th:src="@{/plugins/metismenu/js/metisMenu.min.js}"></script>
-	<script th:src="@{/plugins/perfect-scrollbar/js/perfect-scrollbar.js}"></script>
-	<!--app JS-->
-	<script th:src="@{/js/app.js}"></script>
+    <!--Start Back To Top Button-->
+    <div th:insert="~{layout/copyright :: copy_back}"></div>
+    <!--End Back To Top Button-->
+
+    <!--start footer -->
+    <div th:insert="~{layout/copyright :: copy_footer}"></div>
+    <!--end footer -->
+</div>
+<!--end wrapper-->
+
+<!--start switcher-->
+<div th:insert="~{layout/copyright :: copy_switcher}"></div>
+<!--end switcher-->
+
+<!-- Bootstrap JS -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!--plugins-->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/plugins/simplebar/js/simplebar.min.js}"></script>
+<script th:src="@{/plugins/metismenu/js/metisMenu.min.js}"></script>
+<script th:src="@{/plugins/perfect-scrollbar/js/perfect-scrollbar.js}"></script>
+<!--app JS-->
+<script th:src="@{/js/app.js}"></script>
+
+<script th:inline="javascript">
+    <!--跳转页面-->
+    function goToPage() {
+        var num = $("#goToPage").val();
+        $("#pageA").attr('href','/carList?pageNum='+num);
+    }
+</script>
 </body>
 
 </html>

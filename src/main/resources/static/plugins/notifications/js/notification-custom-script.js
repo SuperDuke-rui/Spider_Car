@@ -117,7 +117,7 @@ function img_default_noti() {
 		pauseDelayOnHover: true,
 		continueDelayOnInactiveTab: false,
 		position: 'top right',
-		img: 'assets/plugins/notifications/img/1.jpg', //path to image
+		img: '/plugins/notifications/img/1.jpg', //path to image
 		msg: 'Lorem ipsum dolor sit amet hears farmer indemnity inherent.'
 	});
 }
@@ -128,7 +128,7 @@ function img_info_noti() {
 		continueDelayOnInactiveTab: false,
 		icon: 'bx bx-info-circle',
 		position: 'top right',
-		img: 'assets/plugins/notifications/img/2.jpg', //path to image
+		img: '/plugins/notifications/img/2.jpg', //path to image
 		msg: 'Lorem ipsum dolor sit amet hears farmer indemnity inherent.'
 	});
 }
@@ -139,7 +139,7 @@ function img_warning_noti() {
 		icon: 'bx bx-error',
 		continueDelayOnInactiveTab: false,
 		position: 'top right',
-		img: 'assets/plugins/notifications/img/3.jpg', //path to image
+		img: '/plugins/notifications/img/3.jpg', //path to image
 		msg: 'Lorem ipsum dolor sit amet hears farmer indemnity inherent.'
 	});
 }
@@ -150,7 +150,7 @@ function img_error_noti() {
 		continueDelayOnInactiveTab: false,
 		icon: 'bx bx-x-circle',
 		position: 'top right',
-		img: 'assets/plugins/notifications/img/4.jpg', //path to image
+		img: '/plugins/notifications/img/4.jpg', //path to image
 		msg: 'Lorem ipsum dolor sit amet hears farmer indemnity inherent.'
 	});
 }
@@ -161,7 +161,7 @@ function img_success_noti() {
 		continueDelayOnInactiveTab: false,
 		position: 'top right',
 		icon: 'bx bx-check-circle',
-		img: 'assets/plugins/notifications/img/5.jpg', //path to image
+		img: '/plugins/notifications/img/5.jpg', //path to image
 		msg: 'Lorem ipsum dolor sit amet hears farmer indemnity inherent.'
 	});
 }

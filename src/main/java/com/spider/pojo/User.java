@@ -34,4 +34,7 @@ public class User {
 
     /*用户类型*/
     private int state;
+
+    /*用户偏好*/
+    private String interests;
 }

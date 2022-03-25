@@ -24,6 +24,13 @@
 	<link rel="stylesheet" th:href="@{/css/semi-dark.css}" />
 	<link rel="stylesheet" th:href="@{/css/header-colors.css}" />
 	<title>个人主页</title>
+
+	<style>
+		h6 {
+			font-family: 楷体, serif;
+			color: red;
+		}
+	</style>
 </head>
 
 <body>
@@ -57,7 +64,7 @@
 				<div class="container">
 					<div class="main-body">
 						<div class="row">
-							<div class="col-lg-4">
+							<div class="col-lg-3">
 								<div class="card">
 									<div class="d-flex flex-column align-items-center text-center">
 
@@ -75,42 +82,71 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-8">
+							<div class="col-lg-9">
 								<div th:class="row">
-									<div th:class="col-lg-6">
+									<div th:class="col-lg-4">
 										<div th:class="card">
 											<div th:class="card-body">
 												<form class="d-flex flex-column align-items-center text-center" th:action="@{/changeImg}">
+													<div style="height: 2rem"></div>
 													<img th:src="${session.loginUser.getUserPhoto()}" th:id="img-tx" alt="Admin" class="rounded-circle p-1 bg-primary" width="110" height="110">
 													<input type="hidden" th:name="srcString" th:id="srcString" />
 													<div class="mt-3">
+														<div style="height: 2rem"></div>
 														<h4>[[${session.loginUser.getUsername()}]]</h4>
 														<h5>[[${session.loginRole}]]</h5>
-														<!--<input type="file" accept="image/*" th:id="file-tx" name="file" class="fileInput"-->
-														<!--		onchange="upload('#file-tx', '#img-tx')" value="" />-->
+														<div style="height: 1rem"></div>
 														<button class="btn btn-info px-4" onclick="changeImg()">点击更换头像</button>
+														<div style="height: 2rem"></div>
 													</div>
 												</form>
 											</div>
 										</div>
 									</div>
 
-									<div th:class="col-lg-6">
+									<div th:class="col-lg-8">
 										<div th:class="card">
 											<div th:class="card-body">
-												<div class="d-flex flex-column align-items-center text-center">
-													<img th:src="${session.loginUser.getUserPhoto()}" alt="Admin" class="rounded-circle p-1 bg-primary" width="110" >
-													<div class="mt-3">
-														<h4>[[${session.loginUser.getUsername()}]]</h4>
-														<h5>[[${session.loginRole}]]</h5>
-														<button class="btn btn-info px-4">选择感兴趣的车型</button>
+												<!--添加一个复选框，让用户选择感兴趣的车辆类型-->
+												<form th:action="@{/user/saveTags}" th:onsubmit="jsonData()">
+													<label style="font-family: 宋体,serif; color: #0bb2d3" th:for="carType">感兴趣的车型</label>
+													<div th:class="row" th:id="carType">
+														<div th:class="col-md-4" th:each="carType: ${session.CarType}">
+															<input th:name="inputCarType" type="checkbox" th:value="${carType.getKey()}" th:checked="${carType.getValue()}" />[[${carType.getKey()}]]
+														</div>
 													</div>
-												</div>
+													<hr />
+													<label style="font-family: 宋体,serif; color: #0bb2d3" th:for="powerType">感兴趣的动力类型</label>
+													<div th:class="row" th:id="powerTypes">
+														<div th:class="col-md-4" th:each="powerType : ${session.PowerType}">
+															<input th:name="inputPowerType" type="checkbox" th:value="${powerType.getKey()}" th:checked="${powerType.getValue()}" />[[${powerType.getKey()}]]
+														</div>
+													</div>
+													<hr />
+													<label style="font-family: 宋体,serif; color: #0bb2d3" th:for="transType">感兴趣的变速类型</label>
+													<div th:class="row" th:id="transType">
+														<div th:class="col-md-6" th:each="transType : ${session.TransType}">
+															<input th:name="inputTransType" type="checkbox" th:value="${transType.getKey()}" th:checked="${transType.getValue()}" />[[${transType.getKey()}]]
+														</div>
+													</div>
+													<div style="height: 1rem"></div>
+													<!--一个不可见的input,用于传值-->
+													<input th:hidden="hidden" th:name="interestStr" th:id="interestStr" />
+													<div th:class="display_flex">
+														<div th:class="col-4">
+															<button class="btn btn-success" type="submit">保存偏好</button>
+														</div>
+														<div th:class="col-8">
+															<!--消息回显，如果msg消息不为空显示提示信息-->
+															<p style="color: red" th:id="message" th:text="${msg1}"></p>
+														</div>
+													</div>
+												</form>
 											</div>
 										</div>
 									</div>
 								</div>
-
+								<!--个人信息修改-->
 								<div class="card">
 									<div class="card-body">
 										<form th:class="row" th:action="@{/user/update}" th:onsubmit="return check()">
@@ -183,9 +219,6 @@
 															<option value="其它">其它</option>
 														</select>
 													</div>
-													<!--<div th:class="col-2">-->
-													<!--	<button class="btn btn-info px-4" onclick="getLocation()">自动定位</button>-->
-													<!--</div>-->
 												</div>
 
 											</div>
@@ -278,20 +311,6 @@
 			return true;
 		}
 	</script>
-	<!--上传图片-->
-	<!--<script type="text/javascript">-->
-	<!--	var upload = function(c, d){-->
-	<!--		"use strict";-->
-	<!--		var $c = document.querySelector(c),-->
-	<!--				$d = document.querySelector(d),-->
-	<!--				file = $c.files[0],-->
-	<!--				reader = new FileReader();-->
-	<!--		reader.readAsDataURL(file);-->
-	<!--		reader.onload = function (e) {-->
-	<!--			$d.setAttribute("src", e.target.result);-->
-	<!--		};-->
-	<!--	};-->
-	<!--</script>-->
 
 	<!--切换头像-->
 	<script type="text/javascript">
@@ -302,6 +321,60 @@
 			// document.getElementById("img-tx").src = "/images/user-images/user-images-" + num + ".png";
 			document.getElementById("srcString").value = "/images/user-images/user-images-" + num + ".png";
 
+		}
+	</script>
+
+	<!--包装json数据-->
+	<script type="text/javascript">
+		function jsonData() {
+			var json = [];
+			//1.车辆类型
+			var inputCarTypes = document.getElementsByName("inputCarType");
+			var array = {};
+			array.key = "CarType";
+			var carArray = [];
+			for (let i = 0; i < inputCarTypes.length; i++) {
+				var row = {};
+				row.key = inputCarTypes[i].getAttribute('value');
+				row.value = inputCarTypes[i].checked;
+				carArray.push(row)
+			}
+			array.value = carArray;
+			json.push(array);
+
+			//2.动力类型
+			array = {};
+			array.key = "PowerType";
+			carArray = [];
+			var inputPowerTypes = document.getElementsByName("inputPowerType");
+			for (let i = 0; i < inputPowerTypes.length; i++) {
+				var row = {};
+				row.key = inputPowerTypes[i].getAttribute('value');
+				row.value = inputPowerTypes[i].checked;
+				carArray.push(row)
+			}
+			array.value = carArray;
+			json.push(array);
+
+			//3.变速箱类型
+			array = {};
+			array.key = "TransType";
+			carArray = [];
+			var  inputTransTypes = document.getElementsByName("inputTransType");
+			for (let i = 0; i < inputTransTypes.length; i++) {
+				var row = {};
+				row.key = inputTransTypes[i].getAttribute('value');
+				row.value = inputTransTypes[i].checked;
+				carArray.push(row)
+			}
+			array.value = carArray;
+			json.push(array);
+
+			// console.log(JSON.stringify(json))
+			// return json;
+			// 通过input传值
+			var str = JSON.stringify(json).toString();
+			document.getElementById("interestStr").value = str;
 		}
 	</script>
 

@@ -50,9 +50,6 @@ public class Car {
     /*车辆保险到期时间，作为字符串获取*/
     private String insuranceTimeout;
 
-    /*车辆质检到期时间，作为字符串获取*/
-    private String qualityTimeout;
-
     /*车辆过户次数，作为字符串获取*/
     private String transfersTimes;
 

@@ -159,8 +159,8 @@ public class SpiderMain {
                 car.setInsuranceTimeout(insurance_timeout);
 
                 //14.车辆质检到期时间
-                String quality_timeout = car_content[12].substring(4);
-                car.setQualityTimeout(quality_timeout);
+                // String quality_timeout = car_content[12].substring(4);
+                // car.setQualityTimeout(quality_timeout);
 
                 //15.车辆过户次数
                 String transfers_times = car_content[14].substring(4);
