@@ -2,6 +2,7 @@ package com.spider.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.spider.mapper.CarMapper;
 import com.spider.pojo.Car;
@@ -9,6 +10,7 @@ import com.spider.service.ICarService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +35,7 @@ public class CarService implements ICarService {
     @Override
     public Map<String, Object> getCarMap(int pageNum, int pageSize) {
 
-        Page<Car> pageInfo = new Page(pageNum, pageSize);
+        Page<Car> pageInfo = new Page<>(pageNum, pageSize);
         Page<Car> iPage = carMapper.selectPage(pageInfo, null);
         Map<String, Object> pageMap = new HashMap<>();
         pageMap.put("total_record", iPage.getTotal());
@@ -120,5 +122,60 @@ public class CarService implements ICarService {
     public List<String> getTransType() {
         return carMapper.getTransTypes();
     }
+
+    /**
+     * 通过用户输入的关键词key搜索Car,同样需要分页查询
+     * @param key 关键词
+     * @param pageNum 当前页码
+     * @param pageSize 页面大小
+     * @return
+     */
+    @Override
+    public Page<Car> queryByKey(String key, int pageNum, int pageSize) {
+        //获取查询的carList
+        List<Car> carList =  carMapper.queryByKey(key);
+        //通过自定义函数对获取到的List进行分页
+        return getPages(pageNum, pageSize, carList);
+    }
+
+    /**
+     * 自定义一个分页功能的函数
+     * @param pageNum 当前页码
+     * @param pageSize 页面大小
+     * @param list 需要分页的List
+     * @return Page<Car>
+     */
+    public Page<Car> getPages(int pageNum, int pageSize, List<Car> list) {
+        Page<Car> carPage = new Page<>();
+
+        int size = list.size();
+
+        //防止pageSize越界
+        if (pageSize > size) {
+            pageSize = size;
+        }
+
+        //求得最大页数，防止pageNum越界
+        int maxPage = size % pageSize == 0 ? size / pageSize : size / pageSize + 1;
+
+        if (pageNum > maxPage) {
+            pageNum = maxPage;
+        }
+
+        //当前第一条数据下标
+        int curIds = pageNum > 1 ? (pageNum-1) * pageSize : 0;
+
+        List<Car> carList = new ArrayList<>();
+
+        //将当前页的数据放进pageList中
+        for (int i = 0; i < pageSize && curIds + i < size; i++) {
+            carList.add(list.get(curIds + i));
+        }
+
+        carPage.setCurrent(pageNum).setSize(pageSize).setTotal(list.size()).setRecords(carList);
+
+        return carPage;
+    }
+
 
 }

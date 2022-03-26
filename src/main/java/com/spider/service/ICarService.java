@@ -1,5 +1,6 @@
 package com.spider.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.spider.pojo.Car;
 
@@ -68,4 +69,13 @@ public interface ICarService {
      * @return
      */
     List<String> getTransType();
+
+    /**
+     * 通过用户输入的关键词key搜索Car
+     * @param key 关键词
+     * @param pageNum 当前页码
+     * @param pageSize 页面大小
+     * @return
+     */
+    Page<Car> queryByKey(String key, int pageNum, int pageSize);
 }

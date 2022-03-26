@@ -24,4 +24,8 @@ public interface CarMapper extends BaseMapper<Car> {
     /*获取车辆的变速箱类型：自动、手动等*/
     @Select("SELECT transmission, COUNT(transmission) FROM car_detail GROUP BY transmission ORDER BY COUNT(transmission) DESC")
     List<String> getTransTypes();
+
+    /*通过输入的关键词模糊查询*/
+    @Select("SELECT * FROM car_detail WHERE CONCAT(title,transmission,power_type,car_brand,car_website) LIKE CONCAT('%',#{key},'%')")
+    List<Car> queryByKey(String key);
 }

@@ -1,5 +1,6 @@
 package com.spider.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.spider.pojo.Car;
 import com.spider.service.ICarService;
@@ -23,11 +24,33 @@ public class CarController {
 
     @RequestMapping("/carList")
     // @ResponseBody
-    public String page(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "20") int pageSize, Model model) {
+    public String page(@RequestParam(defaultValue = "1") int pageNum,
+                       @RequestParam(defaultValue = "20") int pageSize,
+                       Model model) {
         // Map<String, Object> pageMap = carService.getCarMap(pageNum, pageSize);
         Page<Car> carPage = carService.getCarPage(pageNum, pageSize);
         //将map传到html中，进行取值并展示，展示页面做成卡片状
         model.addAttribute("carPage",carPage);
+        model.addAttribute("currentURL", "/carList?");
+        return "cars-list";
+    }
+
+    /**
+     * 通过用户输入模糊查询
+     * @param queryKey
+     * @return
+     */
+    @RequestMapping("/user/queryByKey")
+    public String queryByKey(@RequestParam String queryKey,
+                             @RequestParam(defaultValue = "1") int pageNum,
+                             @RequestParam(defaultValue = "20") int pageSize,
+                             Model model){
+
+        Page<Car> carPage = carService.queryByKey(queryKey, pageNum, pageSize);
+
+        model.addAttribute("carPage", carPage);
+        model.addAttribute("currentURL", "/user/queryByKey?queryKey="+queryKey+"&");
+
         return "cars-list";
     }
 
