@@ -23,6 +23,10 @@ li {
 	list-style-type: none;
 }
 
+.songStyle {
+	font-family: 宋体, serif;
+}
+
 .display_flex {
 	display: flex;
 }

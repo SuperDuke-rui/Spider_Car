@@ -3,14 +3,21 @@ package com.spider.pojo;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * @Author wangrui
- * @Description 车辆信息的实体类
- * @date 2022/3/8 11:46
+ * @Description 用于保存用户收藏的表的实体类，
+ * 其中的字段为：Car实体类的全部字段 + 用户uid +
+ * 收藏时间save_time + 逻辑删除用到的state（1：正常；0：逻辑删除）
+ * @date 2022/3/27 22:18
  */
-@TableName("car_detail")
+@TableName("user_store")
 @Data
-public class Car {
+public class Store {
+    /*用户uid*/
+    private int uid;
+
     /*二手车id,用于唯一识别二手车信息*/
     private int cid;
 
@@ -77,4 +84,9 @@ public class Car {
     /*二手车信息发布时间*/
     private String releaseTime;
 
+    /*收藏时间*/
+    private String saveTime;
+
+    /*状态 1：正常；0：逻辑删除*/
+    private int state;
 }

@@ -68,7 +68,6 @@ public class UserController {
 
     /**
      * 重置密码
-     *
      * @return
      */
     @RequestMapping("/user/reset")
@@ -100,6 +99,24 @@ public class UserController {
 
     }
 
+    /**
+     * 重置密码之后需要清除session再返回登录页面
+     * @param session
+     * @return
+     */
+    @RequestMapping("/BackToLogin")
+    public String backToLogin(HttpSession session) {
+        //清除session
+        session.invalidate();
+        return "redirect:/login.html";
+    }
+
+    /**
+     * 更换头像
+     * @param srcString
+     * @param session
+     * @return
+     */
     @RequestMapping("/changeImg")
     public String uploadImg(@RequestParam String srcString, HttpSession session) {
         // System.out.println("strString=" + srcString);
@@ -117,8 +134,13 @@ public class UserController {
         return "account/user-profile";
     }
 
+    /**
+     * 用户个人主页
+     * @param session
+     * @return
+     */
     @RequestMapping("/userProfile")
-    public String getTags(Model model,HttpSession session) {
+    public String getTags(HttpSession session) {
 
         //在此处分析session中的json数据并返回到html中，，，注册时默认给用户一个全为false的偏好
         //下面的都可以删除
@@ -203,6 +225,13 @@ public class UserController {
         return "account/user-profile";
     }
 
+    /**
+     * 保存用户偏好
+     * @param interestStr 用户偏好json字符串
+     * @param session
+     * @param model
+     * @return
+     */
     @RequestMapping("/user/saveTags")
     public String saveTags(@RequestParam String interestStr,
                            HttpSession session, Model model) {
@@ -267,20 +296,6 @@ public class UserController {
         }
         // model.addAttribute("TransType", transTypeMap);
         session.setAttribute("TransType", transTypeMap);
-    }
-
-
-    /**
-     * 重置密码之后需要清除session再返回登录页面
-     *
-     * @param session
-     * @return
-     */
-    @RequestMapping("/BackToLogin")
-    public String backToLogin(HttpSession session) {
-        //清除session
-        session.invalidate();
-        return "redirect:/login.html";
     }
 
 }
