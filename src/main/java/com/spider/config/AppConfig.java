@@ -30,6 +30,8 @@ public class AppConfig implements WebMvcConfigurer {
         registry.addViewController("/userProfile").setViewName("account/user-profile");
         // 二手车信息展示页
         registry.addViewController("/table_Datatable").setViewName("table-datatable");
+        //二手车详细界面
+        registry.addViewController("/carDetail").setViewName("car-details");
 
         //三个chart
         registry.addViewController("/Chart1").setViewName("charts/chartDemo");

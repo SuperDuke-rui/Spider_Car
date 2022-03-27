@@ -138,6 +138,16 @@ public class CarService implements ICarService {
         return getPages(pageNum, pageSize, carList);
     }
 
+    @Override
+    public List<Car> queryCars(String key) {
+        return carMapper.queryByKey(key);
+    }
+
+    @Override
+    public List<Car> queryByInterest(String carType, String powerType, String transType) {
+        return carMapper.queryByInterest(carType, powerType, transType);
+    }
+
     /**
      * 自定义一个分页功能的函数
      * @param pageNum 当前页码

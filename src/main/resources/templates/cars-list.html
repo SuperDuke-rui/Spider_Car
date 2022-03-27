@@ -137,9 +137,11 @@
                     <li>
                         <div class="col">
                             <!--整体包装成 a 标签，点击跳转详细页面-->
-                            <a style="color: #8a8a8c" class="card" th:href="@{#}">
+                            <a style="color: #8a8a8c" class="card" th:href="@{'/user/carDetailInfo?cid='+${car.getCid()}}">
                                 <img th:src="${car.getCarPhoto()}" class="card-img-top" alt="...">
                                 <div class="card-body" style="height: 10rem">
+                                    <!--设置一个不可见的input用于传当前的二手车信息-->
+                                    <!--<input name="carDetail" th:hidden="hidden" th:value="${car}">-->
                                     <h6 class="card-title cursor-pointer" style="height: 3rem">[[${car.getTitle()}]]</h6>
                                     <hr style="margin-top: 0" />
                                     <small>[[${car.getDisplayedMileage()}]] | [[${car.getCarLoc()}]] | [[${car.getCarWebsite()}]]</small>

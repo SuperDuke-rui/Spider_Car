@@ -29,14 +29,11 @@
         <!--navigation-->
         <ul class="metismenu" id="menu">
             <li>
-                <a href="javascript:;" class="has-arrow">
+                <a th:href="@{/index.html}">
                     <div class="parent-icon"><i class='bx bx-home-circle'></i>
                     </div>
                     <div class="menu-title">主 页</div>
                 </a>
-                <ul>
-                    <li> <a th:href="@{/index.html}"><i class="bx bx-right-arrow-alt"></i>欢迎使用！</a></li>
-                </ul>
             </li>
 
 
@@ -44,15 +41,11 @@
 
 
             <li>
-                <a href="javascript:;" class="has-arrow">
-                    <div class="parent-icon"><i class='bx bx-cart'></i>
+                <a th:href="@{/carList}">
+                    <div class="parent-icon"><i class="bx bx-grid-alt"></i>
                     </div>
-                    <div class="menu-title">二手车</div>
+                    <div class="menu-title">信息列表</div>
                 </a>
-                <ul>
-                    <li> <a th:href="@{/carList}"><i class="bx bx-right-arrow-alt"></i>信息列表</a>
-                    </li>
-                </ul>
             </li>
 
 
@@ -60,7 +53,7 @@
 
             <li>
                 <a class="has-arrow" href="javascript:;">
-                    <div class="parent-icon"><i class="bx bx-grid-alt"></i>
+                    <div class="parent-icon"><i class="bx bx-line-chart"></i>
                     </div>
                     <div class="menu-title">图表</div>
                 </a>

@@ -71,11 +71,27 @@ public interface ICarService {
     List<String> getTransType();
 
     /**
-     * 通过用户输入的关键词key搜索Car
+     * 通过用户输入的关键词key搜索Car, 需要分页的
      * @param key 关键词
      * @param pageNum 当前页码
      * @param pageSize 页面大小
      * @return
      */
     Page<Car> queryByKey(String key, int pageNum, int pageSize);
+
+    /**
+     * 通过关键词查找符合条件的信息
+     * @param key
+     * @return
+     */
+    List<Car> queryCars(String key);
+
+    /**
+     * 多条件查询
+     * @param carType 车辆类型
+     * @param powerType 动力类型
+     * @param transType 变速箱类型
+     * @return
+     */
+    List<Car> queryByInterest(String carType, String powerType, String transType);
 }
