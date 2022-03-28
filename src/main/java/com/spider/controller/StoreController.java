@@ -5,15 +5,20 @@ import com.spider.pojo.Store;
 import com.spider.pojo.User;
 import com.spider.service.ICarService;
 import com.spider.service.IStoreService;
+import com.spider.utils.ExcelUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author wangrui
@@ -138,5 +143,171 @@ public class StoreController {
             System.out.println("更新状态失败");
         }
         return "redirect:/user/myStore";
+    }
+
+    /**
+     * 下载用户的收藏信息
+     * @param response
+     * @param session
+     * @throws IOException
+     */
+    @RequestMapping("/user/download")
+    public void download(HttpServletResponse response, HttpSession session) throws IOException {
+        User user = (User) session.getAttribute("loginUser");
+
+        //填充project数据
+        List<Store> storeList = storeService.queryStoreList(user.getUid(), 1);
+        List<Map<String, Object>> list = createExcelRecord(storeList);
+        String[] columnNames = {"序号","描述", "车辆照片", "价格", "品牌", "子品牌", "表显里程", "车辆上牌时间", "变速箱类型", "排量", "排放标准", "年检到期时间",
+                "保险到期时间", "过户次数", "车辆所在地", "车辆级别", "发动机", "车辆颜色", "燃油标号", "驱动方式", "二手车网站", "二手车信息发布时间", "收藏时间"};
+        String[] keys = {"id","title", "carPhoto", "carPrice", "carBrand", "carType", "displayedMileage", "licensingTime", "transmission", "emissions", "emissionStandard", "annualTimeout",
+                "insuranceTimeout", "transfersTimes", "carLoc", "carGrade", "carEngine", "carColor", "fuelType", "powerType", "carWebsite", "releaseTime", "saveTime"};
+
+        InputAndOutput(response, list, keys, columnNames);
+
+    }
+
+    /**
+     * 下载用户的所有收藏信息（包括移除的部分信息）
+     * 用户的所有收藏信息的排序方式，首先按照状态降序排序，再按保存时间降序排序
+     * @param response
+     * @param session
+     * @throws IOException
+     */
+    @RequestMapping("/user/downloadAll")
+    public void downloadAll(HttpServletResponse response, HttpSession session) throws IOException {
+        User user = (User) session.getAttribute("loginUser");
+        //填充project数据
+        List<Store> storeList = storeService.queryAllStores(user.getUid());
+        List<Map<String, Object>> list = createExcelRecord2(storeList);
+        String[] columnNames = {"序号","描述", "车辆照片", "价格", "品牌", "子品牌", "表显里程", "车辆上牌时间", "变速箱类型", "排量", "排放标准", "年检到期时间",
+                "保险到期时间", "过户次数", "车辆所在地", "车辆级别", "发动机", "车辆颜色", "燃油标号", "驱动方式", "二手车网站", "二手车信息发布时间", "收藏时间", "收藏状态"};
+        String[] keys = {"id","title", "carPhoto", "carPrice", "carBrand", "carType", "displayedMileage", "licensingTime", "transmission", "emissions", "emissionStandard", "annualTimeout",
+                "insuranceTimeout", "transfersTimes", "carLoc", "carGrade", "carEngine", "carColor", "fuelType", "powerType", "carWebsite", "releaseTime", "saveTime", "state"};
+
+        InputAndOutput(response, list, keys, columnNames);
+    }
+
+    /**
+     * 抽取大段相同代码
+     * @param response
+     * @param list
+     * @param keys
+     * @param columnNames
+     * @throws IOException
+     */
+    public void InputAndOutput(HttpServletResponse response, List<Map<String, Object>> list, String[] keys, String[] columnNames) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            ExcelUtil.createWorkBook(list, keys, columnNames).write(outputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        byte[] content = outputStream.toByteArray();
+        InputStream inputStream = new ByteArrayInputStream(content);
+
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String formatTime = simpleDateFormat.format(date);
+        String fileName = "二手车信息表_" + formatTime;
+        //设置response参数，可以打开下载页面
+        response.reset();
+        response.setContentType("application/vnd.ms-excel;charset=utf-8");
+        response.setHeader("Content-Disposition", "attachment;filename=" + new String((fileName + ".xlsx").getBytes(), StandardCharsets.ISO_8859_1));
+        ServletOutputStream out = response.getOutputStream();
+        BufferedInputStream bufferedInputStream = null;
+        BufferedOutputStream bufferedOutputStream = null;
+        try {
+            bufferedInputStream = new BufferedInputStream(inputStream);
+            bufferedOutputStream = new BufferedOutputStream(out);
+            byte[] buff = new byte[2048];
+            int bytesRead;
+            while (-1 != (bytesRead = bufferedInputStream.read(buff, 0, buff.length))) {
+                bufferedOutputStream.write(buff, 0, bytesRead);
+            }
+        } catch (final IOException e) {
+            throw e;
+        } finally {
+            if (bufferedInputStream != null){
+                bufferedInputStream.close();
+            }
+            if (bufferedOutputStream != null) {
+                bufferedOutputStream.close();
+            }
+        }
+    }
+
+
+    /**
+     * 将storeList解析为MapList的形式
+     * @param storeList 待解析的数据
+     * @return
+     */
+    private List<Map<String, Object>> createExcelRecord(List<Store> storeList) {
+        List<Map<String, Object>> listMap = new ArrayList<>();
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("sheetName", "sheet1");
+        listMap.add(map);
+        Store store;
+        for (int i = 0; i < storeList.size(); i++) {
+            store = storeList.get(i);
+            Map<String, Object> mapValue = new LinkedHashMap<>();
+            mapValue.put("id", i+1);
+            putValues(mapValue, store);
+            listMap.add(mapValue);
+        }
+        return listMap;
+    }
+
+    /**
+     * 将storeList解析为MapList的形式
+     * @param storeList 待解析的数据
+     * @return
+     */
+    private List<Map<String, Object>> createExcelRecord2(List<Store> storeList) {
+        List<Map<String, Object>> listMap = new ArrayList<>();
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("sheetName", "sheet1");
+        listMap.add(map);
+        Store store;
+        for (int i = 0; i < storeList.size(); i++) {
+            store = storeList.get(i);
+            Map<String, Object> mapValue = new LinkedHashMap<>();
+            mapValue.put("id", i+1);
+            putValues(mapValue, store);
+            mapValue.put("state", store.getState() == 1 ? "收藏中" : "已被移除");
+            listMap.add(mapValue);
+        }
+        return listMap;
+    }
+
+    /**
+     * 大段相同代码的抽取
+     * @param mapValue
+     * @param store
+     */
+    public void putValues(Map<String, Object> mapValue, Store store) {
+        mapValue.put("title", store.getTitle());
+        mapValue.put("carPhoto", store.getCarPhoto());
+        mapValue.put("carPrice", store.getCarPrice() + "万元");
+        mapValue.put("carBrand", store.getCarBrand());
+        mapValue.put("carType", store.getCarType());
+        mapValue.put("displayedMileage", store.getDisplayedMileage());
+        mapValue.put("licensingTime", store.getLicensingTime());
+        mapValue.put("transmission", store.getTransmission());
+        mapValue.put("emissions", store.getEmissions() + "升");
+        mapValue.put("emissionStandard", store.getEmissionStandard());
+        mapValue.put("annualTimeout", store.getAnnualTimeout());
+        mapValue.put("insuranceTimeout", store.getInsuranceTimeout());
+        mapValue.put("transfersTimes", store.getTransfersTimes());
+        mapValue.put("carLoc", store.getCarLoc());
+        mapValue.put("carGrade", store.getCarGrade());
+        mapValue.put("carEngine", store.getCarEngine());
+        mapValue.put("carColor", store.getCarColor());
+        mapValue.put("fuelType", store.getFuelType());
+        mapValue.put("powerType", store.getPowerType());
+        mapValue.put("carWebsite", store.getCarWebsite());
+        mapValue.put("releaseTime", store.getReleaseTime());
+        mapValue.put("saveTime", store.getSaveTime());
     }
 }

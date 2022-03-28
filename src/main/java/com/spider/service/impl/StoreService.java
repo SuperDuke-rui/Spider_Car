@@ -57,6 +57,16 @@ public class StoreService implements IStoreService {
     }
 
     /**
+     * 查询用户的所有收藏信息，排序方式，首先按照状态降序排序，再按保存时间降序排序
+     * @param uid 用户id
+     * @return
+     */
+    @Override
+    public List<Store> queryAllStores(Integer uid) {
+        return storeMapper.queryAllStores(uid);
+    }
+
+    /**
      * 更新收藏信息状态
      * @param uid 用户id
      * @param cid 车辆信息id
