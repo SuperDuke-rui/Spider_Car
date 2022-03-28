@@ -2,6 +2,8 @@ package com.spider.service;
 
 import com.spider.pojo.Store;
 
+import java.util.List;
+
 /**
  * @Author wangrui
  * @Description TODO
@@ -22,4 +24,21 @@ public interface IStoreService {
      * @return 返回查询结果
      */
     boolean queryStore(Integer uid, Integer cid);
+
+    /**
+     * 在数据库中搜索用户的收藏信息
+     * @param uid 用户id
+     * @param state 信息的状态
+     * @return List
+     */
+    List<Store> queryStoreList(Integer uid, Integer state);
+
+    /**
+     * 更新收藏信息状态
+     * @param uid 用户id
+     * @param cid 车辆信息id
+     * @param state 更新状态为state
+     * @return 更新结果
+     */
+    int updateState(Integer uid, Integer cid, Integer state);
 }

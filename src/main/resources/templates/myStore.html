@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--favicon-->
+    <link rel="icon" th:href="@{/images/favicon-32x32.png}" type="image/png"/>
+    <!--plugins-->
+    <link th:href="@{/plugins/simplebar/css/simplebar.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/perfect-scrollbar/css/perfect-scrollbar.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/metismenu/css/metisMenu.min.css}" rel="stylesheet"/>
+    <!-- loader-->
+    <link th:href="@{/css/pace.min.css}" rel="stylesheet"/>
+    <script th:src="@{/js/pace.min.js}"></script>
+    <!-- Bootstrap CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
+    <link th:href="@{/css/icons.css}" rel="stylesheet">
+    <!-- Theme Style CSS -->
+    <link rel="stylesheet" th:href="@{/css/dark-theme.css}"/>
+    <link rel="stylesheet" th:href="@{/css/semi-dark.css}"/>
+    <link rel="stylesheet" th:href="@{/css/header-colors.css}"/>
+    <title>我的收藏页</title>
+
+    <style>
+        h6 {
+            font-family: 宋体, serif;
+        }
+    </style>
+</head>
+
+<body>
+<!--wrapper-->
+<div class="wrapper">
+    <!--sidebar wrapper -->
+    <div th:insert="~{layout/copyright :: copy_sideBar}"></div>
+    <!--end sidebar wrapper -->
+
+    <!--start header -->
+    <div th:insert="~{layout/copyright :: copy_header}"></div>
+    <!--end header -->
+
+    <!--start page wrapper -->
+    <div class="page-wrapper">
+        <div class="page-content">
+
+            <!--breadcrumb-->
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                <div class="breadcrumb-title pe-3">用户页面</div>
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0">
+                            <li class="breadcrumb-item"><a th:href="@{/carList}"><i class="bx bx-grid-alt"></i></a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">我的收藏</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="ms-auto">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary songStyle">下载</button>
+                        <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                            <a class="dropdown-item songStyle" href="javascript:;">下载全部收藏</a>
+                            <a class="dropdown-item songStyle" href="javascript:;">下载选中收藏</a>
+                            <!--<a class="dropdown-item" href="javascript:;">Something else here</a>-->
+                            <!--<div class="dropdown-divider"></div>	-->
+                            <!--<a class="dropdown-item" href="javascript:;">Separated link</a>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end breadcrumb-->
+
+            <!--查询结果展示区 Begin-->
+            <div th:id="storeList" class="row row-cols-1 row-cols-sm-1 row-cols-lg-1 row-cols-xl-1 row-cols-xxl-1 product-grid">
+                <ul th:each="store : ${storeList}">
+                    <li>
+                        <div class="col">
+                            <div class="card">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img th:src="${store.getCarPhoto()}" class="card-img" alt="...">
+                                    </div>
+                                    <div class="col-md-8 card-body">
+                                        <h5 class="card-title cursor-pointer songStyle" style="height: 2rem">[[${store.getTitle()}]]</h5>
+                                        <dl class="row col-12">
+                                            <div class="col-6">
+                                                <div th:class="display_flex">
+                                                    <dt class="col-sm-6">车辆变速箱类型</dt>
+                                                    <dd class="col-sm-6">[[${store.getTransmission()}]]</dd>
+                                                </div>
+
+                                                <div th:class="display_flex">
+                                                    <dt class="col-sm-6">车辆排放量</dt>
+                                                    <dd class="col-sm-6">[[${store.getEmissions}]] 升</dd>
+                                                </div>
+
+                                                <div th:class="display_flex">
+                                                    <dt class="col-sm-6">排放标准</dt>
+                                                    <dd class="col-sm-6">[[${store.getEmissionStandard()}]]</dd>
+                                                </div>
+
+                                                <div th:class="display_flex">
+                                                    <dt class="col-sm-6">车辆年检到期时间</dt>
+                                                    <dd class="col-sm-6">[[${store.getAnnualTimeout()}]]</dd>
+                                                </div>
+
+                                                <div th:class="display_flex">
+                                                    <dt class="col-sm-6">车辆保险到期时间</dt>
+                                                    <dd class="col-sm-6">[[${store.getInsuranceTimeout()}]]</dd>
+                                                </div>
+
+                                                <div th:class="display_flex">
+                                                    <dt class="col-sm-6">车辆过户次数</dt>
+                                                    <dd class="col-sm-6">[[${store.getTransfersTimes()}]]</dd>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div th:class="display_flex">
+                                                    <dt class="col-sm-6">车辆所在地</dt>
+                                                    <dd class="col-sm-6">[[${store.getCarLoc()}]]</dd>
+                                                </div>
+
+                                                <div th:class="display_flex">
+                                                    <dt class="col-sm-6">车辆级别</dt>
+                                                    <dd class="col-sm-6">[[${store.getCarGrade()}]]</dd>
+                                                </div>
+
+                                                <div th:class="display_flex">
+                                                    <dt class="col-sm-6">车辆发动机</dt>
+                                                    <dd class="col-sm-6">[[${store.getCarEngine()}]]</dd>
+                                                </div>
+
+                                                <div th:class="display_flex">
+                                                    <dt class="col-sm-6">车辆颜色</dt>
+                                                    <dd class="col-sm-6">[[${store.getCarColor()}]]</dd>
+                                                </div>
+
+                                                <div th:class="display_flex">
+                                                    <dt class="col-sm-6">驱动方式</dt>
+                                                    <dd class="col-sm-6">[[${store.getPowerType()}]]</dd>
+                                                </div>
+
+                                                <div th:class="display_flex">
+                                                    <dt class="col-sm-6">收藏时间</dt>
+                                                    <dd class="col-sm-6">[[${store.getSaveTime()}]]</dd>
+                                                </div>
+                                            </div>
+
+                                        </dl>
+                                        <div class="clearfix col display_flex">
+                                            <div class="display_flex col-5">
+                                                <h3 style="color: #d9810d">[[${store.getCarPrice()}]]</h3>
+                                                <small style="color: #3c83ea"> 万元</small>
+                                            </div>
+                                            <div class="col-7 display_flex">
+                                                <a type="button" class="btn btn-info px-5 radius-15" th:href="@{'/user/carDetailInfo?cid=' + ${store.getCid()}}">查看详情</a>
+                                                &nbsp;&nbsp;
+                                                <a type="button" class="btn btn-danger px-5 radius-15" onclick="return confirm('是否移除？')" th:href="@{'/deleteStore?cid='+${store.getCid()}}">移除收藏</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <h6 class="mb-0 text-uppercase">已被移除的收藏</h6>
+            <hr/>
+            <div th:id="storeListDel"
+                 class="row row-cols-1 row-cols-sm-1 row-cols-lg-1 row-cols-xl-2 row-cols-xxl-2 product-grid">
+                <ul th:each="store : ${storeListDel}">
+                    <li>
+                        <div class="col">
+                            <div class="card">
+                                <div class="row g-0">
+                                    <div class="col-md-5">
+                                        <img th:src="${store.getCarPhoto()}" class="card-img" alt="...">
+                                    </div>
+                                    <div class="col-md-7 card-body">
+                                        <h6 class="card-title cursor-pointer" style="height: 3rem">[[${store.getTitle()}]]</h6>
+                                        <dl class="row col-12">
+
+                                            <div th:class="display_flex">
+                                                <dt class="col-sm-6">收藏时间</dt>
+                                                <dd class="col-sm-6">[[${store.getSaveTime()}]]</dd>
+                                            </div>
+                                        </dl>
+                                        <div class="clearfix col display_flex">
+                                            <div class="display_flex col-8">
+                                                <h5>[[${store.getCarPrice()}]]</h5>
+                                                <p> 万元</p>
+                                            </div>
+                                            <div class="col-4">
+                                                <a type="button" class="btn btn-success px-2 radius-15" th:href="@{'/removeToStore?cid='+${store.getCid()}}">移入收藏</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div><!--end row-->
+            <!--查询结果展示区 End-->
+
+        </div>
+    </div>
+    <!--end page wrapper -->
+
+    <!--start overlay-->
+    <div th:insert="~{layout/copyright :: copy_overlay}"></div>
+    <!--end overlay-->
+
+    <!--Start Back To Top Button-->
+    <div th:insert="~{layout/copyright :: copy_back}"></div>
+    <!--End Back To Top Button-->
+
+    <!--start footer -->
+    <div th:insert="~{layout/copyright :: copy_footer}"></div>
+    <!--end footer -->
+</div>
+<!--end wrapper-->
+
+<!--start switcher-->
+<div th:insert="~{layout/copyright :: copy_switcher}"></div>
+<!--end switcher-->
+
+<!-- Bootstrap JS -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!--plugins-->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/plugins/simplebar/js/simplebar.min.js}"></script>
+<script th:src="@{/plugins/metismenu/js/metisMenu.min.js}"></script>
+<script th:src="@{/plugins/perfect-scrollbar/js/perfect-scrollbar.js}"></script>
+<!--app JS-->
+<script th:src="@{/js/app.js}"></script>
+</body>
+
+</html>

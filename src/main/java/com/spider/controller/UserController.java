@@ -6,7 +6,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.spider.pojo.User;
 import com.spider.service.ICarService;
 import com.spider.service.IUserService;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -139,7 +138,7 @@ public class UserController {
      * @param session
      * @return
      */
-    @RequestMapping("/userProfile")
+    @RequestMapping("/user/userProfile")
     public String getTags(HttpSession session) {
 
         //在此处分析session中的json数据并返回到html中，，，注册时默认给用户一个全为false的偏好

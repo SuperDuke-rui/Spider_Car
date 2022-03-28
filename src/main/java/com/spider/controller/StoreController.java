@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author wangrui
@@ -81,5 +82,61 @@ public class StoreController {
         }
 
         return "car-details";
+    }
+
+    /**
+     * 用户收藏页，从数据库中查询数据并展示到页面上
+     * @return
+     */
+    @RequestMapping("/user/myStore")
+    public String myStore(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("loginUser");
+        //获取正常状态的收藏信息
+        List<Store> storeList = storeService.queryStoreList(user.getUid(), 1);
+        //获取被逻辑删除的收藏信息
+        List<Store> storeListDel = storeService.queryStoreList(user.getUid(), 0);
+
+        model.addAttribute("storeList", storeList);
+        model.addAttribute("storeListDel", storeListDel);
+
+        return "/myStore";
+    }
+
+    /**
+     * 移除我的收藏，将该条记录修改状态为0
+     * @param cid
+     * @param session
+     * @return
+     */
+    @RequestMapping("/deleteStore")
+    public String deleteStore(Integer cid, HttpSession session) {
+        //获取uid
+        User user = (User) session.getAttribute("loginUser");
+        int result = storeService.updateState(user.getUid(), cid, 0);
+        if (result > 0) {
+            System.out.println("更新状态成功");
+        } else {
+            System.out.println("更新状态失败");
+        }
+        return "redirect:/user/myStore";
+    }
+
+    /**
+     * 移入我的收藏，将该条记录修改状态为1
+     * @param cid
+     * @param session
+     * @return
+     */
+    @RequestMapping("/removeToStore")
+    public String removeToStore(Integer cid, HttpSession session) {
+        //获取uid
+        User user = (User) session.getAttribute("loginUser");
+        int result = storeService.updateState(user.getUid(), cid, 1);
+        if (result > 0) {
+            System.out.println("更新状态成功");
+        } else {
+            System.out.println("更新状态失败");
+        }
+        return "redirect:/user/myStore";
     }
 }

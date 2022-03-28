@@ -6,6 +6,7 @@ import com.spider.service.IStoreService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author wangrui
@@ -42,5 +43,28 @@ public class StoreService implements IStoreService {
         } else {
             return false;
         }
+    }
+
+    /**
+     * 在数据库中搜索用户的收藏信息
+     * @param uid 用户id
+     * @param state 信息的状态
+     * @return
+     */
+    @Override
+    public List<Store> queryStoreList(Integer uid, Integer state) {
+        return storeMapper.queryStoreList(uid, state);
+    }
+
+    /**
+     * 更新收藏信息状态
+     * @param uid 用户id
+     * @param cid 车辆信息id
+     * @param state 更新状态为state
+     * @return 更新结果
+     */
+    @Override
+    public int updateState(Integer uid, Integer cid, Integer state) {
+        return storeMapper.updateState(uid, cid, state);
     }
 }

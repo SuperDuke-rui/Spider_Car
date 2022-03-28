@@ -47,7 +47,9 @@
 					<div class="ps-3">
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb mb-0 p-0">
-								<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+								<li class="breadcrumb-item">
+									<a th:href="@{/carList}"><i class="bx bx-home-alt"></i></a>/
+									<a th:href="@{/user/myStore}"><i class="bx bx-star"></i></a>
 								</li>
 								<li class="breadcrumb-item active" aria-current="page">详细信息</li>
 							</ol>
@@ -83,7 +85,7 @@
 							  	<dt class="col-sm-3">车辆上牌时间</dt>
 							  	<dd class="col-sm-9">[[${session.carDetail.getLicensingTime()}]]</dd>
 						  	</dl>
-						  <hr>
+						  <hr />
 						<div class="d-flex gap-3 mt-3">
 							<a th:href="@{'/user/store?cid=' + ${session.carDetail.getCid()}}" class="btn btn-primary"><li class="bx bx-star"></li><span class="text"> 收藏</span></a>
 							<a href="#" class="btn btn-outline-primary"><span class="text">加入对比</span></a>
