@@ -5,8 +5,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.spider.pojo.Car;
+import com.spider.pojo.SearchKey;
 import com.spider.pojo.User;
 import com.spider.service.ICarService;
+import com.spider.service.ISearchKeyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -26,6 +29,9 @@ public class CarController {
 
     @Resource
     private ICarService carService;
+
+    @Resource
+    private ISearchKeyService searchKeyService;
 
     @RequestMapping("/carList")
     // @ResponseBody
@@ -52,6 +58,22 @@ public class CarController {
                              Model model){
 
         Page<Car> carPage = carService.queryByKey(queryKey, pageNum, pageSize);
+
+        //保存查询的queryKey(关键词不为空)
+        if (!Objects.equals(queryKey, "") &&queryKey!=null) {
+            SearchKey searchKey = new SearchKey();
+            searchKey.setWords(queryKey);
+            //获取当前时间
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String time = dateFormat.format(new Date());
+            searchKey.setSearchTime(time);
+            int result = searchKeyService.insertKey(searchKey);
+            if (result > 0) {
+                System.out.println("关键词插入成功");
+            } else {
+                System.out.println("关键词插入失败");
+            }
+        }
 
         model.addAttribute("carPage", carPage);
         model.addAttribute("currentURL", "/user/queryByKey?queryKey="+queryKey+"&");

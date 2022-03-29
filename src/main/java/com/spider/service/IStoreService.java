@@ -23,7 +23,7 @@ public interface IStoreService {
      * @param cid 车辆信息id
      * @return 返回查询结果
      */
-    boolean queryStore(Integer uid, Integer cid);
+    Store queryStore(Integer uid, Integer cid);
 
     /**
      * 在数据库中搜索用户的收藏信息
@@ -47,5 +47,5 @@ public interface IStoreService {
      * @param state 更新状态为state
      * @return 更新结果
      */
-    int updateState(Integer uid, Integer cid, Integer state);
+    int updateState(Integer uid, Integer cid, Integer state, String newTime);
 }

@@ -58,48 +58,53 @@
 				</div>
 				<!--end breadcrumb-->
 
-				 <div class="card">
+				<div class="card">
 					<div class="row g-0">
-					  <div class="col-md-4 border-end">
-						<img th:src="${session.carDetail.getCarPhoto()}" class="img-fluid" alt="...">
-					  </div>
-					  <div class="col-md-8">
-						<div class="card-body">
-						  <h4 class="card-title">[[${session.carDetail.getTitle()}]]</h4>
+						<div class="col-md-4 border-end">
+							<img th:src="${session.carDetail.getCarPhoto()}" class="img-fluid" alt="...">
+						</div>
+						<div class="col-md-8">
+							<div class="card-body">
+								<h4 class="card-title">[[${session.carDetail.getTitle()}]]</h4>
 
-						  <div class="mb-3 display_flex">
-							  <span class="price h4">参考价：</span>
-							  <h3 style="color: #f88d00">[[${session.carDetail.getCarPrice()}]] </h3>
-							  <span class="price h4">万元</span>
-						</div>
-						  	<dl class="row">
-								<dt class="col-sm-3">车辆品牌</dt>
-								<dd class="col-sm-9">[[${session.carDetail.getCarBrand()}]]</dd>
-						  
-								<dt class="col-sm-3">子品牌</dt>
-								<dd class="col-sm-9">[[${session.carDetail.getCarType()}]]</dd>
-						  
-								<dt class="col-sm-3">车辆表显里程</dt>
-								<dd class="col-sm-9">[[${session.carDetail.getDisplayedMileage()}]]</dd>
+								<div class="mb-3 display_flex">
+									<span class="price h4">参考价：</span>
+									<h3 style="color: #f88d00">[[${session.carDetail.getCarPrice()}]] </h3>
+									<span class="price h4">万元</span>
+								</div>
+								<dl class="row">
+									<dt class="col-sm-3">车辆品牌</dt>
+									<dd class="col-sm-9">[[${session.carDetail.getCarBrand()}]]</dd>
 
-							  	<dt class="col-sm-3">车辆上牌时间</dt>
-							  	<dd class="col-sm-9">[[${session.carDetail.getLicensingTime()}]]</dd>
-						  	</dl>
-						  <hr />
-						<div class="d-flex gap-3 mt-3">
-							<a th:href="@{'/user/store?cid=' + ${session.carDetail.getCid()}}" class="btn btn-primary"><li class="bx bx-star"></li><span class="text"> 收藏</span></a>
-							<a href="#" class="btn btn-outline-primary"><span class="text">加入对比</span></a>
-							<!--消息回显，如果msg消息不为空显示提示信息-->
-							<p style="color: red" th:id="message" th:text="${msg}"></p>
+									<dt class="col-sm-3">子品牌</dt>
+									<dd class="col-sm-9">[[${session.carDetail.getCarType()}]]</dd>
+
+									<dt class="col-sm-3">车辆表显里程</dt>
+									<dd class="col-sm-9">[[${session.carDetail.getDisplayedMileage()}]]</dd>
+
+									<dt class="col-sm-3">车辆上牌时间</dt>
+									<dd class="col-sm-9">[[${session.carDetail.getLicensingTime()}]]</dd>
+								</dl>
+								<hr/>
+								<div class="d-flex gap-3 mt-3">
+									<a th:href="@{'/user/store?cid=' + ${session.carDetail.getCid()}}"
+									   class="btn btn-primary">
+										<li class="bx bx-star"></li>
+										<span class="text"> 收藏</span></a>
+									<a th:href="@{'/user/compare?cid=' + ${session.carDetail.getCid()}}"
+									   class="btn btn-outline-primary"><span class="text">加入对比</span></a>
+									<!--消息回显，如果msg消息不为空显示提示信息-->
+									<p style="color: red" th:id="message" th:text="${msg}"></p>
+								</div>
+							</div>
 						</div>
-						</div>
-					  </div>
 					</div>
-                    <hr/>
+					<hr/>
 					<div class="card-body">
 						<ul class="nav nav-tabs nav-primary mb-0" role="tablist">
 							<li class="nav-item" role="presentation">
-								<a class="nav-link active" data-bs-toggle="tab" href="#detailDescription" role="tab" aria-selected="true">
+								<a class="nav-link active" data-bs-toggle="tab" href="#detailDescription" role="tab"
+								   aria-selected="true">
 									<div class="d-flex align-items-center">
 										<div class="tab-icon"><i class='bx bx-comment-detail font-18 me-1'></i>
 										</div>
@@ -108,7 +113,8 @@
 								</a>
 							</li>
 							<li class="nav-item" role="presentation">
-								<a class="nav-link" data-bs-toggle="tab" href="#otherInfo" role="tab" aria-selected="false">
+								<a class="nav-link" data-bs-toggle="tab" href="#otherInfo" role="tab"
+								   aria-selected="false">
 									<div class="d-flex align-items-center">
 										<div class="tab-icon"><i class='bx bx-bookmark-alt font-18 me-1'></i>
 										</div>
@@ -206,34 +212,39 @@
 						</div>
 					</div>
 
-				  </div>
+				</div>
 
-					<h6 class="text-uppercase mb-0">为您推荐</h6>
-					<hr/>
-					<div class="row row-cols-1 row-cols-lg-3">
-						   <ul th:each="car : ${session.recommend}">
-							   <li>
-								   <div class="col">
-									   <div class="card">
-										   <a style="color: #8a8a8c" class="row g-0" th:href="@{'/user/carDetailInfo?cid=' + ${car.getCid()}}">
-											   <div class="col-md-5">
-												   <img th:src="${car.getCarPhoto()}" class="img-fluid" alt="...">
-											   </div>
-											   <div class="col-md-7">
-												   <div class="card-body">
-													   <h6 style="font-family: 宋体,serif" class="card-title">[[${car.getTitle()}]]</h6>
-													   <small>[[${car.getCarGrade()}]] | [[${car.getPowerType()}]] | [[${car.getTransmission()}]]</small>
-													   <div class="clearfix">
-														   <p class="mb-0 float-start fw-bold"><span style="color: #d9810d">[[${car.getCarPrice()}]] </span><span style="color:#1acaff;">万元</span></p>
-													   </div>
-												   </div>
-											   </div>
-										   </a>
-									   </div>
-								   </div>
-							   </li>
-						   </ul>
-					   </div>
+				<h6 class="text-uppercase mb-0">为您推荐</h6>
+				<hr/>
+
+				<div class="row row-cols-1 row-cols-lg-3">
+					<ul th:each="car : ${session.recommend}">
+						<li>
+							<div class="col">
+								<div class="card">
+									<a style="color: #8a8a8c" class="row g-0"
+									   th:href="@{'/user/carDetailInfo?cid=' + ${car.getCid()}}">
+										<div class="col-md-5">
+											<img th:src="${car.getCarPhoto()}" class="img-fluid" alt="...">
+										</div>
+										<div class="col-md-7">
+											<div class="card-body">
+												<h6 style="font-family: 宋体,serif" class="card-title">
+													[[${car.getTitle()}]]</h6>
+												<small>[[${car.getCarGrade()}]] | [[${car.getPowerType()}]] |
+													[[${car.getTransmission()}]]</small>
+												<div class="clearfix">
+													<p class="mb-0 float-start fw-bold"><span style="color: #d9810d">[[${car.getCarPrice()}]] </span><span
+															style="color:#1acaff;">万元</span></p>
+												</div>
+											</div>
+										</div>
+									</a>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 		<!--end page wrapper -->

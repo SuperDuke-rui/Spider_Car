@@ -48,21 +48,6 @@
                 </a>
             </li>
 
-
-            <li class="menu-label">分析图表</li>
-
-            <li>
-                <a class="has-arrow" href="javascript:;">
-                    <div class="parent-icon"><i class="bx bx-line-chart"></i>
-                    </div>
-                    <div class="menu-title">图表</div>
-                </a>
-                <ul>
-                    <li> <a th:href="@{table_Datatable}"><i class="bx bx-right-arrow-alt"></i>数据图表</a>
-                    </li>
-                </ul>
-            </li>
-
             <li class="menu-label">图表</li>
 
             <li>
@@ -72,11 +57,25 @@
                     <div class="menu-title">Charts</div>
                 </a>
                 <ul>
-                    <li> <a th:href="@{Chart1}"><i class="bx bx-right-arrow-alt"></i>Chart1</a>
+                    <li> <a th:href="@{/Chart1}"><i class="bx bx-right-arrow-alt"></i>Chart1</a>
                     </li>
-                    <li> <a th:href="@{Chart2}"><i class="bx bx-right-arrow-alt"></i>Chart2</a>
+                    <li> <a th:href="@{/Chart2}"><i class="bx bx-right-arrow-alt"></i>Chart2</a>
                     </li>
-                    <li> <a th:href="@{Chart3}"><i class="bx bx-right-arrow-alt"></i>Chart3</a>
+                    <li> <a th:href="@{/Chart3}"><i class="bx bx-right-arrow-alt"></i>Chart3</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li th:if="${session.loginUser.getState()==1}" class="menu-label">数据管理</li>
+
+            <li th:if="${session.loginUser.getState()==1}">
+                <a class="has-arrow" href="javascript:;">
+                    <div class="parent-icon"><i class="bx bx-line-chart"></i>
+                    </div>
+                    <div class="menu-title">图表</div>
+                </a>
+                <ul>
+                    <li> <a th:href="@{/table_Datatable}"><i class="bx bx-right-arrow-alt"></i>数据图表</a>
                     </li>
                 </ul>
             </li>
@@ -126,11 +125,7 @@
                         </li>
                         <li><a class="dropdown-item" th:href="@{/user/myStore}"><i class="bx bx-star"></i><span class="songStyle">我的收藏</span></a>
                         </li>
-                        <li><a class="dropdown-item" href="javascript:;"><i class='bx bx-home-circle'></i><span class="songStyle">Dashboard</span></a>
-                        </li>
-                        <li><a class="dropdown-item" href="javascript:;"><i class='bx bx-dollar-circle'></i><span class="songStyle">Earnings</span></a>
-                        </li>
-                        <li><a class="dropdown-item" href="javascript:;"><i class='bx bx-download'></i><span class="songStyle">Downloads</span></a>
+                        <li><a class="dropdown-item" th:href="@{/car/compare}"><i class='bx bx-home-circle'></i><span class="songStyle">二手车对比</span></a>
                         </li>
                         <li>
                             <div class="dropdown-divider mb-0"></div>

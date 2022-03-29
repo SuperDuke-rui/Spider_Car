@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
@@ -34,6 +33,9 @@ public class StoreController {
     @Resource
     private IStoreService storeService;
 
+    //车辆对比最大数量
+    final int COMPARENUM = 4;
+
     /**
      * 用户收藏当前的二手车信息
      * @param cid 二手车的id
@@ -42,13 +44,33 @@ public class StoreController {
      */
     @RequestMapping("/user/store")
     public String carStore(Integer cid, Model model, HttpSession session) {
+        store(cid, model, session);
+        return "car-details";
+    }
+
+    /**
+     * 抽取收藏的相同代码
+     * @param cid
+     * @param model
+     * @param session
+     */
+    private void store(Integer cid, Model model, HttpSession session) {
         //获取当前二手车信息
         Car car = carService.queryCar("cid", cid);
         //获取用户信息
         User user = (User)session.getAttribute("loginUser");
         //插入数据之前判断该条数据是否已经被收藏
-        if (storeService.queryStore(user.getUid(), cid)){
-            model.addAttribute("msg", "该二手车信息已被收藏");
+        Store queryStore = storeService.queryStore(user.getUid(), cid);
+        if (queryStore != null){
+            if (queryStore.getState() == 1) {
+                model.addAttribute("msg", "该二手车信息已被收藏");
+            } else {        //如果被收藏但，处于移除收藏状态，则修改状态为 1
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String newTime = dateFormat.format(new Date());
+                int result = storeService.updateState(user.getUid(), cid, 1, newTime);
+                System.out.println(result>0 ? "更新状态成功" : "更新状态失败");
+                model.addAttribute("msg", "收藏成功");
+            }
         } else {
             //保存二手车信息到数据库中
             Store store = new Store();
@@ -85,8 +107,19 @@ public class StoreController {
                 model.addAttribute("msg", "收藏失败，未成功插入数据");
             }
         }
+    }
 
-        return "car-details";
+    /**
+     * 在对比页面的收藏请求，返回的是对比页面
+     * @param cid
+     * @param model
+     * @param session
+     * @return
+     */
+    @RequestMapping("/compare/store")
+    public String compareStore(Integer cid, Model model, HttpSession session) {
+        store(cid, model, session);
+        return "redirect:/car/compare";
     }
 
     /**
@@ -108,16 +141,18 @@ public class StoreController {
     }
 
     /**
-     * 移除我的收藏，将该条记录修改状态为0
+     * 移除我的收藏，将该条记录修改状态为 0
      * @param cid
      * @param session
      * @return
      */
-    @RequestMapping("/deleteStore")
+    @RequestMapping("/removeStore")
     public String deleteStore(Integer cid, HttpSession session) {
         //获取uid
         User user = (User) session.getAttribute("loginUser");
-        int result = storeService.updateState(user.getUid(), cid, 0);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String newTime = dateFormat.format(new Date());
+        int result = storeService.updateState(user.getUid(), cid, 0, newTime);
         if (result > 0) {
             System.out.println("更新状态成功");
         } else {
@@ -127,7 +162,7 @@ public class StoreController {
     }
 
     /**
-     * 移入我的收藏，将该条记录修改状态为1
+     * 移入我的收藏，将该条记录修改状态为 1
      * @param cid
      * @param session
      * @return
@@ -136,13 +171,139 @@ public class StoreController {
     public String removeToStore(Integer cid, HttpSession session) {
         //获取uid
         User user = (User) session.getAttribute("loginUser");
-        int result = storeService.updateState(user.getUid(), cid, 1);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String newTime = dateFormat.format(new Date());
+        int result = storeService.updateState(user.getUid(), cid, 1, newTime);
         if (result > 0) {
             System.out.println("更新状态成功");
         } else {
             System.out.println("更新状态失败");
         }
         return "redirect:/user/myStore";
+    }
+
+    /**
+     * 将二手车加入对比
+     * @param cid 车辆信息id
+     * @param model
+     * @param session 用session保存需要进行对比的二手车的cid
+     * @return
+     */
+    @RequestMapping("/user/compare")
+    public String carCompare(Integer cid, Model model, HttpSession session) {
+        //最多同时比较5个信息
+        int[] compareIds = new int[COMPARENUM];
+        //判断是否存在compareIds的session
+        if (session.getAttribute("compareIds") == null) {
+            int idNum = countIds(compareIds); //计数,这里的计数一定为 0
+            compareIds[idNum] = cid;
+            session.setAttribute("compareIds", compareIds);
+            model.addAttribute("msg", "添加成功！");
+        } else {
+            compareIds = (int[]) session.getAttribute("compareIds");
+            int idNum = countIds(compareIds); //计数
+            if (idNum >= COMPARENUM) {  //已经有5个cid了
+                model.addAttribute("msg","最大对比个数为"+COMPARENUM+"个");
+            } else {
+                //判断该条信息是否已经存入
+                if (haveCid(compareIds, cid)){
+                    model.addAttribute("msg","该二手车已添加至对比");
+                } else {
+                    compareIds[idNum] = cid;
+                    session.setAttribute("compareIds", compareIds);
+                    model.addAttribute("msg", "添加成功！");
+                }
+            }
+        }
+
+        return "car-details";
+    }
+
+    /**
+     * 移除对比表
+     * @param cid
+     * @return
+     */
+    @RequestMapping("/removeCompare")
+    public String removeStore(Integer cid, HttpSession session) {
+        int[] compareIds = (int[]) session.getAttribute("compareIds");
+        for (int i = 0; i < countIds(compareIds); i++) {
+            if (cid == compareIds[i]){
+                //将删除位之后的每一个cid向前移动一位，最后一位置为0
+                int j;
+                for (j = i; j < countIds(compareIds)-1; j++) {
+                    compareIds[j] = compareIds[j+1];
+                }
+                compareIds[j] = 0;
+                break;
+            }
+        }
+        session.setAttribute("compareIds", compareIds);
+        return "redirect:/car/compare";
+    }
+
+    /**
+     * 判断该cid是否已经存在
+     * @param compareIds
+     * @param cid
+     * @return
+     */
+    public boolean haveCid(int[] compareIds, int cid) {
+        for (int i = 0; i < compareIds.length; i++) {
+            if (cid == compareIds[i]){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 对int[]数组中不为空的数进行计数
+     * @param compareIds 待计数的数组
+     * @return 个数
+     */
+    public int countIds(int[] compareIds) {
+        if (compareIds == null){
+            return 0;
+        }
+        int num = 0;
+        for (int i = 0; i < compareIds.length; i++) {
+            if (compareIds[i] != 0) {
+                num ++;
+            }
+        }
+        return num;
+    }
+
+    /**
+     * 二手车信息对比页
+     * @param session
+     * @param model 传输获取到的二手车信息
+     * @return
+     */
+    @RequestMapping("/car/compare")
+    public String comparePage(HttpSession session, Model model) {
+        //获取session
+        int[] compareIds = (int[]) session.getAttribute("compareIds");
+        //通过session依次查询获取车辆信息
+        List<Car> carList = new LinkedList<>();
+        if (countIds(compareIds) != 0) {
+            for (int i = 0; i < compareIds.length; i++) {
+                if (compareIds[i] != 0) {
+                    Car car = carService.queryCar("cid", compareIds[i]);
+                    carList.add(car);
+                }
+            }
+            List<Integer> indexes = new ArrayList<>();
+            for (int i = 0; i < countIds(compareIds); i++) {
+                indexes.add(i+1);
+            }
+            model.addAttribute("compareCarsIndex", indexes);
+        } else {
+            carList = null;
+        }
+        model.addAttribute("compareCars", carList);
+        return "compare";
     }
 
     /**

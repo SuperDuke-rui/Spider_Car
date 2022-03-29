@@ -57,7 +57,7 @@ public class ExcelUtil {
         cellStyle.setBorderTop(CellStyle.BORDER_THIN);
         cellStyle.setBorderBottom(CellStyle.BORDER_THIN);
         cellStyle.setAlignment(CellStyle.ALIGN_CENTER);
-        cellStyle.setFillForegroundColor(IndexedColors.GREEN.getIndex());
+        cellStyle.setFillForegroundColor(IndexedColors.PALE_BLUE.getIndex());
 
         //设置第二种单元格的样式（用于值）
         cellStyle1.setFont(font1);

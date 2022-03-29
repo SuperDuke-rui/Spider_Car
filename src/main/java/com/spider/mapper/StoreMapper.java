@@ -25,7 +25,7 @@ public interface StoreMapper extends BaseMapper<Store> {
     @Select("SELECT * FROM user_store WHERE uid = #{uid} ORDER BY state DESC,save_time DESC")
     List<Store> queryAllStores(Integer uid);
 
-    /*更新记录状态为state*/
-    @Update("UPDATE user_store SET state = #{state} WHERE uid = #{uid} AND cid = #{cid}")
-    int updateState(Integer uid, Integer cid, Integer state);
+    /*更新记录状态为state，并更新操作时间*/
+    @Update("UPDATE user_store SET state = #{state},save_time = #{newTime} WHERE uid = #{uid} AND cid = #{cid}")
+    int updateState(Integer uid, Integer cid, Integer state, String newTime);
 }

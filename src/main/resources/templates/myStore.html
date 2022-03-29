@@ -61,12 +61,12 @@
                 </div>
                 <div class="ms-auto">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-primary songStyle">下载</button>
+                        <button type="button" class="btn btn-primary songStyle"><i class='bx bx-download'></i>下载</button>
                         <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">
                         </button>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
-                            <a class="dropdown-item songStyle" th:href="@{/user/download}">下载选中收藏</a>
-                            <a class="dropdown-item songStyle" th:href="@{/user/downloadAll}">下载全部收藏</a>
+                            <a class="dropdown-item songStyle" th:href="@{/user/download}">下载收藏中的信息</a>
+                            <a class="dropdown-item songStyle" th:href="@{/user/downloadAll}">下载全部收藏信息</a>
                             <!--<a class="dropdown-item" href="javascript:;">Something else here</a>-->
                             <!--<div class="dropdown-divider"></div>	-->
                             <!--<a class="dropdown-item" href="javascript:;">Separated link</a>-->
@@ -162,7 +162,7 @@
                                             <div class="col-7 display_flex">
                                                 <a type="button" class="btn btn-info px-5 radius-15" th:href="@{'/user/carDetailInfo?cid=' + ${store.getCid()}}">查看详情</a>
                                                 &nbsp;&nbsp;
-                                                <a type="button" class="btn btn-danger px-5 radius-15" onclick="return confirm('是否移除？')" th:href="@{'/deleteStore?cid='+${store.getCid()}}">移除收藏</a>
+                                                <a type="button" class="btn btn-danger px-5 radius-15" onclick="return confirm('是否移除？')" th:href="@{'/removeStore?cid='+${store.getCid()}}">移除收藏</a>
                                             </div>
                                         </div>
                                     </div>
@@ -189,7 +189,7 @@
                                         <dl class="row col-12">
 
                                             <div th:class="display_flex">
-                                                <dt class="col-sm-6">收藏时间</dt>
+                                                <dt class="col-sm-6">移出时间</dt>
                                                 <dd class="col-sm-6">[[${store.getSaveTime()}]]</dd>
                                             </div>
                                         </dl>

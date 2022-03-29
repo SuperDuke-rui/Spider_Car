@@ -36,13 +36,8 @@ public class StoreService implements IStoreService {
      * @return
      */
     @Override
-    public boolean queryStore(Integer uid, Integer cid) {
-        Store store = storeMapper.queryStore(uid, cid);
-        if (store != null){
-            return true;
-        } else {
-            return false;
-        }
+    public Store queryStore(Integer uid, Integer cid) {
+        return storeMapper.queryStore(uid, cid);
     }
 
     /**
@@ -74,7 +69,7 @@ public class StoreService implements IStoreService {
      * @return 更新结果
      */
     @Override
-    public int updateState(Integer uid, Integer cid, Integer state) {
-        return storeMapper.updateState(uid, cid, state);
+    public int updateState(Integer uid, Integer cid, Integer state, String newTime) {
+        return storeMapper.updateState(uid, cid, state, newTime);
     }
 }
