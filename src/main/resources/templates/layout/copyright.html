@@ -54,10 +54,10 @@
                 <a class="has-arrow" href="javascript:;">
                     <div class="parent-icon"><i class="bx bx-line-chart"></i>
                     </div>
-                    <div class="menu-title">Charts</div>
+                    <div class="menu-title">图表信息</div>
                 </a>
                 <ul>
-                    <li> <a th:href="@{/Chart1}"><i class="bx bx-right-arrow-alt"></i>Chart1</a>
+                    <li> <a th:href="@{/Chart1}"><i class="bx bx-right-arrow-alt"></i>搜索热度榜</a>
                     </li>
                     <li> <a th:href="@{/Chart2}"><i class="bx bx-right-arrow-alt"></i>Chart2</a>
                     </li>
@@ -69,15 +69,11 @@
             <li th:if="${session.loginUser.getState()==1}" class="menu-label">数据管理</li>
 
             <li th:if="${session.loginUser.getState()==1}">
-                <a class="has-arrow" href="javascript:;">
-                    <div class="parent-icon"><i class="bx bx-line-chart"></i>
+                <a th:href="@{/table_Datatable}">
+                    <div class="parent-icon"><i class="bx bx-file"></i>
                     </div>
-                    <div class="menu-title">图表</div>
+                    <div class="menu-title">二手车数据管理</div>
                 </a>
-                <ul>
-                    <li> <a th:href="@{/table_Datatable}"><i class="bx bx-right-arrow-alt"></i>数据图表</a>
-                    </li>
-                </ul>
             </li>
 
         </ul>

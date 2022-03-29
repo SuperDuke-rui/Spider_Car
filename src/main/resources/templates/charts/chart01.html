@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--favicon-->
+    <link rel="icon" th:href="@{/images/favicon-32x32.png}" type="image/png"/>
+    <!--plugins-->
+    <link th:href="@{/plugins/simplebar/css/simplebar.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/perfect-scrollbar/css/perfect-scrollbar.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/metismenu/css/metisMenu.min.css}" rel="stylesheet"/>
+    <!-- loader-->
+    <link th:href="@{/css/pace.min.css}" rel="stylesheet"/>
+    <script th:src="@{/js/pace.min.js}"></script>
+    <!-- Bootstrap CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
+    <link th:href="@{/css/icons.css}" rel="stylesheet">
+    <!-- Theme Style CSS -->
+    <link rel="stylesheet" th:href="@{/css/dark-theme.css}"/>
+    <link rel="stylesheet" th:href="@{/css/semi-dark.css}"/>
+    <link rel="stylesheet" th:href="@{/css/header-colors.css}"/>
+    <title>搜索热度榜</title>
+</head>
+
+<body>
+<!--wrapper-->
+<div class="wrapper">
+    <!--sidebar wrapper -->
+    <div th:insert="~{layout/copyright :: copy_sideBar}"></div>
+    <!--end sidebar wrapper -->
+
+    <!--start header -->
+    <div th:insert="~{layout/copyright :: copy_header}"></div>
+    <!--end header -->
+
+    <!--start page wrapper -->
+    <div class="page-wrapper">
+        <div class="page-content">
+
+            <!--breadcrumb-->
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                <div class="breadcrumb-title pe-3">图表页面</div>
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0">
+                            <li class="breadcrumb-item"><a th:href="@{/index.html}"><i class="bx bx-home"></i></a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">搜索热度榜</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <!--end breadcrumb-->
+
+            <!--图表展示区 begin-->
+            <div th:id="demo1" style="width: 600px; height: 400px;"></div>
+            <!--图表展示区 end-->
+
+        </div>
+    </div>
+    <!--end page wrapper -->
+
+    <!--start overlay-->
+    <div th:insert="~{layout/copyright :: copy_overlay}"></div>
+    <!--end overlay-->
+
+    <!--Start Back To Top Button-->
+    <div th:insert="~{layout/copyright :: copy_back}"></div>
+    <!--End Back To Top Button-->
+
+    <!--start footer -->
+    <div th:insert="~{layout/copyright :: copy_footer}"></div>
+    <!--end footer -->
+</div>
+<!--end wrapper-->
+
+<!--start switcher-->
+<div th:insert="~{layout/copyright :: copy_switcher}"></div>
+<!--end switcher-->
+
+<!-- Bootstrap JS -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!--plugins-->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/plugins/simplebar/js/simplebar.min.js}"></script>
+<script th:src="@{/plugins/metismenu/js/metisMenu.min.js}"></script>
+<script th:src="@{/plugins/perfect-scrollbar/js/perfect-scrollbar.js}"></script>
+<script th:src="@{/js/echarts.min.js}"></script>
+<!--app JS-->
+<script th:src="@{/js/app.js}"></script>
+<!--使用JavaScript绘制图表-->
+<script>
+    // 初始化绘制图表的echarts实例
+    var myChart = echarts.init(document.querySelector('#demo1'))
+
+    // 指定图表的配置
+    var option = {
+        title:{
+            text:"这是一个echarts的Demo"
+        },
+        tooltip:{}, //提示框
+        legend:{
+            data:['人数']
+        },
+        xAxis:{
+            data: ['vue','react','angular','jquery']
+        },
+        yAxis:{},
+        series:[
+            {
+                name:"人数",
+                type:"bar",
+                data:[2000,1500,500,2200]
+            }
+        ]
+    }
+    //对实例对象设置配置
+    myChart.setOption(option)
+</script>
+</body>
+
+</html>

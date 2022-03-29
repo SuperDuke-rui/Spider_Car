@@ -44,17 +44,82 @@ public class StoreController {
      */
     @RequestMapping("/user/store")
     public String carStore(Integer cid, Model model, HttpSession session) {
-        store(cid, model, session);
+        //获取当前二手车信息
+        Car car = carService.queryCar("cid", cid);
+        //获取用户信息
+        User user = (User)session.getAttribute("loginUser");
+        //插入数据之前判断该条数据是否已经被收藏
+        Store queryStore = storeService.queryStore(user.getUid(), cid);
+        if (queryStore != null){
+            if (queryStore.getState() == 1) {
+                model.addAttribute("msg", "该二手车信息已被收藏 ");
+            } else {        //如果被收藏但，处于移除收藏状态，则修改状态为 1
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String newTime = dateFormat.format(new Date());
+                int result = storeService.updateState(user.getUid(), cid, 1, newTime);
+                System.out.println(result>0 ? "更新状态成功" : "更新状态失败");
+                model.addAttribute("msg", "收藏成功");
+            }
+        } else {
+            //保存二手车信息到数据库中
+            Store store = new Store();
+            setStoreValue(store, user, car, cid);
+            int result = storeService.saveToStore(store);
+            if (result > 0) {
+                model.addAttribute("msg", "收藏成功");
+            } else {
+                model.addAttribute("msg", "收藏失败，未成功插入数据");
+            }
+        }
         return "car-details";
     }
 
     /**
-     * 抽取收藏的相同代码
+     * 抽取收藏的相同代码 此处抽取代码时出问题了，在抽取代码时需要考虑抽取的部分代码中
+     * 是否有后续需要用的数据，如果有，抽取部分的返回值就不可为void
+     * @param store
+     * @param user
+     * @param car
+     * @param cid
+     */
+    private void setStoreValue(Store store, User user, Car car, Integer cid) {
+        store.setUid(user.getUid());
+        store.setCid(cid);
+        store.setTitle(car.getTitle());
+        store.setCarPhoto(car.getCarPhoto());
+        store.setCarPrice(car.getCarPrice());
+        store.setCarBrand(car.getCarBrand());
+        store.setCarType(car.getCarType());
+        store.setDisplayedMileage(car.getDisplayedMileage());
+        store.setLicensingTime(car.getLicensingTime());
+        store.setTransmission(car.getTransmission());
+        store.setEmissions(car.getEmissions());
+        store.setEmissionStandard(car.getEmissionStandard());
+        store.setAnnualTimeout(car.getAnnualTimeout());
+        store.setInsuranceTimeout(car.getInsuranceTimeout());
+        store.setTransfersTimes(car.getTransfersTimes());
+        store.setCarLoc(car.getCarLoc());
+        store.setCarGrade(car.getCarGrade());
+        store.setCarEngine(car.getCarEngine());
+        store.setCarColor(car.getCarColor());
+        store.setFuelType(car.getFuelType());
+        store.setPowerType(car.getPowerType());
+        store.setCarWebsite(car.getCarWebsite());
+        store.setReleaseTime(car.getReleaseTime());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        store.setSaveTime(dateFormat.format(new Date()));
+        store.setState(1);
+    }
+
+    /**
+     * 在对比页面的收藏请求，返回的是对比页面
      * @param cid
      * @param model
      * @param session
+     * @return
      */
-    private void store(Integer cid, Model model, HttpSession session) {
+    @RequestMapping("/compare/store")
+    public String compareStore(Integer cid, Model model, HttpSession session) {
         //获取当前二手车信息
         Car car = carService.queryCar("cid", cid);
         //获取用户信息
@@ -74,32 +139,7 @@ public class StoreController {
         } else {
             //保存二手车信息到数据库中
             Store store = new Store();
-            store.setUid(user.getUid());
-            store.setCid(cid);
-            store.setTitle(car.getTitle());
-            store.setCarPhoto(car.getCarPhoto());
-            store.setCarPrice(car.getCarPrice());
-            store.setCarBrand(car.getCarBrand());
-            store.setCarType(car.getCarType());
-            store.setDisplayedMileage(car.getDisplayedMileage());
-            store.setLicensingTime(car.getLicensingTime());
-            store.setTransmission(car.getTransmission());
-            store.setEmissions(car.getEmissions());
-            store.setEmissionStandard(car.getEmissionStandard());
-            store.setAnnualTimeout(car.getAnnualTimeout());
-            store.setInsuranceTimeout(car.getInsuranceTimeout());
-            store.setTransfersTimes(car.getTransfersTimes());
-            store.setCarLoc(car.getCarLoc());
-            store.setCarGrade(car.getCarGrade());
-            store.setCarEngine(car.getCarEngine());
-            store.setCarColor(car.getCarColor());
-            store.setFuelType(car.getFuelType());
-            store.setPowerType(car.getPowerType());
-            store.setCarWebsite(car.getCarWebsite());
-            store.setReleaseTime(car.getReleaseTime());
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            store.setSaveTime(dateFormat.format(new Date()));
-            store.setState(1);
+            setStoreValue(store, user, car, cid);
             int result = storeService.saveToStore(store);
             if (result > 0) {
                 model.addAttribute("msg", "收藏成功");
@@ -107,19 +147,7 @@ public class StoreController {
                 model.addAttribute("msg", "收藏失败，未成功插入数据");
             }
         }
-    }
-
-    /**
-     * 在对比页面的收藏请求，返回的是对比页面
-     * @param cid
-     * @param model
-     * @param session
-     * @return
-     */
-    @RequestMapping("/compare/store")
-    public String compareStore(Integer cid, Model model, HttpSession session) {
-        store(cid, model, session);
-        return "redirect:/car/compare";
+        return comparePage(session, model);
     }
 
     /**

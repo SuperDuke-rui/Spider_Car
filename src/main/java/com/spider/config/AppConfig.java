@@ -38,7 +38,7 @@ public class AppConfig implements WebMvcConfigurer {
         registry.addViewController("/compare").setViewName("compare");
 
         //三个chart
-        registry.addViewController("/Chart1").setViewName("charts/chartDemo");
+        registry.addViewController("/Chart1").setViewName("charts/chart01");
         registry.addViewController("/Chart2").setViewName("charts/charts-chartjs");
         registry.addViewController("/Chart3").setViewName("charts/charts-highcharts");
     }

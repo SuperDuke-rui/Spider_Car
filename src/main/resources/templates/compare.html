@@ -80,6 +80,12 @@
                         </ol>
                     </nav>
                 </div>
+                <div class="ms-auto">
+                    <div class="btn-group">
+                        <!--消息回显，如果msg消息不为空显示提示信息-->
+                        <p style="color: red" th:id="message" th:text="${msg}"></p>
+                    </div>
+                </div>
             </div>
             <!--end breadcrumb-->
 
@@ -185,13 +191,6 @@
                             </div>
                         </td>
                     </tr>
-                    <!--<tr>-->
-                    <!--    <td th:class="column">操作结果</td>-->
-                    <!--    <td th:class="column1">-->
-                    <!--        &lt;!&ndash;消息回显，如果msg消息不为空显示提示信息&ndash;&gt;-->
-                    <!--        <p style="color: red" th:id="message" th:text="hello"></p>-->
-                    <!--    </td>-->
-                    <!--</tr>-->
                 </table>
             </div>
             <!--查询结果展示区 End-->
