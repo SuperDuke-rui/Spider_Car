@@ -133,7 +133,7 @@ public class CarService implements ICarService {
     @Override
     public Page<Car> queryByKey(String key, int pageNum, int pageSize) {
         //获取查询的carList
-        List<Car> carList =  carMapper.queryByKey(key);
+        List<Car> carList = carMapper.queryByKey(key);
         //通过自定义函数对获取到的List进行分页
         return getPages(pageNum, pageSize, carList);
     }
@@ -160,29 +160,35 @@ public class CarService implements ICarService {
 
         int size = list.size();
 
-        //防止pageSize越界
-        if (pageSize > size) {
-            pageSize = size;
+        if (list.size() != 0) {
+
+            //防止pageSize越界
+            if (pageSize > size) {
+                pageSize = size;
+            }
+
+            //求得最大页数，防止pageNum越界
+            int maxPage = size % pageSize == 0 ? size / pageSize : size / pageSize + 1;
+
+            if (pageNum > maxPage) {
+                pageNum = maxPage;
+            }
+
+            //当前第一条数据下标
+            int curIds = pageNum > 1 ? (pageNum - 1) * pageSize : 0;
+
+            List<Car> carList = new ArrayList<>();
+
+            //将当前页的数据放进pageList中
+            for (int i = 0; i < pageSize && curIds + i < size; i++) {
+                carList.add(list.get(curIds + i));
+            }
+
+            carPage.setCurrent(pageNum).setSize(pageSize).setTotal(list.size()).setRecords(carList);
+
+        } else {
+            carPage.setCurrent(0).setSize(pageSize).setTotal(list.size()).setRecords(null);
         }
-
-        //求得最大页数，防止pageNum越界
-        int maxPage = size % pageSize == 0 ? size / pageSize : size / pageSize + 1;
-
-        if (pageNum > maxPage) {
-            pageNum = maxPage;
-        }
-
-        //当前第一条数据下标
-        int curIds = pageNum > 1 ? (pageNum-1) * pageSize : 0;
-
-        List<Car> carList = new ArrayList<>();
-
-        //将当前页的数据放进pageList中
-        for (int i = 0; i < pageSize && curIds + i < size; i++) {
-            carList.add(list.get(curIds + i));
-        }
-
-        carPage.setCurrent(pageNum).setSize(pageSize).setTotal(list.size()).setRecords(carList);
 
         return carPage;
     }

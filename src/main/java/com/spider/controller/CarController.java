@@ -60,7 +60,10 @@ public class CarController {
         Page<Car> carPage = carService.queryByKey(queryKey, pageNum, pageSize);
 
         //保存查询的queryKey(关键词不为空)
-        if (!Objects.equals(queryKey, "") &&queryKey!=null) {
+        if (!Objects.equals(queryKey, "") && queryKey!=null) {
+            if (carPage.getRecords()==null){
+                queryKey = queryKey + "(无数据)";
+            }
             SearchKey searchKey = new SearchKey();
             searchKey.setWords(queryKey);
             //获取当前时间
@@ -250,6 +253,5 @@ public class CarController {
             }
         }
     }
-
 
 }
