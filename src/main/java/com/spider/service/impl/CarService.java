@@ -2,7 +2,6 @@ package com.spider.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.spider.mapper.CarMapper;
 import com.spider.pojo.Car;
@@ -10,10 +9,7 @@ import com.spider.service.ICarService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author wangrui
@@ -138,14 +134,85 @@ public class CarService implements ICarService {
         return getPages(pageNum, pageSize, carList);
     }
 
+    /**
+     * 条件查找车辆（分页输出）
+     * @param pageNum 当前页
+     * @param pageSize 页面大小
+     * @param brand 品牌
+     * @param subBrand 子品牌
+     * @param minPrice 价格下限
+     * @param maxPrice 价格上限
+     * @return
+     */
+    @Override
+    public Page<Car> query(int pageNum, int pageSize, String brand, String subBrand, Double minPrice, Double maxPrice) {
+        //获取查询的carList
+        QueryWrapper<Car> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("*");
+        if (!Objects.equals(brand, "") && brand != null) {
+            queryWrapper.eq("car_brand", brand);
+        }
+        if (!Objects.equals(subBrand, "") && subBrand != null) {
+            queryWrapper.eq("car_type", subBrand);
+        }
+        if (minPrice != null) {
+            queryWrapper.ge("car_price", minPrice);
+        }
+        if (maxPrice != null) {
+            queryWrapper.le("car_price", maxPrice);
+        }
+        List<Car> carList = carMapper.selectList(queryWrapper);
+
+        //通过自定义函数对获取到的List进行分页
+        return getPages(pageNum, pageSize, carList);
+    }
+
+    /**
+     * 通过关键词查找符合条件的信息
+     * @param key
+     * @return
+     */
     @Override
     public List<Car> queryCars(String key) {
         return carMapper.queryByKey(key);
     }
 
+    /**
+     * 多条件查询
+     * @param carType 车辆类型
+     * @param powerType 动力类型
+     * @param transType 变速箱类型
+     * @return
+     */
     @Override
     public List<Car> queryByInterest(String carType, String powerType, String transType) {
         return carMapper.queryByInterest(carType, powerType, transType);
+    }
+
+    /**
+     * 获取数据库中所有车辆的品牌
+     * @return
+     */
+    @Override
+    public List<Object> carBrands() {
+        QueryWrapper<Car> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("car_brand")
+                .groupBy("car_brand");
+        return carMapper.selectObjs(queryWrapper);
+    }
+
+    /**
+     * 查询车辆的子品牌
+     * @param carBrand 车辆的品牌
+     * @return
+     */
+    @Override
+    public List<Object> carSubBrands(String carBrand) {
+        QueryWrapper<Car> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("car_type")
+                .eq("car_brand", carBrand)
+                .groupBy("car_type");
+        return carMapper.selectObjs(queryWrapper);
     }
 
     /**

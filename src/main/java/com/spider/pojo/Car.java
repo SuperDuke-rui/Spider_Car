@@ -77,4 +77,7 @@ public class Car {
     /*二手车信息发布时间*/
     private String releaseTime;
 
+    /*二手车信息爬取时间*/
+    private String spiderTime;
+
 }

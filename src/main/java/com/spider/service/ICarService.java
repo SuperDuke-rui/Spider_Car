@@ -1,6 +1,5 @@
 package com.spider.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.spider.pojo.Car;
 
@@ -80,6 +79,18 @@ public interface ICarService {
     Page<Car> queryByKey(String key, int pageNum, int pageSize);
 
     /**
+     * 条件查找车辆（分页输出）
+     * @param pageNum 当前页
+     * @param pageSize 页面大小
+     * @param brand 品牌
+     * @param subBrand 子品牌
+     * @param minPrice 价格下限
+     * @param maxPrice 价格上限
+     * @return
+     */
+    Page<Car> query(int pageNum, int pageSize, String brand, String subBrand, Double minPrice, Double maxPrice);
+
+    /**
      * 通过关键词查找符合条件的信息
      * @param key
      * @return
@@ -94,4 +105,17 @@ public interface ICarService {
      * @return
      */
     List<Car> queryByInterest(String carType, String powerType, String transType);
+
+    /**
+     * 获取数据库中所有车辆的品牌
+     * @return
+     */
+    List<Object> carBrands();
+
+    /**
+     * 查询车辆的子品牌
+     * @param carBrand 车辆的品牌
+     * @return
+     */
+    List<Object> carSubBrands(String carBrand);
 }

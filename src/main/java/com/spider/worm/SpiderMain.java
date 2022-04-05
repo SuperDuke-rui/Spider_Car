@@ -11,8 +11,10 @@ import org.openqa.selenium.remote.HttpCommandExecutor;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -248,6 +250,11 @@ public class SpiderMain {
                 //23.二手车信息发布时间
                 String release_time = car_content[8].substring(4);
                 car.setReleaseTime(release_time);
+
+                //24.二手车信息爬取时间
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String spiderTime = simpleDateFormat.format(new Date());
+                car.setSpiderTime(spiderTime);
 
                 return car;
             } catch (StringIndexOutOfBoundsException e) {

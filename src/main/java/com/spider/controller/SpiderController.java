@@ -28,6 +28,10 @@ public class SpiderController {
     @Resource
     private PageUrlsMapper pageUrlsMapper;
 
+    /**
+     * 获取到展示页中的每个二手车分页的所有地址信息car_pages_urls
+     * @throws IOException
+     */
     @RequestMapping("/savePageUrls")
     @ResponseBody
     public void savePageUrlsToDb() throws IOException {
@@ -37,7 +41,7 @@ public class SpiderController {
         //将获取到的分页urls存入数据库中
         List<String> pageUrlsList = spiderMain.getPagesUrls();
 
-        PageUrls pageUrls = null;
+        PageUrls pageUrls;
 
         for (String s : pageUrlsList) {
             System.out.println(s);
@@ -51,6 +55,12 @@ public class SpiderController {
         System.out.println("插入成功，共插入了" + pageUrlsList.size() + "条数据！");
     }
 
+    /**
+     * 获取所有的二手车信息
+     * @throws IOException
+     * @throws ParseException
+     * @throws InterruptedException
+     */
     @RequestMapping("/saveCars")
     @ResponseBody
     public void saveCarToDb() throws IOException, ParseException, InterruptedException {
@@ -64,7 +74,7 @@ public class SpiderController {
         List<String> pageUrlsList = spiderMain.getPagesUrls();
 
         //创建一个List存放Car类
-        List<Car> carList = null;
+        List<Car> carList;
 
         //计数分页数
         int num = 1;

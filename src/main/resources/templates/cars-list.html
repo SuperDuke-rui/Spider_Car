@@ -51,9 +51,10 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <form class="col-lg-6 col-xl-5 display_flex" th:action="@{/user/queryByKey}">
+                        <div class="row card-body display_flex">
+                            <div class="row align-items-center col-lg-5 col-xl-4">
+                                <!--模糊查询 start-->
+                                <form class="display_flex" th:action="@{/user/queryByKey}">
                                     <div class="col-6">
                                         <div class="position-relative">
                                             <label>
@@ -67,64 +68,38 @@
                                         <button th:type="submit" class="btn btn-primary mb-3 mb-lg-0"><i class='bx bx-search'></i>查询</button>
                                     </div>
                                 </form>
-                                <!--<div class="col-lg-8 col-xl-7">-->
-                                <!--    <form class="float-lg-end">-->
-                                <!--        <div class="row row-cols-lg-auto g-2">-->
+                                <!--模糊查询 end-->
+                            </div>
 
-                                <!--            <div class="col-12">-->
-                                <!--                <div class="btn-group" role="group"-->
-                                <!--                     aria-label="Button group with nested dropdown">-->
-                                <!--                    <button type="button" class="btn btn-white">排序</button>-->
-                                <!--                    <div class="btn-group" role="group">-->
-                                <!--                        <button id="btnGroupDrop1" type="button"-->
-                                <!--                                class="btn btn-white dropdown-toggle dropdown-toggle-nocaret px-1"-->
-                                <!--                                data-bs-toggle="dropdown" aria-expanded="false">-->
-                                <!--                            <i class='bx bx-chevron-down'></i>-->
-                                <!--                        </button>-->
-                                <!--                        <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">-->
-                                <!--                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>-->
-                                <!--                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>-->
-                                <!--                        </ul>-->
-                                <!--                    </div>-->
-                                <!--                </div>-->
-                                <!--            </div>-->
-                                <!--            <div class="col-12">-->
-                                <!--                <div class="btn-group" role="group"-->
-                                <!--                     aria-label="Button group with nested dropdown">-->
-                                <!--                    <button type="button" class="btn btn-white">Collection Type</button>-->
-                                <!--                    <div class="btn-group" role="group">-->
-                                <!--                        <button id="btnGroupDrop2" type="button"-->
-                                <!--                                class="btn btn-white dropdown-toggle dropdown-toggle-nocaret px-1"-->
-                                <!--                                data-bs-toggle="dropdown" aria-expanded="false">-->
-                                <!--                            <i class='bx bxs-category'></i>-->
-                                <!--                        </button>-->
-                                <!--                        <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">-->
-                                <!--                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>-->
-                                <!--                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>-->
-                                <!--                        </ul>-->
-                                <!--                    </div>-->
-                                <!--                </div>-->
-                                <!--            </div>-->
-                                <!--            <div class="col-12">-->
-                                <!--                <div class="btn-group" role="group">-->
-                                <!--                    <button type="button" class="btn btn-white">Price Range</button>-->
-                                <!--                    <div class="btn-group" role="group">-->
-                                <!--                        <button id="btnGroupDrop3" type="button"-->
-                                <!--                                class="btn btn-white dropdown-toggle dropdown-toggle-nocaret px-1"-->
-                                <!--                                data-bs-toggle="dropdown" aria-expanded="false">-->
-                                <!--                            <i class='bx bx-slider'></i>-->
-                                <!--                        </button>-->
-                                <!--                        <ul class="dropdown-menu dropdown-menu-start"-->
-                                <!--                            aria-labelledby="btnGroupDrop3">-->
-                                <!--                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>-->
-                                <!--                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>-->
-                                <!--                        </ul>-->
-                                <!--                    </div>-->
-                                <!--                </div>-->
-                                <!--            </div>-->
-                                <!--        </div>-->
-                                <!--    </form>-->
-                                <!--</div>-->
+                            <div class="row align-items-center col">
+                                <!--条件查询 start-->
+                                <form th:action="@{/user/query}" class="display_flex">
+                                    <div class="align-items-center display_flex">
+                                        <label for="brand" >品牌&nbsp;</label>
+                                        <select style="width: 150px;" name="brand" id="brand" th:class="form-select" onchange="getBrand()">
+                                            <option value="" >--请选择--</option>
+                                            <option th:each="brand : ${brandMap}" th:value="${brand.getKey()}">[[${brand.getKey()}]]</option>
+                                        </select>
+                                    </div>
+                                    <div class="align-items-center display_flex">
+                                        <label for="subBrand" >&nbsp;&nbsp;子品牌&nbsp;</label>
+                                        <select style="width: 150px;" name="subBrand" id="subBrand" th:class="form-select">
+                                            <!--<option value="">&#45;&#45;请选择&#45;&#45;</option>-->
+                                        </select>
+                                    </div>
+                                    <div class="align-items-center display_flex">
+                                        <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价格&nbsp;</label>
+                                        <input id="minPrice" name="minPrice" class="form-control" style="width: 100px;" type="text" th:placeholder="价格下限"/>
+                                    </div>
+                                    &nbsp;~&nbsp;
+                                    <div class="align-items-center display_flex">
+                                        <input id="maxPrice" name="maxPrice" class="form-control" style="width: 100px;" type="text" th:placeholder="价格上限"/>
+                                    </div>
+                                    &nbsp;&nbsp;
+                                    <button th:type="submit" class="btn btn-primary mb-3 mb-lg-0"><i class='bx bx-search'></i>查询</button>
+                                </form>
+                                <!--条件查询 end-->
+
                             </div>
                         </div>
                     </div>
@@ -250,7 +225,22 @@
         var num = $("#goToPage").val();
         var url = [[${currentURL}]];
         // alert("URL=" + url)
-        $("#pageA").attr('href', url + 'pageNum='+num);
+        $("#pageA").attr('href', url + 'pageNum=' + num);
+    }
+
+    //设置二级下拉框的数据
+    function getBrand() {
+        var brand = document.getElementById("brand").value;
+        var brandMap = [[${brandMap}]];
+        var subBrand = document.getElementById("subBrand");
+
+        //每次添加之前将原先的下拉框清空
+        subBrand.options.length = 0;
+        subBrand.options.add(new Option("--请选择--", ""));
+        var list = brandMap[brand];
+        for (var i in list) {
+            subBrand.options.add(new Option(list[i]), list[i]);
+        }
     }
 </script>
 </body>

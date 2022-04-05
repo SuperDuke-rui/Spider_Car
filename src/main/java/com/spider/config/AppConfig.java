@@ -28,8 +28,8 @@ public class AppConfig implements WebMvcConfigurer {
         registry.addViewController("/register").setViewName("account/SpiderCar-register");
         // 用户信息界面（个人主页）
         registry.addViewController("/userProfile").setViewName("account/user-profile");
-        // 二手车信息展示页
-        registry.addViewController("/table_Datatable").setViewName("table-datatable");
+        // 管理员管理爬虫页面
+        registry.addViewController("/spiderControl").setViewName("spider-control");
         //二手车详细界面
         registry.addViewController("/carDetail").setViewName("car-details");
         //收藏页面

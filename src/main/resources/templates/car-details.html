@@ -194,17 +194,24 @@
 							</div>
 							<div class="tab-pane fade" id="otherInfo" role="tabpanel">
 								<dl class="row col-12">
-									<div th:class="col-6">
+									<div th:class="col-4">
 										<div th:class="display_flex">
 											<dt class="col-sm-3">二手车网站</dt>
-											<dd class="col-sm-9">[[${session.carDetail.getCarWebsite}]]</dd>
+											<dd class="col-sm-9">[[${session.carDetail.getCarWebsite()}]]</dd>
 										</div>
 									</div>
 
-									<div th:class="col-6">
+									<div th:class="col-4">
 										<div th:class="display_flex">
-											<dt class="col-sm-3">二手车信息发布时间</dt>
-											<dd class="col-sm-9">[[${session.carDetail.getReleaseTime}]]</dd>
+											<dt class="col-sm-6">二手车信息发布时间</dt>
+											<dd class="col-sm-6">[[${session.carDetail.getReleaseTime()}]]</dd>
+										</div>
+									</div>
+
+									<div th:class="col-4">
+										<div th:class="display_flex">
+											<dt class="col-sm-6">二手车信息爬取时间</dt>
+											<dd class="col-sm-6">[[${session.carDetail.getSpiderTime()}]]</dd>
 										</div>
 									</div>
 								</dl>

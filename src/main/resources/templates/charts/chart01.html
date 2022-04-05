@@ -57,7 +57,7 @@
             <!--end breadcrumb-->
 
             <!--图表展示区 begin-->
-            <div th:id="demo1" style="width: 600px; height: 400px;"></div>
+            <div th:id="demo1" style="width: 1000px; height: 400px;"></div>
             <!--图表展示区 end-->
 
         </div>
@@ -93,28 +93,41 @@
 <!--app JS-->
 <script th:src="@{/js/app.js}"></script>
 <!--使用JavaScript绘制图表-->
-<script>
+<script th:inline="javascript">
     // 初始化绘制图表的echarts实例
     var myChart = echarts.init(document.querySelector('#demo1'))
+    let searchKeys = [[${topTen}]];
+    console.log(searchKeys)
+    // let countKeys = [[${topTen}]]
+    var keysStr = new Array(0);
+    var numStr = new Array(0);
+    for (var p in searchKeys) {
 
+        keysStr.push(searchKeys[p].words)
+
+        numStr.push(searchKeys[p].num)
+    }
+    console.log(keysStr)
+    console.log(numStr)
     // 指定图表的配置
     var option = {
-        title:{
-            text:"这是一个echarts的Demo"
+        title: {
+            text: "热搜关键词 Top10"
         },
-        tooltip:{}, //提示框
-        legend:{
-            data:['人数']
+        tooltip: {}, //提示框
+        legend: {
+            data: ['关键词']
         },
-        xAxis:{
-            data: ['vue','react','angular','jquery']
+        xAxis: {
+            data: keysStr,
+            axisLabel: {interval: 0}
         },
-        yAxis:{},
-        series:[
+        yAxis: {},
+        series: [
             {
-                name:"人数",
-                type:"bar",
-                data:[2000,1500,500,2200]
+                name: "搜索量",
+                type: "bar",
+                data: numStr
             }
         ]
     }

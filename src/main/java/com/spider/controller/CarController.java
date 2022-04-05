@@ -43,6 +43,19 @@ public class CarController {
         //将map传到html中，进行取值并展示，展示页面做成卡片状
         model.addAttribute("carPage",carPage);
         model.addAttribute("currentURL", "/carList?");
+
+        //查询数据库中的车辆类型并传到前端，用于显示级联下拉框
+        List<Object> brands = carService.carBrands();
+
+        //定义一个Map用来存放车辆的品牌信息
+        Map<String, List<Object>> brandMap = new LinkedHashMap<>();
+        for (Object brand : brands) {
+            List<Object> subBrands = carService.carSubBrands((String) brand);
+            brandMap.put((String) brand, subBrands);
+        }
+
+        model.addAttribute("brandMap", brandMap);
+
         return "cars-list";
     }
 
@@ -77,6 +90,18 @@ public class CarController {
                 System.out.println("关键词插入失败");
             }
         }
+
+        //查询数据库中的车辆类型并传到前端，用于显示级联下拉框
+        List<Object> brands = carService.carBrands();
+
+        //定义一个Map用来存放车辆的品牌信息
+        Map<String, List<Object>> brandMap = new LinkedHashMap<>();
+        for (Object brand : brands) {
+            List<Object> subBrands = carService.carSubBrands((String) brand);
+            brandMap.put((String) brand, subBrands);
+        }
+
+        model.addAttribute("brandMap", brandMap);
 
         model.addAttribute("carPage", carPage);
         model.addAttribute("currentURL", "/user/queryByKey?queryKey="+queryKey+"&");
@@ -252,6 +277,43 @@ public class CarController {
                 System.out.println("更新失败");
             }
         }
+    }
+
+    /**
+     * 条件查找车辆（分页输出）
+     * @param pageNum 当前页
+     * @param pageSize 页面大小
+     * @param brand 品牌
+     * @param subBrand 子品牌
+     * @param minPrice 价格下限
+     * @param maxPrice 价格上限
+     * @param model 用于传值
+     * @return
+     */
+    @RequestMapping("/user/query")
+    public String query(@RequestParam(defaultValue = "1") int pageNum,
+                        @RequestParam(defaultValue = "20") int pageSize,
+                        String brand, String subBrand, Double minPrice, Double maxPrice, Model model) {
+        Page<Car> carPage = carService.query(pageNum, pageSize, brand, subBrand, minPrice, maxPrice);
+        //model传值
+        model.addAttribute("carPage", carPage);
+        model.addAttribute("currentURL", "/user/query?brand=" +
+                (brand==null ? "" : brand) + "&subBrand=" + (subBrand==null ? "" : subBrand) +
+                "&minPrice=" + (minPrice==null ? "" : minPrice) + "&maxPrice=" + (maxPrice==null ? "" : maxPrice) + "&");
+
+        //查询数据库中的车辆类型并传到前端，用于显示级联下拉框
+        List<Object> brands = carService.carBrands();
+
+        //定义一个Map用来存放车辆的品牌信息
+        Map<String, List<Object>> brandMap = new LinkedHashMap<>();
+        for (Object brandOne : brands) {
+            List<Object> subBrands = carService.carSubBrands((String) brandOne);
+            brandMap.put((String) brandOne, subBrands);
+        }
+
+        model.addAttribute("brandMap", brandMap);
+
+        return "cars-list";
     }
 
 }
