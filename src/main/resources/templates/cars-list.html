@@ -147,7 +147,7 @@
             		<!-- 上一页 -->
             		<li th:if="${carPage.hasPrevious()}">
                         &nbsp;&nbsp;
-            			<a th:class="btn-info" th:href="${currentURL} + 'pageNum=' + ${carPage.getPages()-1}" th:text="上一页"></a>
+            			<a th:class="btn-info" th:href="${currentURL} + 'pageNum=' + ${carPage.getCurrent()-1}" th:text="上一页"></a>
             		</li>
 
             		 <!--中间页 -->
@@ -176,7 +176,7 @@
                     <!--跳转至某页-->
                     <li>
                         &nbsp;&nbsp;
-                        第 <input type="text" style="width: 40px; height: 20px" value="" th:id="goToPage" /> 页
+                        第 <input type="number" style="width: 50px; height: 20px" value="" th:id="goToPage" /> 页
                         <a href="" th:class="btn-danger" th:id="pageA" th:onclick="goToPage()">跳转</a>
                     </li>
 

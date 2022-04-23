@@ -19,4 +19,7 @@ public class PageUrls {
 
     //pageUrl
     private String pagesUrl;
+
+    //brand
+    private String brand;
 }

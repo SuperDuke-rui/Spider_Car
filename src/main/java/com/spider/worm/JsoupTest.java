@@ -1,5 +1,6 @@
 package com.spider.worm;
 
+import com.spider.pojo.Car;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -8,7 +9,8 @@ import org.jsoup.select.Elements;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Date;
+import java.text.ParseException;
+import java.util.*;
 
 /**
  * @Author wangrui
@@ -60,10 +62,18 @@ public class JsoupTest {
     }
 
     @Test
-    public void test3() {
-        long time = new Date().getTime();
-        System.out.println(time);
-
-        new Date().getTime();
+    public void test3() throws IOException, ParseException, InterruptedException {
+        List<Car> carList = new ArrayList<>();
+        String brand = "奥迪";
+        carList = SpiderMain.getDetailInfoFromPageUrl("https://www.che168.com/shanghai/aodi/a0_0msdgscncgpi1ltocsp1exx0/", brand);
     }
+
+    @Test
+    public void test4() throws IOException {
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("奥迪","/shanghai/aodi/");
+        Map<String, List<String>> map1 = SpiderMain.getPagesUrlsFromBrandUrls(map);
+
+    }
+
 }

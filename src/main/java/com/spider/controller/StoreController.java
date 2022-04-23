@@ -1,6 +1,9 @@
 package com.spider.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.spider.pojo.Car;
+import com.spider.pojo.Scores;
 import com.spider.pojo.Store;
 import com.spider.pojo.User;
 import com.spider.service.ICarService;
@@ -16,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -315,23 +319,228 @@ public class StoreController {
         int[] compareIds = (int[]) session.getAttribute("compareIds");
         //通过session依次查询获取车辆信息
         List<Car> carList = new LinkedList<>();
+        //保存雷达图需要的数据：价格、1/表显里程、排量、过户次数、发动机功率、发动机缸数
+        JSONArray radarData = new JSONArray();
+        //价格最大值
+        double maxPrice = 0;
+        //表显里程的最大值
+        double maxMile = 0;
+        //排量最大值
+        double maxEmission = 0;
+        //最大过户次数
+        int maxTrans = 0;
+        //发动机最大马力
+        double maxPower = 0;
+        //发动机最大缸数
+        int maxNum = 0;
+        //保存最大值的数组
+        double[] maxArray = new double[6];
         if (countIds(compareIds) != 0) {
             for (int i = 0; i < compareIds.length; i++) {
+                JSONObject radarItem = new JSONObject();
                 if (compareIds[i] != 0) {
                     Car car = carService.queryCar("cid", compareIds[i]);
                     carList.add(car);
+
+                    //用数组保存数据的值
+                    double[] radarDateValue = new double[6];
+                    //分析雷达图需要的数据并保存
+                    //1.车辆价格
+                    double radarPrice = car.getCarPrice();
+                    if (radarPrice > maxPrice) {
+                        maxPrice = radarPrice;
+                    }
+                    //2.车辆表显里程
+                    String miles = car.getDisplayedMileage();
+                    double radarMile = Double.parseDouble(miles.substring(0, miles.length()-3));
+                    if (radarMile > maxMile) {
+                        maxMile = radarMile;
+                    }
+                    //3.排量
+                    double radarEmissions = car.getEmissions();
+                    if (radarEmissions > maxEmission) {
+                        maxEmission = radarEmissions;
+                    }
+                    //4.过户次数
+                    String transTime = car.getTransfersTimes();
+                    int radarTransTimes = Integer.parseInt(transTime.substring(0, transTime.length()-11));
+                    if (radarTransTimes > maxTrans) {
+                        maxTrans = radarTransTimes;
+                    }
+                    //5.发动机功率和发动机缸数
+                    double radarPower = 0;
+                    int radarEngineNum = 0;
+                    if (!car.getCarEngine().equals("-")){
+                        String[] engineItems = car.getCarEngine().split(" ");
+                        radarPower = Double.parseDouble(engineItems[1].substring(0, engineItems[1].length() - 2));
+                        if (engineItems.length == 3) {
+                            radarEngineNum = Integer.parseInt(engineItems[2].substring(1));
+                        }
+                    }
+                    if (radarPower > maxPower) {
+                        maxPower = radarPower;
+                    }
+                    if (radarEngineNum > maxNum) {
+                        maxNum = radarEngineNum;
+                    }
+
+                    radarDateValue[0] = radarPrice;
+                    radarDateValue[1] = radarMile;
+                    radarDateValue[2] = radarEmissions;
+                    radarDateValue[3] = radarTransTimes;
+                    radarDateValue[4] = radarPower;
+                    radarDateValue[5] = radarEngineNum;
+
+                    radarItem.put("value", radarDateValue);
+                    radarItem.put("name", "车辆"+(i+1));
                 }
+                radarData.add(radarItem);
             }
+            //对比车辆编号
             List<Integer> indexes = new ArrayList<>();
+            //雷达图需要用到的车辆编号：[车辆1,车辆2,车辆3,车辆4]
+            String[] radarIndex = new String[countIds(compareIds)];
             for (int i = 0; i < countIds(compareIds); i++) {
                 indexes.add(i+1);
+                radarIndex[i] = "车辆" + (i+1);
             }
+
+            maxArray[0] = maxPrice;
+            maxArray[1] = maxMile;
+            maxArray[2] = maxEmission;
+            maxArray[3] = maxTrans;
+            maxArray[4] = maxPower;
+            maxArray[5] = maxNum;
+
+            //设置车辆评分数据
+            List<Scores> scoresList = setScores(compareIds, maxArray);
+
             model.addAttribute("compareCarsIndex", indexes);
+            model.addAttribute("maxPrice", maxPrice);
+            model.addAttribute("maxMile", maxMile);
+            model.addAttribute("maxEmission", maxEmission);
+            model.addAttribute("maxTrans", maxTrans);
+            model.addAttribute("maxPower", maxPower);
+            model.addAttribute("maxNum", maxNum);
+            model.addAttribute("radarIndex", radarIndex);
+            model.addAttribute("radarData", radarData);
+            model.addAttribute("scores", scoresList);
         } else {
             carList = null;
         }
         model.addAttribute("compareCars", carList);
         return "compare";
+    }
+
+    /**
+     * 将Car中的字符串中的数据提取出来
+     * @param car
+     * @return
+     */
+    public double[] stringToNumber(Car car) {
+        //用数组保存数据的值
+        double[] radarDateValue = new double[6];
+        //分析雷达图需要的数据并保存
+        //1.车辆价格
+        double radarPrice = car.getCarPrice();
+
+        //2.车辆表显里程
+        String miles = car.getDisplayedMileage();
+        double radarMile = Double.parseDouble(miles.substring(0, miles.length()-3));
+
+        //3.排量
+        double radarEmissions = car.getEmissions();
+        //4.过户次数
+        String transTime = car.getTransfersTimes();
+        int radarTransTimes = Integer.parseInt(transTime.substring(0, transTime.length()-11));
+
+        //5.发动机功率和发动机缸数
+        double radarPower = 0;
+        int radarEngineNum = 0;
+        if (!car.getCarEngine().equals("-")){
+            String[] engineItems = car.getCarEngine().split(" ");
+            radarPower = Double.parseDouble(engineItems[1].substring(0, engineItems[1].length() - 2));
+            if (engineItems.length == 3) {
+                radarEngineNum = Integer.parseInt(engineItems[2].substring(1));
+            }
+        }
+        radarDateValue[0] = radarPrice;
+        radarDateValue[1] = radarMile;
+        radarDateValue[2] = radarEmissions;
+        radarDateValue[3] = radarTransTimes;
+        radarDateValue[4] = radarPower;
+        radarDateValue[5] = radarEngineNum;
+        return radarDateValue;
+    }
+
+    /**
+     * 设置车辆评分数据
+     * @param compareIds 对比表车辆cid数组
+     */
+    public List<Scores> setScores(int[] compareIds, double[] maxArray) {
+        List<Scores> scoresList = new LinkedList<>();
+        for (int i = 0; i < compareIds.length; i++) {
+            if (compareIds[i] != 0) {
+                Car car = carService.queryCar("cid", compareIds[i]);
+                double[] radarDateValue = stringToNumber(car);
+                double sumScore = 0;
+
+                Scores scores = new Scores();
+                //保留两位小数
+                DecimalFormat df = new DecimalFormat("#.00");
+                //价格
+                if (maxArray[0] != 0) {
+                    double priceScore = ((1 - (radarDateValue[0] / maxArray[0])) * 20);
+                    sumScore += priceScore;
+                    scores.setPriceScore(Double.parseDouble(df.format(priceScore)));
+                } else {
+                    scores.setPriceScore(0);
+                }
+                //表显里程
+                if (maxArray[1] != 0) {
+                    double mileScore = (1 - (radarDateValue[1] / maxArray[1])) * 20;
+                    sumScore += mileScore;
+                    scores.setMileScore(Double.parseDouble(df.format(mileScore)));
+                } else {
+                    scores.setMileScore(0);
+                }
+                //排量
+                if (maxArray[2] != 0) {
+                    double emissionScore = (radarDateValue[2] / maxArray[2]) * 20;
+                    sumScore += emissionScore;
+                    scores.setEmissionScore(Double.parseDouble(df.format(emissionScore)));
+                } else {
+                    scores.setEmissionScore(0);
+                }
+                //过户次数
+                if (maxArray[3] != 0) {
+                    double transScore = (1 - (radarDateValue[3] / maxArray[3])) * 20;
+                    sumScore += transScore;
+                    scores.setTransScore(Double.parseDouble(df.format(transScore)));
+                } else {
+                    scores.setTransScore(0);
+                }
+                //发动机功率
+                if (maxArray[4] != 0) {
+                    double powerScore = (radarDateValue[4] / maxArray[4]) * 10;
+                    sumScore += powerScore;
+                    scores.setPowerScore(Double.parseDouble(df.format(powerScore)));
+                } else {
+                    scores.setPowerScore(0);
+                }
+                //发动机缸数
+                if (maxArray[5] != 0) {
+                    double numScore = (radarDateValue[5] / maxArray[5]) * 10;
+                    sumScore += numScore;
+                    scores.setNumScore(Double.parseDouble(df.format(numScore)));
+                } else {
+                    scores.setNumScore(0);
+                }
+                scores.setTotalScore(Double.parseDouble(df.format(sumScore)));
+                scoresList.add(scores);
+            }
+        }
+        return scoresList;
     }
 
     /**

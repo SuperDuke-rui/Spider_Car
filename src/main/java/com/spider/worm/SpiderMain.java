@@ -12,10 +12,7 @@ import org.openqa.selenium.remote.HttpCommandExecutor;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -29,43 +26,15 @@ public class SpiderMain {
     static String sessionId = null;
     static String serverURL = null;
 
-    public List<String> getPagesUrls() throws IOException {
+    public Map<String, List<String>> getPagesUrls(String url) throws IOException {
         //1.二手车之家，默认地址暂为上海（shanghai），url为主页地址
-        String url = "https://www.che168.com/shanghai/benchi/#pvareaid=104649";
+        // String url = "https://www.che168.com/shanghai/benchi/#pvareaid=104649";
         //2.1获取首页所有的a标签的href属性 (此处获得的是所有品牌二手车展示页面的urls)
-        List<String> brand_urls = getUrlsFromIndex(url);
+        Map<String,String> brand_urls_map = getUrlsFromIndex(url);
         //2.2继续通过获得的品牌展示urls获取到展示页中的每个二手车分页的所有地址信息car_pages_urls
-        return getPagesUrlsFromBrandUrls(brand_urls);
+        return getPagesUrlsFromBrandUrls(brand_urls_map);
     }
 
-    /**
-     * 爬取二手车数据
-     * <p>
-     * 废弃该方法****
-     */
-    public List<Car> getCars() throws IOException, InterruptedException, ParseException {
-        //1.二手车之家，默认地址暂为上海（shanghai），url为主页地址
-        String url = "https://www.che168.com/shanghai/benchi/#pvareaid=104649";
-        //2.1获取首页所有的a标签的href属性 (此处获得的是所有品牌二手车展示页面的urls)
-        List<String> brand_urls = getUrlsFromIndex(url);
-//        List<String> brand_urls2 = new ArrayList<>();
-//        brand_urls2.add("/shanghai/benchi/");
-
-        //2.2继续通过获得的品牌展示urls获取到展示页中的每个二手车分页的所有地址信息car_pages_urls
-//        List<String> car_pages_urls = getPagesUrlsFromBrandUrls(brand_urls);
-
-        //2.3通过获取的所有品牌的所有分页的地址urls获取每个分页上所有单个二手车的urls并对其进行解析，返回CarList
-
-//        return getDetailInfoFromPageUrls(car_pages_urls);
-
-//        List<Car> carList = new ArrayList<>();
-//        Car car = new Car();
-//        car = getCarInfoFromUrl("https://www.che168.com/dealer/466131/41903402.html?pvareaid=100519&userpid=310000&usercid=310100&offertype=0&offertag=0&activitycartype=0#pos=12#page=1#rtype=10#isrecom=1#filter=29#module=10#refreshid=0#recomid=28814787#queryid=1647066209$11$f8c879cb-defc-4ebf-9d53-26af14781202$92989#cartype=30");
-//
-//        carList.add(car);
-//        return carList;
-        return null;
-    }
 
     /**
      * 通过car_detail_url解析单个二手车详细页面信息并获取需要的信息
@@ -73,10 +42,10 @@ public class SpiderMain {
      * @param car_detail_url
      * @return
      */
-    private static Car getCarInfoFromUrl(String car_detail_url) throws IOException, ParseException, InterruptedException {
+    public static Car getCarInfoFromUrl(String car_detail_url) throws IOException, InterruptedException {
         if (null != car_detail_url) {
             //创建Car对象
-            Car car = null;
+            Car car;
 
             Document doc = handleUrls(car_detail_url);
             if (doc == null) {
@@ -92,9 +61,10 @@ public class SpiderMain {
                 //2.车辆标题描述
                 String title = doc.select(".car-brand-name").text();
                 car.setTitle(title);
+                String[] title_items = title.split(" ");
 
                 //3.二手车图片
-                String car_photo = "";
+                String car_photo;
                 try {
                     car_photo = "http:" + doc.select(".swiper-slide-active a img").first().attr("src");
                     car.setCarPhoto(car_photo);
@@ -104,8 +74,11 @@ public class SpiderMain {
                 }
 
                 //4.车辆价格
-                double car_price = 0;
+                double car_price;
                 String string_price = doc.select("#overlayPrice").text();
+                if (string_price.equals("")){
+                    string_price = doc.select(".goodstartmoney").text();
+                }
 //            System.out.println(string_price);
                 String[] price_items = string_price.split(" ");
                 car_price = Double.parseDouble(price_items[0].substring(1, price_items[0].length() - 1));
@@ -113,24 +86,10 @@ public class SpiderMain {
 //            System.out.println(car_price);
 
                 //5.车辆品牌
-                String car_infos_string = doc.select(".bread-crumbs a").text();
-                String[] car_base_infos = car_infos_string.split(" ");
-                if (car_base_infos.length > 10) {
-                    car.setCarBrand(car_base_infos[3]);
-                } else if (car_base_infos.length == 10) {
-                    car.setCarBrand(car_base_infos[2]);
-                } else {
-                    car.setCarBrand("-");
-                }
+                //车辆品牌在getDetailInfoFromPageUrl方法中赋值
 
-                //6.车辆类型
-                if (car_base_infos.length > 10) {
-                    car.setCarType(car_base_infos[4]);
-                } else if (car_base_infos.length == 10) {
-                    car.setCarType(car_base_infos[3]);
-                } else {
-                    car.setCarType("-");
-                }
+                //6.车辆类型，从title中分离出来
+                car.setCarType(title_items[0]);
 
                 //7.车辆表显里程
                 String car_infos2_string = doc.select(".brand-unit-item h4").text();
@@ -178,7 +137,7 @@ public class SpiderMain {
                 car.setCarLoc("上海");
 
                 //17.车辆级别
-                String car_grade = "";
+                String car_grade;
                 if (car_content.length > 28) {
                     car_grade = car_content[23].substring(4);
                 } else if (car_content.length == 28) {
@@ -190,7 +149,7 @@ public class SpiderMain {
 //                System.out.println(car_grade);
 
                 //18.车辆发动机
-                String car_engine = "";
+                String car_engine;
                 if (car_content.length > 28) {
                     car_engine = car_content[20].substring(1) + " " + car_content[21] + " " + car_content[22];
                 } else if (car_content.length == 28) {
@@ -203,7 +162,7 @@ public class SpiderMain {
 //                System.out.println(car_engine);
 
                 //19.车辆颜色
-                String car_color = "";
+                String car_color;
                 if (car_content.length > 28) {
                     car_color = car_content[24].substring(4);
                 } else if (car_content.length == 28) {
@@ -215,7 +174,7 @@ public class SpiderMain {
 //                System.out.println(car_color);
 
                 //20.燃油标号
-                String fuel_type = "";
+                String fuel_type;
                 if (car_content.length > 28) {
                     fuel_type = car_content[25].substring(4);
                 } else if (car_content.length == 28) {
@@ -228,7 +187,7 @@ public class SpiderMain {
 //                System.out.println(fuel_type);
 
                 //21.驱动方式
-                String power_type = "";
+                String power_type;
                 if (car_content.length > 28) {
                     power_type = car_content[26].substring(4);
                 } else if (car_content.length == 28) {
@@ -271,11 +230,12 @@ public class SpiderMain {
     /**
      * 获取一个分页中的单个二手的车详细信息
      *
-     * @param car_pages_url
+     * @param car_pages_url 分页地址
+     * @param brand 品牌名称
      * @return List<Car> 一个分页的二手车列表
      * @throws IOException
      */
-    public static List<Car> getDetailInfoFromPageUrl(String car_pages_url) throws IOException, ParseException, InterruptedException {
+    public static List<Car> getDetailInfoFromPageUrl(String car_pages_url, String brand) throws IOException, ParseException, InterruptedException {
 
         //创建一个List存放每个二手车的Url
         List<Car> car_detail_infos = new ArrayList<>();
@@ -296,14 +256,14 @@ public class SpiderMain {
                 if (!elementEach.attr("href").startsWith("https://topicm")) {  //去除广告页面
                     if (elementEach.attr("href").startsWith("/dealer/")) {
                         car = getCarInfoFromUrl("https://www.che168.com" + elementEach.attr("href"));
+                        car.setCarBrand(brand);
                         //                    System.out.println("https://www.che168.com/" + elementEach.attr("href"));
                     } else {
                         car = getCarInfoFromUrl("https:" + elementEach.attr("href"));
                         //                    System.out.println("https:" + elementEach.attr("href"));
+                        car.setCarBrand(brand);
                     }
-                    if (car != null) {
-                        car_detail_infos.add(car);
-                    }
+                    car_detail_infos.add(car);
                 }
 //                System.out.println(elementEach.attr("href"));
             }
@@ -316,13 +276,13 @@ public class SpiderMain {
     /**
      * 继续通过获得的品牌展示urls获取到展示页中的每个二手车分页的所有地址信息car_pages_urls
      *
-     * @param brand_urls
+     * @param brand_urls_map
      * @return
      * @throws IOException
      */
-    public static List<String> getPagesUrlsFromBrandUrls(List<String> brand_urls) throws IOException {
-        //创建一个List
-        List<String> car_pages_urls = new ArrayList<>();
+    public static Map<String, List<String>> getPagesUrlsFromBrandUrls(Map<String, String> brand_urls_map) throws IOException {
+        //创建一个Map
+        Map<String, List<String>> car_pages_urls_map = new LinkedHashMap<>();
 
 //        //定义一个HashMap存放从品牌url中截取的品牌名，使用HashMap的key存放品牌名可以保证所有名称不重复出现
 //        HashMap<String, String> brandMap = new HashMap<>();
@@ -337,22 +297,26 @@ public class SpiderMain {
 //        }
 
         //拼接数据获取到所有分页url  https://www.che168.com/shanghai/ + benchi  + /a0_0msdgscncgpi1ltocsp + 2 + exx0/
-        for (String brand_url : brand_urls) {
+        Iterator<Map.Entry<String,String>> iterator = brand_urls_map.entrySet().iterator();
+        while (iterator.hasNext()) {
 
-            System.out.println("当前获取的是：" + brand_url);
+            Map.Entry<String, String> entry = iterator.next();
+            System.out.println("当前获取的是：" + entry.getKey());
 
             //获取分页的数量
-            int page_num = getPageNums("https://www.che168.com" + brand_url);
+            int page_num = getPageNums("https://www.che168.com" + entry.getValue());
 
+            List<String> list = new ArrayList<>();
             //依次输出分页url
             for (int i = 1; i <= page_num; i++) {
-                car_pages_urls.add("https://www.che168.com" + brand_url + "a0_0msdgscncgpi1ltocsp" + i + "exx0/");
-                System.out.println("https://www.che168.com" + brand_url + "a0_0msdgscncgpi1ltocsp" + i + "exx0/");
+                list.add("https://www.che168.com" + entry.getValue() + "a0_0msdgscncgpi1ltocsp" + i + "exx0/");
+                System.out.println("https://www.che168.com" + entry.getValue() + "a0_0msdgscncgpi1ltocsp" + i + "exx0/");
             }
+            car_pages_urls_map.put(entry.getKey(), list);
 
         }
 
-        return car_pages_urls;
+        return car_pages_urls_map;
     }
 
 
@@ -363,9 +327,11 @@ public class SpiderMain {
      * @return
      */
 
-    private static List<String> getUrlsFromIndex(String url) {
+    public static Map<String, String> getUrlsFromIndex(String url) {
+        //创建一个Map，第一个参数为品牌名，第二个参数是品牌的拼音
+        Map<String, String> map = new LinkedHashMap<>();
         //创建一个List
-        List<String> brand_urls = new ArrayList<>();
+        // List<String> brand_urls = new ArrayList<>();
 
         //1.和二手车网站建立链接
         System.setProperty("webdriver.gecko.driver", "C:\\Program Files (x86)\\Mozilla Firefox\\geckodriver.exe");
@@ -391,17 +357,16 @@ public class SpiderMain {
 
         assert element != null;
         Elements elements = element.getElementsByTag("a");
-        System.out.println("共有" + elements.size() + "个分页");
 
         for (Element elementEach : elements) {
             if (!elementEach.attr("pingyin").isEmpty()) {
 //                System.out.println("https://www.che168.com" + elementEach.attr("pingyin"));
                 //elementEach.attr("pingyin")的值类型为：/shanghai/aodi/
-                brand_urls.add(elementEach.attr("pingyin"));
+                map.put(elementEach.text(),elementEach.attr("pingyin"));
             }
         }
 
-        return brand_urls;
+        return map;
     }
 
     /**
@@ -412,6 +377,46 @@ public class SpiderMain {
      * @throws IOException
      */
     private static Document handleUrls(String url) throws IOException, InterruptedException {
+
+        if (sessionId == null) {
+            //1.和二手车网站建立链接
+            System.setProperty("webdriver.gecko.driver", "C:\\Program Files (x86)\\Mozilla Firefox\\geckodriver.exe");
+
+            //初始化一个firefox浏览器实例 第一次通过new FireFoxDriver()启动浏览器
+            FirefoxDriver driver = new FirefoxDriver();
+
+            sessionId = String.valueOf(driver.getSessionId());
+
+            serverURL = String.valueOf(((HttpCommandExecutor) driver.getCommandExecutor()).getAddressOfRemoteServer());
+
+            //设置隐性等待时间
+            driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
+
+            driver.get(url);
+
+            Document doc = Jsoup.parse(driver.getPageSource());
+
+            //尝试获取错误页面的元素，若获取到错误页面，则重新设置ip
+            String error_page = doc.select(".fail-page").text();
+            while (!error_page.isEmpty()) {
+                //重置代理ip
+                HttpUtils.setProxyIp();
+
+                Thread.sleep(2000);
+                System.out.println("暂停两秒，再切换IP");
+
+                //刷新当前网页
+                driver.navigate().refresh();
+
+                driver.get(url);
+
+                doc = Jsoup.parse(driver.getPageSource());
+                //再次获取错误页，如存在继续循环，知道获得正确的页面
+                error_page = doc.select(".fail-page").text();
+            }
+            return doc;
+        }
+
         //复用WebDriver
         ReuseWebDriver driver = new ReuseWebDriver(serverURL, sessionId);
 

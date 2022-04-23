@@ -49,8 +49,10 @@ public class CarService implements ICarService {
      */
     @Override
     public Page<Car> getCarPage(int pageNum, int pageSize) {
-        Page<Car> pageInfo = new Page<>(pageNum, pageSize);
-        return carMapper.selectPage(pageInfo, null);
+        QueryWrapper<Car> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("*");
+        List<Car> carList = carMapper.selectList(queryWrapper);
+        return getPages(pageNum, pageSize, carList);
     }
 
     /**
@@ -239,6 +241,10 @@ public class CarService implements ICarService {
 
             if (pageNum > maxPage) {
                 pageNum = maxPage;
+            }
+
+            if (pageNum < 1) {
+                pageNum = 1;
             }
 
             //当前第一条数据下标

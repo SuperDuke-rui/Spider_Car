@@ -259,8 +259,8 @@ public class CarController {
      */
     @RequestMapping("/washData")
     public void updateBrandType(){
-        int count = carService.queryCount();
-        for(int i = 1; i < count; i++) {
+        // int count = carService.queryCount();
+        for(int i = 8722; i < 8769; i++) {
             //1.通过cid获取车辆信息
             Car car = carService.queryCar("cid", i);
             //2.提取车辆的title

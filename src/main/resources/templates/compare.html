@@ -195,6 +195,56 @@
             </div>
             <!--查询结果展示区 End-->
 
+            <hr/>
+
+            <!--雷达图 Begin-->
+            <div class="card">
+                <div class="card-body row">
+                    <div class="col-lg-6" th:id="score" style="width: 600px; height: 600px" >
+                    <!--    图表显示-->
+                    </div>
+                    <div class="col-lg-6">
+                        <h4 style="font-family: 'Microsoft YaHei UI';">车辆相对评分</h4>
+                        <table th:class="mailTable" th:cellpadding="0">
+                            <tr>
+                                <td th:class="column">序号</td>
+                                <td style="text-align: center; background-color: #0bb2d3" th:each="index : ${compareCarsIndex}" th:if="car != null" th:class="column1" th:text="'车辆'+${index}"></td>
+                            </tr>
+                            <tr>
+                                <td th:class="column">价格<br>20%</td>
+                                <td th:each="score : ${scores}" th:class="column1" th:if="score != null">[[${score.getPriceScore()}]]</td>
+                            </tr>
+                            <tr>
+                                <td th:class="column">表显里程<br>20%</td>
+                                <td th:each="score : ${scores}" th:class="column1" th:if="score != null">[[${score.getMileScore()}]]</td>
+                            </tr>
+                            <tr>
+                                <td th:class="column">排量<br>20%</td>
+                                <td th:each="score : ${scores}" th:class="column1" th:if="score != null">[[${score.getEmissionScore()}]]</td>
+                            </tr>
+                            <tr>
+                                <td th:class="column">过户次数<br>20%</td>
+                                <td th:each="score : ${scores}" th:class="column1" th:if="score != null">[[${score.getTransScore()}]]</td>
+                            </tr>
+                            <tr>
+                                <td th:class="column">发动机功率<br>10%</td>
+                                <td th:each="score : ${scores}" th:class="column1" th:if="score != null">[[${score.getPowerScore()}]]</td>
+                            </tr>
+                            <tr>
+                                <td th:class="column">发动机缸数<br>10%</td>
+                                <td th:each="score : ${scores}" th:class="column1" th:if="score != null">[[${score.getNumScore()}]]</td>
+                            </tr>
+                            <tr>
+                                <td th:class="column">总分<br>100%</td>
+                                <td th:each="score : ${scores}" th:class="column1" th:if="score != null">[[${score.getTotalScore()}]]</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--雷达图 End-->
+
+
         </div>
     </div>
     <!--end page wrapper -->
@@ -224,8 +274,50 @@
 <script th:src="@{/plugins/simplebar/js/simplebar.min.js}"></script>
 <script th:src="@{/plugins/metismenu/js/metisMenu.min.js}"></script>
 <script th:src="@{/plugins/perfect-scrollbar/js/perfect-scrollbar.js}"></script>
+<script th:src="@{/js/echarts.min.js}"></script>
 <!--app JS-->
 <script th:src="@{/js/app.js}"></script>
+<!--绘制图表-->
+<script th:inline="javascript">
+    // 初始化绘制图表的echarts实例
+    var myChart = echarts.init(document.querySelector('#score'))
+    var legendData = [[${radarIndex}]]
+    var seriesData = [[${radarData}]]
+    var maxPrice = [[${maxPrice}]] + 5
+    var maxMile = [[${maxMile}]] + 2
+    var maxEmission = [[${maxEmission}]] + 0.2
+    var maxTrans = [[${maxTran}]]
+    var maxPower = [[${maxPower}]] + 10
+    var maxNum = [[${maxNum}]] + 2
+    var option = {
+        title: {
+            text: '车辆对比雷达图'
+        },
+        legend: {
+            data: legendData
+        },
+        radar: {
+            // shape: 'circle',
+            indicator: [
+                { name: '价格', max: maxPrice},
+                { name: '表显里程', max: maxMile},
+                { name: '排量', max: maxEmission},
+                { name: '过户次数', max: maxTrans},
+                { name: '发动机功率', max: maxPower},
+                { name: '发动机缸数', max: maxNum}
+            ]
+        },
+        series: [
+            {
+                name: '车辆',
+                type: 'radar',
+                data: seriesData
+            }
+        ]
+    };
+    //对实例对象设置配置
+    myChart.setOption(option)
+</script>
 </body>
 
 </html>
