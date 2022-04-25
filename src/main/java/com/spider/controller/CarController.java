@@ -129,20 +129,10 @@ public class CarController {
         Map<String, String[]> map = analyseJson(interestInfo);
         //2.3通过用户的偏好查询车辆信息（在查出来的信息中随机获取12个通过session传入详细页面）
         String[] params = randomParam(map);
+        System.out.println("params=[" + params[0] + ", " + params[1] + ", " + params[2] + "]");
         //保证三个参数均不为空
-        List<Car> carList;
-        if (!Objects.equals(params[0], "") && !Objects.equals(params[1], "") && !Objects.equals(params[2], "")){
-            carList = carService.queryByInterest(params[0], params[1], params[2]);
-        } else if (!Objects.equals(params[0], "")) {
-            carList = carService.queryCars(params[0]);
-        } else if (!Objects.equals(params[1], "")) {
-            carList = carService.queryCars(params[1]);
-        } else if (!Objects.equals(params[2], "")) {
-            carList = carService.queryCars(params[2]);
-        } else {
-            //如果全为空，那就随便推送点信息 (●^●)
-            carList = carService.queryCars("");
-        }
+        List<Car> carList = carService.queryByInterest(params[0], params[1], params[2]);
+
         //截取前12个数据
         if (carList.size() >= 12){
             session.setAttribute("recommend", carList.subList(0, 12));
@@ -247,7 +237,7 @@ public class CarController {
         int count = 0;
         for (int i = 0; i < strArray.length; i++) {
             //计数
-            if (Objects.equals(strArray[i], "") || strArray[i] == null) {
+            if (!Objects.equals(strArray[i], "") && strArray[i] != null) {
                 count ++;
             }
         }

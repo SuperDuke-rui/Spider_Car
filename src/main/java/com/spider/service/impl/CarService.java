@@ -188,7 +188,25 @@ public class CarService implements ICarService {
      */
     @Override
     public List<Car> queryByInterest(String carType, String powerType, String transType) {
-        return carMapper.queryByInterest(carType, powerType, transType);
+        //多添建查询
+        QueryWrapper<Car> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("*");
+        if (!carType.equals("")) {
+            queryWrapper.eq("car_grade", carType);
+        }
+        if (!powerType.equals("")) {
+            queryWrapper.eq("power_type", powerType);
+        }
+        if (!transType.equals("")) {
+            queryWrapper.eq("transmission", transType);
+        }
+        List<Car> carList = carMapper.selectList(queryWrapper);
+        if (carList.size() == 0) {
+            QueryWrapper<Car> queryWrapper1 = new QueryWrapper<>();
+            queryWrapper1.select("*");
+            carList = carMapper.selectList(queryWrapper1);
+        }
+        return carList;
     }
 
     /**

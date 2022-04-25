@@ -28,8 +28,4 @@ public interface CarMapper extends BaseMapper<Car> {
     /*通过输入的关键词模糊查询*/
     @Select("SELECT * FROM car_detail WHERE CONCAT(title,transmission,power_type,car_brand,car_website, car_grade) LIKE CONCAT('%',#{key},'%')")
     List<Car> queryByKey(String key);
-
-    /*多条件查询，根据用户偏好进行推荐*/
-    @Select("SELECT * FROM car_detail WHERE car_grade = #{carType} AND power_type = #{powerType} AND transmission = #{transType}")
-    List<Car> queryByInterest(String carType, String powerType, String transType);
 }
