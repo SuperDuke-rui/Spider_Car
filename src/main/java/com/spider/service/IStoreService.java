@@ -3,6 +3,7 @@ package com.spider.service;
 import com.spider.pojo.Store;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author wangrui
@@ -48,4 +49,28 @@ public interface IStoreService {
      * @return 更新结果
      */
     int updateState(Integer uid, Integer cid, Integer state, String newTime);
+
+    /**
+     * 获取用户收藏表中的品牌分布
+     * @return
+     */
+    List<Map<String, Object>> queryBrandAndNumber();
+
+    /**
+     * 获取用户收藏表中的变速箱类型分布
+     * @return
+     */
+    List<Map<String, Object>> queryTransAndNumber();
+
+    /**
+     * 获取用户收藏表中的动力类型分布
+     * @return
+     */
+    List<Map<String, Object>> queryPowerAndNumber();
+
+    /**
+     * 获取用户收藏表中的车辆类型类型分布
+     * @return
+     */
+    List<Map<String, Object>> queryTypeAndNumber();
 }

@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--favicon-->
+    <link rel="icon" th:href="@{/images/favicon-32x32.png}" type="image/png"/>
+    <!--plugins-->
+    <link th:href="@{/plugins/simplebar/css/simplebar.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/perfect-scrollbar/css/perfect-scrollbar.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/metismenu/css/metisMenu.min.css}" rel="stylesheet"/>
+    <!-- loader-->
+    <link th:href="@{/css/pace.min.css}" rel="stylesheet"/>
+    <script th:src="@{/js/pace.min.js}"></script>
+    <!-- Bootstrap CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
+    <link th:href="@{/css/icons.css}" rel="stylesheet">
+    <!-- Theme Style CSS -->
+    <link rel="stylesheet" th:href="@{/css/dark-theme.css}"/>
+    <link rel="stylesheet" th:href="@{/css/semi-dark.css}"/>
+    <link rel="stylesheet" th:href="@{/css/header-colors.css}"/>
+    <title>二手车数据分析页面</title>
+    <style>
+        h6 {
+            font-family: 宋体, serif;
+        }
+        .mailTable{
+            border-top: 1px solid #E6EAEE;
+            border-left: 1px solid #E6EAEE;
+        }
+        .mailTable tr td{
+            width: 120px;
+            height: 35px;
+            line-height: 35px;
+            box-sizing: border-box;
+            padding: 0 10px;
+            border-bottom: 1px solid #E6EAEE;
+            border-right: 1px solid #E6EAEE;
+        }
+        .mailTable tr td.column {
+            background-color: #d4bde5;
+            color: #050000;
+            text-align: center;
+        }
+        .mailTable tr td.column1 {
+            color: #050000;
+        }
+    </style>
+</head>
+
+<body>
+<!--wrapper-->
+<div class="wrapper">
+    <!--sidebar wrapper -->
+    <div th:insert="~{layout/copyright :: copy_sideBar}"></div>
+    <!--end sidebar wrapper -->
+
+    <!--start header -->
+    <div th:insert="~{layout/copyright :: copy_header}"></div>
+    <!--end header -->
+
+    <!--start page wrapper -->
+    <div class="page-wrapper">
+        <div class="page-content">
+
+            <!--breadcrumb-->
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                <div class="breadcrumb-title pe-3">图表页面</div>
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0">
+                            <li class="breadcrumb-item"><a th:href="@{/index.html}"><i class="bx bx-home"></i></a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">二手车数据分析</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <!--end breadcrumb-->
+
+            <!--图表展示区 begin-->
+            <div class="card">
+                <div class="card-body row">
+                    <div class="col-lg-5" th:id="Global" style="width: 500px; height: 500px" >
+                        <!-- 图表显示：南丁格尔玫瑰图-->
+                    </div>
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-6">
+                        <br />
+                        <h4 style="font-family: 'Microsoft YaHei UI';">被出手最多的车辆品牌如下：</h4>
+                        <br />
+                        <div class="row">
+                            <table th:class="mailTable" th:cellpadding="0" style="margin-top: 15px; margin-bottom: 15px">
+                                <tr>
+                                    <td th:class="column">品牌</td>
+                                    <td th:each="car,carStat : ${CarList}" style="text-align: center; background-color: #0bb2d3" th:if="${(car != null) && (carStat.index < 5)}" th:class="column1" th:text="${car.getCarBrand()}"></td>
+                                </tr>
+                                <tr>
+                                    <td th:class="column">数量(辆)</td>
+                                    <td th:each="car,carStat : ${CarList}" th:class="column1" th:if="${(car != null) && (carStat.index < 5)}" th:text="${car.getCid()}"></td>
+                                </tr>
+                            </table>
+
+                            <table th:class="mailTable" th:cellpadding="0" style="margin-top: 15px; margin-bottom: 15px">
+                                <tr>
+                                    <td th:class="column">品牌</td>
+                                    <td th:each="car,carStat : ${CarList}" style="text-align: center; background-color: #0bb2d3" th:if="${(car != null) && (carStat.index >= 5) && (carStat.index < 10)}" th:class="column1" th:text="${car.getCarBrand()}"></td>
+                                </tr>
+                                <tr>
+                                    <td th:class="column">数量(辆)</td>
+                                    <td th:each="car,carStat : ${CarList}" th:class="column1" th:if="${(car != null) && (carStat.index >= 5) && (carStat.index < 10)}" th:text="${car.getCid()}"></td>
+                                </tr>
+                            </table>
+                            <br />
+                            <table th:class="mailTable" th:cellpadding="0" style="margin-top: 15px; margin-bottom: 15px">
+                                <tr>
+                                    <td th:class="column">品牌</td>
+                                    <td th:each="car,carStat : ${CarList}" style="text-align: center; background-color: #0bb2d3" th:if="${(car != null) && (carStat.index >= 10) && (carStat.index < 15)}" th:class="column1" th:text="${car.getCarBrand()}"></td>
+                                </tr>
+                                <tr>
+                                    <td th:class="column">数量(辆)</td>
+                                    <td th:each="car,carStat : ${CarList}" th:class="column1" th:if="${(car != null) && (carStat.index >= 10) && (carStat.index < 15)}" th:text="${car.getCid()}"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="main-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div th:id="Chart01" style="width: 500px; height: 500px" >
+                                    <!-- 图表显示：圆角环形饼图-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div th:id="Chart02" style="width: 500px; height: 500px" >
+                                    <!-- 图表显示：普通饼图-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div th:id="Chart03" style="width: 500px; height: 500px" >
+                                    <!-- 图表显示：圆角环形饼图-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div th:id="Chart04" style="width: 500px; height: 500px" >
+                                    <!-- 图表显示：普通饼图-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- 分析总结 -->
+                                <div class="display_flex">
+                                    <h2 class="songStyle">
+                                        用户喜欢的车辆类型为：
+                                    </h2>
+                                    <h3 style="font-family: 'JetBrains Mono',serif" th:each="item : ${MaxItems}">
+                                        [[${item}]]&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--图表展示区 end-->
+
+        </div>
+    </div>
+    <!--end page wrapper -->
+
+    <!--start overlay-->
+    <div th:insert="~{layout/copyright :: copy_overlay}"></div>
+    <!--end overlay-->
+
+    <!--Start Back To Top Button-->
+    <div th:insert="~{layout/copyright :: copy_back}"></div>
+    <!--End Back To Top Button-->
+
+    <!--start footer -->
+    <div th:insert="~{layout/copyright :: copy_footer}"></div>
+    <!--end footer -->
+</div>
+<!--end wrapper-->
+
+<!--start switcher-->
+<div th:insert="~{layout/copyright :: copy_switcher}"></div>
+<!--end switcher-->
+
+<!-- Bootstrap JS -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!--plugins-->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/plugins/simplebar/js/simplebar.min.js}"></script>
+<script th:src="@{/plugins/metismenu/js/metisMenu.min.js}"></script>
+<script th:src="@{/plugins/perfect-scrollbar/js/perfect-scrollbar.js}"></script>
+<script th:src="@{/js/echarts.min.js}"></script>
+<!--app JS-->
+<script th:src="@{/js/app.js}"></script>
+<!--使用JavaScript绘制图表-->
+<!--1.二手车数据全局分析(Top15)：南丁格尔玫瑰图-->
+<script th:inline="javascript">
+    // 初始化绘制图表的echarts实例
+    var myChart = echarts.init(document.querySelector('#Global'))
+    let data = [[${GlobalData}]];
+    console.log(data)
+    option = {
+        title: {
+            text: "二手车数据统计(Top15)"
+        },
+        legend: {
+            top: 'bottom'
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                mark: { show: true },
+                dataView: { show: true, readOnly: false },
+                restore: { show: true },
+                saveAsImage: { show: true }
+            }
+        },
+        series: [
+            {
+                name: '品牌',
+                type: 'pie',
+                radius: [30, 150],
+                center: ['50%', '50%'],
+                roseType: 'area',
+                itemStyle: {
+                    borderRadius: 8
+                },
+                data: data
+            }
+        ]
+    };
+    //对实例对象设置配置
+    myChart.setOption(option)
+</script>
+
+<!--2.用户收藏车辆品牌分布：圆角环形饼图-->
+<script th:inline="javascript">
+    var myChart1 = echarts.init(document.querySelector('#Chart01'))
+    let data1 = [[${BrandData}]];
+    console.log(data1)
+    option = {
+        title: {
+            text: "用户收藏车辆品牌分布"
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            bottom: '5%',
+            left: 'center'
+        },
+        series: [
+            {
+                name: '品牌',
+                type: 'pie',
+                radius: ['33%', '60%'],
+                avoidLabelOverlap: false,
+                itemStyle: {
+                    borderRadius: 10,
+                    borderColor: '#fff',
+                    borderWidth: 2
+                },
+                label: {
+                    show: true,
+                    position: 'center'
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        fontSize: '40',
+                        fontWeight: 'bold'
+                    }
+                },
+                labelLine: {
+                    show: false
+                },
+                data: data1
+            }
+        ]
+    };
+    myChart1.setOption(option)
+</script>
+
+<!--3.用户收藏车辆变速箱类型分布-->
+<script th:inline="javascript">
+    var myChart2 = echarts.init(document.querySelector('#Chart02'))
+    let data2 = [[${TransData}]];
+    console.log(data2)
+    option = {
+        title: {
+            text: '收藏车辆变速箱类型分布'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            bottom: '5%',
+            left: 'center'
+        },
+        series: [
+            {
+                name: '变速箱类型',
+                type: 'pie',
+                radius: '50%',
+                data: data2,
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+    myChart2.setOption(option)
+</script>
+
+<!--4.车辆类型分布：圆角环形饼图-->
+<script th:inline="javascript">
+    var myChart3 = echarts.init(document.querySelector('#Chart03'))
+    let data3 = [[${PowerData}]];
+    console.log(data3)
+    option = {
+        title: {
+            text: '收藏车辆动力类型分布'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            bottom: '5%',
+            left: 'center'
+        },
+        series: [
+            {
+                name: '动力类型',
+                type: 'pie',
+                radius: '40%',
+                data: data3,
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+    myChart3.setOption(option)
+</script>
+
+<!--5.用户收藏车辆动力类型分布-->
+<script th:inline="javascript">
+    var myChart4 = echarts.init(document.querySelector('#Chart04'))
+    let data4 = [[${TypeData}]];
+    console.log(data4)
+    option = {
+        title: {
+            text: "收藏车辆类型分布"
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            bottom: '5%',
+            left: 'center'
+        },
+        series: [
+            {
+                name: '车辆类型',
+                type: 'pie',
+                radius: ['33%', '60%'],
+                avoidLabelOverlap: false,
+                itemStyle: {
+                    borderRadius: 10,
+                    borderColor: '#fff',
+                    borderWidth: 2
+                },
+                label: {
+                    show: true,
+                    position: 'center'
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        fontSize: '40',
+                        fontWeight: 'bold'
+                    }
+                },
+                labelLine: {
+                    show: false
+                },
+                data: data4
+            }
+        ]
+    };
+    myChart4.setOption(option)
+</script>
+</body>
+
+</html>

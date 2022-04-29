@@ -75,7 +75,7 @@ public class CarService implements ICarService {
     @Override
     public int queryCount() {
         QueryWrapper<Car> queryWrapper = new QueryWrapper<>();
-        queryWrapper.isNotNull("uid");
+        queryWrapper.isNotNull("cid");
         return carMapper.selectCount(queryWrapper);
     }
 
@@ -233,6 +233,20 @@ public class CarService implements ICarService {
                 .eq("car_brand", carBrand)
                 .groupBy("car_type");
         return carMapper.selectObjs(queryWrapper);
+    }
+
+    /**
+     * 查询car_detail表中所有的车辆信息及数量
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> queryCarBrandAndNumber() {
+        QueryWrapper<Car> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("car_brand", "COUNT(car_brand) num")
+                .groupBy("car_brand")
+                .orderByDesc("COUNT(car_brand)")
+                .last("limit 15");
+        return carMapper.selectMaps(queryWrapper);
     }
 
     /**

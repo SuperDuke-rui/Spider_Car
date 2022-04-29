@@ -118,4 +118,10 @@ public interface ICarService {
      * @return
      */
     List<Object> carSubBrands(String carBrand);
+
+    /**
+     * 查询car_detail表中所有的车辆信息及数量
+     * @return
+     */
+    List<Map<String, Object>> queryCarBrandAndNumber();
 }

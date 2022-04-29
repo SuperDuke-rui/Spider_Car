@@ -1,5 +1,6 @@
 package com.spider.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.spider.mapper.StoreMapper;
 import com.spider.pojo.Store;
 import com.spider.service.IStoreService;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author wangrui
@@ -71,5 +73,57 @@ public class StoreService implements IStoreService {
     @Override
     public int updateState(Integer uid, Integer cid, Integer state, String newTime) {
         return storeMapper.updateState(uid, cid, state, newTime);
+    }
+
+    /**
+     * 获取用户收藏表中的品牌分布
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> queryBrandAndNumber() {
+        QueryWrapper<Store> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("car_brand", "COUNT(car_brand) num")
+                .groupBy("car_brand")
+                .orderByDesc("car_brand");
+        return storeMapper.selectMaps(queryWrapper);
+    }
+
+    /**
+     * 获取用户收藏表中的变速箱类型分布
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> queryTransAndNumber() {
+        QueryWrapper<Store> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("transmission", "COUNT(transmission) num")
+                .groupBy("transmission")
+                .orderByDesc("transmission");
+        return storeMapper.selectMaps(queryWrapper);
+    }
+
+    /**
+     * 获取用户收藏表中的动力类型分布
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> queryPowerAndNumber() {
+        QueryWrapper<Store> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("power_type", "COUNT(power_type) num")
+                .groupBy("power_type")
+                .orderByDesc("power_type");
+        return storeMapper.selectMaps(queryWrapper);
+    }
+
+    /**
+     * 获取用户收藏表中的车辆类型类型分布
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> queryTypeAndNumber() {
+        QueryWrapper<Store> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("car_grade", "COUNT(car_grade) num")
+                .groupBy("car_grade")
+                .orderByDesc("car_grade");
+        return storeMapper.selectMaps(queryWrapper);
     }
 }
