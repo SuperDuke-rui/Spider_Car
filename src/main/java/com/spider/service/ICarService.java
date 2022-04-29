@@ -124,4 +124,11 @@ public interface ICarService {
      * @return
      */
     List<Map<String, Object>> queryCarBrandAndNumber();
+
+    /**
+     * 删除过期的数据
+     * @param outTime 过期时间
+     * @return
+     */
+    int deleteOutTimeData(String outTime);
 }

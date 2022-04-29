@@ -4,6 +4,7 @@ import com.spider.mapper.CarMapper;
 import com.spider.mapper.PageUrlsMapper;
 import com.spider.pojo.Car;
 import com.spider.pojo.PageUrls;
+import com.spider.service.ICarService;
 import com.spider.service.IPageUrlsService;
 import com.spider.worm.SpiderMain;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,10 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @Author wangrui
@@ -33,6 +32,8 @@ public class SpiderController {
     private CarMapper carMapper;
     @Resource
     private IPageUrlsService pageUrlsService;
+    @Resource
+    private ICarService carService;
 
     @RequestMapping("/spiderControl")
     public String goToSpiderController(Model model) {
@@ -80,12 +81,31 @@ public class SpiderController {
     }
 
     /**
+     * 定时任务：每天凌晨1点删除过期40天的数据
+     */
+    @Scheduled(cron = "0 0 1 * * ?")
+    public void deleteOutTimeData() {
+        //时间格式定义
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        //获取30天前的时间日期-outTime
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, -40);
+        String outDate = format.format(calendar.getTime());
+        int result = carService.deleteOutTimeData(outDate);
+        if (result > 0) {
+            System.out.println("已删除过期数据，共清除" + result + "条数据！");
+        } else {
+            System.out.println("过期数据删除失败");
+        }
+    }
+
+    /**
      * 定时任务：每天凌晨两点爬取数据
      * @throws IOException
      * @throws ParseException
      * @throws InterruptedException
      */
-    @Scheduled(cron = "0 34 14 * * ?")
+    @Scheduled(cron = "0 0 2 * * ?")
     public void schedule() throws IOException, ParseException, InterruptedException {
         saveCarToDb(null);
     }

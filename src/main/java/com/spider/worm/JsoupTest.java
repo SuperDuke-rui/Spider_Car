@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -74,6 +75,23 @@ public class JsoupTest {
         map.put("奥迪","/shanghai/aodi/");
         Map<String, List<String>> map1 = SpiderMain.getPagesUrlsFromBrandUrls(map);
 
+    }
+
+    /**
+     * 定时任务：删除过期的数据
+     */
+    @Test
+    public void deleteOutTimeData() {
+        //时间格式定义
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        //首先获取当前时间-nowDate
+        // String nowDate = format.format(new Date());
+        // System.out.println(nowDate);
+        //获取30天前的时间日期-outTime
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, -49);
+        String outDate = format.format(calendar.getTime());
+        System.out.println(outDate);
     }
 
 }

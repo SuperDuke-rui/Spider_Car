@@ -250,6 +250,16 @@ public class CarService implements ICarService {
     }
 
     /**
+     * 删除过期的数据
+     * @param outTime 过期时间
+     * @return
+     */
+    @Override
+    public int deleteOutTimeData(String outTime) {
+        return carMapper.deleteOutTimeData(outTime);
+    }
+
+    /**
      * 自定义一个分页功能的函数
      * @param pageNum 当前页码
      * @param pageSize 页面大小

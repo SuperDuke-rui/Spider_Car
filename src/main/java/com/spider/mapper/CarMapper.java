@@ -2,6 +2,7 @@ package com.spider.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.spider.pojo.Car;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -28,4 +29,7 @@ public interface CarMapper extends BaseMapper<Car> {
     /*通过输入的关键词模糊查询*/
     @Select("SELECT * FROM car_detail WHERE CONCAT(title,transmission,power_type,car_brand,car_website, car_grade) LIKE CONCAT('%',#{key},'%')")
     List<Car> queryByKey(String key);
+
+    @Delete("DELETE FROM car_detail WHERE spider_time < #{outTime}")
+    int deleteOutTimeData(String outTime);
 }
