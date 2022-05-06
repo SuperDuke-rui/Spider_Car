@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Spider_Car:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <exploded>false</exploded>
+        <module>Spider_Car</module>
+        <packaging>war</packaging>
+        <unpackNestedArchives>false</unpackNestedArchives>
+      </options>
+    </properties>
+    <root id="archive" name="Spider_Car-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="Spider_Car:war exploded" />
+    </root>
+  </artifact>
+</component>

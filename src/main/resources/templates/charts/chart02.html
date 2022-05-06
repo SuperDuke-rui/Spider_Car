@@ -101,7 +101,7 @@
                                 </tr>
                                 <tr>
                                     <td th:class="column">数量(辆)</td>
-                                    <td th:each="car,carStat : ${CarList}" th:class="column1" th:if="${(car != null) && (carStat.index < 5)}" th:text="${car.getCid()}"></td>
+                                    <td th:each="car,carStat : ${CarList}" style="text-align: center" th:class="column1" th:if="${(car != null) && (carStat.index < 5)}" th:text="${car.getCid()}"></td>
                                 </tr>
                             </table>
 
@@ -112,7 +112,7 @@
                                 </tr>
                                 <tr>
                                     <td th:class="column">数量(辆)</td>
-                                    <td th:each="car,carStat : ${CarList}" th:class="column1" th:if="${(car != null) && (carStat.index >= 5) && (carStat.index < 10)}" th:text="${car.getCid()}"></td>
+                                    <td th:each="car,carStat : ${CarList}" style="text-align: center" th:class="column1" th:if="${(car != null) && (carStat.index >= 5) && (carStat.index < 10)}" th:text="${car.getCid()}"></td>
                                 </tr>
                             </table>
                             <br />
@@ -123,7 +123,7 @@
                                 </tr>
                                 <tr>
                                     <td th:class="column">数量(辆)</td>
-                                    <td th:each="car,carStat : ${CarList}" th:class="column1" th:if="${(car != null) && (carStat.index >= 10) && (carStat.index < 15)}" th:text="${car.getCid()}"></td>
+                                    <td th:each="car,carStat : ${CarList}" style="text-align: center" th:class="column1" th:if="${(car != null) && (carStat.index >= 10) && (carStat.index < 15)}" th:text="${car.getCid()}"></td>
                                 </tr>
                             </table>
                         </div>
